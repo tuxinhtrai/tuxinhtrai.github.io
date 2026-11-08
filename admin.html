@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevTips - Admin Login & Dashboard</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-color: #0b0f19;
+            --surface-color: #131b2e;
+            --surface-hover: #1a2540;
+            --primary-color: #6366f1;
+            --primary-hover: #4f46e5;
+            --accent-color: #06b6d4;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --shadow-glow: 0 0 25px rgba(99, 102, 241, 0.2);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+        }
+
+        /* MÀN HÌNH ĐĂNG NHẬP */
+        #loginScreen {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .login-card {
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            padding: 2.5rem;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+            text-align: center;
+        }
+
+        .login-card h2 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .login-card p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+        }
+
+        /* KHU VỰC DASHBOARD (Ẩn ban đầu) */
+        #dashboardScreen {
+            display: none;
+            grid-template-columns: 260px 1fr;
+            min-height: 100vh;
+        }
+
+        @media (max-width: 1024px) {
+            #dashboardScreen { grid-template-columns: 1fr; }
+            .dash-sidebar { display: none; }
+            .content-grid { grid-template-columns: 1fr; }
+        }
+
+        /* Sidebar Dashboard */
+        .dash-sidebar {
+            background: var(--surface-color);
+            border-right: 1px solid var(--border-color);
+            padding: 2rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.4rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+            margin-bottom: 2rem;
+        }
+
+        .dash-menu {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .dash-menu a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 0.85rem 1rem;
+            border-radius: 12px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .dash-menu a:hover, .dash-menu li.active a {
+            background: var(--primary-color);
+            color: white;
+            transform: translateX(4px);
+        }
+
+        /* Main Content Area */
+        .dash-main {
+            padding: 2.5rem;
+            overflow-y: auto;
+            max-height: 100vh;
+        }
+
+        .dash-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .dash-header h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--surface-color);
+            padding: 8px 16px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        .user-profile img {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-bottom: 2.5rem;
+        }
+
+        .stat-card {
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            padding: 1.5rem;
+            border-radius: 16px;
+        }
+
+        .stat-card h3 {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .stat-card .number {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--accent-color);
+        }
+
+        /* Form & Management Section */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .panel-card {
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.75rem;
+        }
+
+        .panel-card h2 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--text-muted);
+        }
+
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            padding: 0.75rem 1rem;
+            border-radius: 10px;
+            color: var(--text-main);
+            font-size: 0.95rem;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+            border-color: var(--primary-color);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            border: none;
+            transition: var(--transition);
+            width: 100%;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+            color: white;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.6);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            margin-top: 10px;
+        }
+        .btn-secondary:hover {
+            background: var(--surface-hover);
+            color: var(--text-main);
+        }
+
+        /* Post Management List */
+        .manage-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-height: 450px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        .manage-item {
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            padding: 1rem;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .manage-info h4 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .manage-info span {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .btn-danger {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            padding: 6px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .btn-danger:hover {
+            background: #ef4444;
+            color: white;
+        }
+
+        .error-msg {
+            color: #ef4444;
+            font-size: 0.85rem;
+            margin-top: 10px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. MÀN HÌNH ĐĂNG NHẬP -->
+    <div id="loginScreen">
+        <div class="login-card">
+            <div class="logo" style="justify-content: center; margin-bottom: 1rem;">
+                <i class="fa-solid fa-code"></i> DevTips.vn
+            </div>
+            <h2>Đăng Nhập Admin</h2>
+            <p>Nhập mật khẩu quản trị để truy cập trang dashboard.</p>
+            <form id="loginForm">
+                <div class="form-group" style="text-align: left;">
+                    <label>Mật khẩu quản trị</label>
+                    <input type="password" id="adminPassword" placeholder="Nhập mật khẩu..." required>
+                </div>
+                <div class="error-msg" id="loginError">Mật khẩu không chính xác! Vui lòng thử lại.</div>
+                <button type="submit" class="btn btn-primary" style="margin-top: 10px;">Truy Cập Dashboard</button>
+                <a href="index.html" class="btn btn-secondary">Quay lại Trang Chủ</a>
+            </form>
+        </div>
+    </div>
+
+    <!-- 2. GIAO DIỆN DASHBOARD CHÍNH (Sau khi đăng nhập thành công) -->
+    <div id="dashboardScreen">
+        <!-- Sidebar Dashboard -->
+        <aside class="dash-sidebar">
+            <div>
+                <a href="index.html" class="logo">
+                    <i class="fa-solid fa-code"></i> DevTips.vn
+                </a>
+                <ul class="dash-menu">
+                    <li class="active"><a href="#"><i class="fa-solid fa-chart-pie"></i> Tổng quan & Đăng bài</a></li>
+                    <li><a href="index.html" target="_blank"><i class="fa-solid fa-globe"></i> Xem trang chủ</a></li>
+                </ul>
+            </div>
+            <div>
+                <button class="btn btn-secondary" onclick="handleLogout()" style="width: 100%;"><i class="fa-solid fa-right-from-bracket"></i> Đăng xuất</button>
+            </div>
+        </aside>
+
+        <!-- Main Dashboard -->
+        <main class="dash-main">
+            <div class="dash-header">
+                <h1>Quản Trị Hệ Thống</h1>
+                <div class="user-profile">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop" alt="Admin">
+                    <div>
+                        <h4 style="font-size: 0.9rem;">Nguyễn Anh Tú</h4>
+                        <span style="font-size: 0.75rem; color: var(--text-muted);">Administrator</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Thống kê nhanh -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Tổng số bài viết</h3>
+                    <div class="number" id="totalPostsCount">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Lượt tương tác giả lập</h3>
+                    <div class="number">1,452</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Bảo mật phiên</h3>
+                    <div class="number" style="font-size: 1.2rem; color: #10b981; margin-top: 5px;"><i class="fa-solid fa-shield-halved"></i> Đã xác thực</div>
+                </div>
+            </div>
+
+            <!-- Khu vực Form đăng bài & Danh sách quản lý -->
+            <div class="content-grid">
+                <!-- Form Tạo Bài Mới -->
+                <div class="panel-card">
+                    <h2><i class="fa-solid fa-pen-nib" style="color: var(--primary-color);"></i> Đăng Bài Viết Mới</h2>
+                    <form id="adminPostForm">
+                        <div class="form-group">
+                            <label>Tiêu đề thủ thuật</label>
+                            <input type="text" id="adminTitle" placeholder="Nhập tiêu đề hấp dẫn..." required>
+                        </div>
+                        <div class="form-group">
+                            <label>Danh mục</label>
+                            <select id="adminCategory">
+                                <option value="Web Development">Web Development</option>
+                                <option value="Bảo mật & Proxy">Bảo mật & Proxy</option>
+                                <option value="AI & Automations">AI & Automations</option>
+                                <option value="Mobile & App">Mobile & App</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Nội dung chi tiết (Hỗ trợ code block)</label>
+                            <textarea id="adminContent" placeholder="Nhập nội dung chia sẻ..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-cloud-arrow-up"></i> Xuất bản bài viết</button>
+                    </form>
+                </div>
+
+                <!-- Danh sách bài viết đang quản lý -->
+                <div class="panel-card">
+                    <h2><i class="fa-solid fa-list-check" style="color: var(--accent-color);"></i> Quản Lý Bài Viết</h2>
+                    <div class="manage-list" id="adminManageList"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Script Xử Lý Đăng Nhập & Quản Trị -->
+    <script>
+        // MẬT KHẨU QUẢN TRỊ CỦA BẠN (Bạn có thể đổi chữ 'admin123' thành mật khẩu tùy ý)
+        const ADMIN_PASSWORD_SECRET = "admin123"; 
+
+        const loginScreen = document.getElementById('loginScreen');
+        const dashboardScreen = document.getElementById('dashboardScreen');
+        const loginForm = document.getElementById('loginForm');
+        const loginError = document.getElementById('loginError');
+
+        // Kiểm tra nếu trước đó đã đăng nhập trong phiên duyệt web này
+        if (sessionStorage.getItem('devtips_logged_in') === 'true') {
+            showDashboard();
+        }
+
+        // Xử lý sự kiện submit form đăng nhập
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const enteredPass = document.getElementById('adminPassword').value;
+
+            if (enteredPass === ADMIN_PASSWORD_SECRET) {
+                sessionStorage.setItem('devtips_logged_in', 'true');
+                showDashboard();
+            } else {
+                loginError.style.display = 'block';
+            }
+        });
+
+        function showDashboard() {
+            loginScreen.style.display = 'none';
+            dashboardScreen.style.display = 'grid';
+            renderDashboard();
+        }
+
+        function handleLogout() {
+            sessionStorage.removeItem('devtips_logged_in');
+            window.location.reload();
+        }
+
+        // --- Quản lý Bài Viết ---
+        let posts = JSON.parse(localStorage.getItem('devtips_posts')) || [
+            {
+                title: 'Tối ưu hóa Cloudflare Workers để chạy API tốc độ cao',
+                author: 'Nguyễn Anh Tú',
+                time: 'Hôm nay',
+                category: 'Cloudflare',
+                snippet: 'Hướng dẫn toàn tập cách deploy các serverless script...',
+                content: 'Bài viết này sẽ hướng dẫn các bạn thiết lập và tinh chỉnh Cloudflare Workers...'
+            }
+        ];
+
+        function saveAndRender() {
+            localStorage.setItem('devtips_posts', JSON.stringify(posts));
+            renderDashboard();
+        }
+
+        function renderDashboard() {
+            const listContainer = document.getElementById('adminManageList');
+            document.getElementById('totalPostsCount').innerText = posts.length;
+            listContainer.innerHTML = '';
+
+            if(posts.length === 0) {
+                listContainer.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 20px;">Chưa có bài viết nào.</p>';
+                return;
+            }
+
+            posts.forEach((post, index) => {
+                const item = document.createElement('div');
+                item.className = 'manage-item';
+                item.innerHTML = `
+                    <div class="manage-info">
+                        <h4>${post.title}</h4>
+                        <span>${post.category} • ${post.time}</span>
+                    </div>
+                    <button class="btn-danger" onclick="deletePost(${index})"><i class="fa-solid fa-trash"></i></button>
+                `;
+                listContainer.appendChild(item);
+            });
+        }
+
+        document.getElementById('adminPostForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const title = document.getElementById('adminTitle').value;
+            const category = document.getElementById('adminCategory').value;
+            const content = document.getElementById('adminContent').value;
+
+            const newPost = {
+                title: title,
+                author: 'Nguyễn Anh Tú (Admin)',
+                time: 'Vừa xong',
+                category: category,
+                snippet: content.substring(0, 90) + '...',
+                content: content
+            };
+
+            posts.unshift(newPost);
+            saveAndRender();
+            this.reset();
+            alert('Đăng bài viết mới thành công!');
+        });
+
+        function deletePost(index) {
+            if(confirm('Bạn có chắc chắn muốn xoá bài viết này không?')) {
+                posts.splice(index, 1);
+                saveAndRender();
+            }
+        }
+    </script>
+</body>
+</html>
