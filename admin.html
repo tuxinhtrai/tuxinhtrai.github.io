@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DevTips - Cổng Đăng Nhập & Quản Trị Thành Viên</title>
+    <title>DevTips - Secure Admin Gateway</title>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- FontAwesome Icons -->
@@ -25,9 +25,7 @@
         }
 
         * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+            margin: 0; padding: 0; box-sizing: border-box;
             font-family: 'Plus Jakarta Sans', sans-serif;
         }
 
@@ -37,73 +35,44 @@
             min-height: 100vh;
         }
 
-        /* KHU VỰC AUTH (Đăng nhập / Đăng ký) */
-        #authScreen {
+        /* TRANG NGỤY TRANG CHO NGƯỜI LẠ (Trông như lỗi 404 hoặc trang bảo trì) */
+        #fake404 {
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            text-align: center;
             padding: 20px;
         }
 
-        .auth-card {
+        #fake404 h1 { font-size: 3rem; color: var(--primary-color); margin-bottom: 10px; }
+        #fake404 p { color: var(--text-muted); margin-bottom: 20px; }
+
+        /* MÀN HÌNH NHẬP MÃ BÍ MẬT (Chỉ hiện khi bấm phím tắt hoặc nhập đúng cú pháp ẩn) */
+        #secretLoginModal {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(11, 15, 25, 0.95);
+            backdrop-filter: blur(10px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .login-card {
             background: var(--surface-color);
             border: 1px solid var(--border-color);
             padding: 2.5rem;
             border-radius: 20px;
             width: 100%;
-            max-width: 440px;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
-        }
-
-        .auth-card h2 {
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
+            max-width: 400px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.8);
             text-align: center;
         }
 
-        .auth-card p {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            margin-bottom: 1.5rem;
-            text-align: center;
-        }
-
-        .auth-tabs {
-            display: flex;
-            background: var(--bg-color);
-            border-radius: 12px;
-            padding: 4px;
-            margin-bottom: 1.5rem;
-            border: 1px solid var(--border-color);
-        }
-
-        .auth-tab {
-            flex: 1;
-            background: transparent;
-            border: none;
-            color: var(--text-muted);
-            padding: 10px;
-            font-weight: 600;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .auth-tab.active {
-            background: var(--primary-color);
-            color: white;
-        }
-
-        .auth-form-section {
-            display: none;
-        }
-
-        .auth-form-section.active {
-            display: block;
-        }
-
-        /* KHU VỰC DASHBOARD (Ẩn ban đầu) */
+        /* DASHBOARD CHÍNH (Sau khi mở khóa) */
         #dashboardScreen {
             display: none;
             grid-template-columns: 260px 1fr;
@@ -126,300 +95,127 @@
         }
 
         .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 1.4rem;
-            font-weight: 800;
+            display: flex; align-items: center; gap: 10px;
+            font-size: 1.4rem; font-weight: 800;
             background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-decoration: none;
-            margin-bottom: 2rem;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            text-decoration: none; margin-bottom: 2rem;
         }
 
-        .dash-menu {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
+        .dash-menu { list-style: none; display: flex; flex-direction: column; gap: 8px; }
         .dash-menu a {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 0.85rem 1rem;
-            border-radius: 12px;
-            color: var(--text-muted);
-            text-decoration: none;
-            font-weight: 600;
+            display: flex; align-items: center; gap: 12px;
+            padding: 0.85rem 1rem; border-radius: 12px;
+            color: var(--text-muted); text-decoration: none; font-weight: 600;
             transition: var(--transition);
         }
-
         .dash-menu a:hover, .dash-menu li.active a {
-            background: var(--primary-color);
-            color: white;
+            background: var(--primary-color); color: white;
             transform: translateX(4px);
         }
 
-        .dash-main {
-            padding: 2.5rem;
-            overflow-y: auto;
-            max-height: 100vh;
-        }
-
-        .dash-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-        }
-
-        .dash-header h1 {
-            font-size: 1.8rem;
-            font-weight: 700;
-        }
+        .dash-main { padding: 2.5rem; overflow-y: auto; max-height: 100vh; }
+        .dash-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+        .dash-header h1 { font-size: 1.8rem; font-weight: 700; }
 
         .user-profile {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            background: var(--surface-color);
-            padding: 8px 16px;
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-        }
-
-        .user-profile i {
-            font-size: 1.8rem;
-            color: var(--primary-color);
+            display: flex; align-items: center; gap: 12px;
+            background: var(--surface-color); padding: 8px 16px;
+            border-radius: 12px; border: 1px solid var(--border-color);
         }
 
         .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 20px;
-            margin-bottom: 2.5rem;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px; margin-bottom: 2.5rem;
         }
 
         .stat-card {
-            background: var(--surface-color);
-            border: 1px solid var(--border-color);
-            padding: 1.5rem;
-            border-radius: 16px;
+            background: var(--surface-color); border: 1px solid var(--border-color);
+            padding: 1.5rem; border-radius: 16px;
         }
+        .stat-card h3 { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 8px; }
+        .stat-card .number { font-size: 2rem; font-weight: 800; color: var(--accent-color); }
 
-        .stat-card h3 {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            margin-bottom: 8px;
-        }
-
-        .stat-card .number {
-            font-size: 2rem;
-            font-weight: 800;
-            color: var(--accent-color);
-        }
-
-        .content-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-        }
+        .content-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
 
         .panel-card {
-            background: var(--surface-color);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 1.75rem;
+            background: var(--surface-color); border: 1px solid var(--border-color);
+            border-radius: 16px; padding: 1.75rem;
         }
-
         .panel-card h2 {
-            font-size: 1.25rem;
-            font-weight: 700;
-            margin-bottom: 1.25rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            font-size: 1.25rem; font-weight: 700; margin-bottom: 1.25rem;
+            display: flex; align-items: center; gap: 10px;
         }
 
-        .form-group {
-            margin-bottom: 1.25rem;
-        }
-
+        .form-group { margin-bottom: 1.25rem; }
         .form-group label {
-            display: block;
-            font-size: 0.9rem;
-            font-weight: 600;
-            margin-bottom: 6px;
-            color: var(--text-muted);
+            display: block; font-size: 0.9rem; font-weight: 600;
+            margin-bottom: 6px; color: var(--text-muted);
         }
-
         .form-group input, .form-group textarea, .form-group select {
-            width: 100%;
-            background: var(--bg-color);
-            border: 1px solid var(--border-color);
-            padding: 0.75rem 1rem;
-            border-radius: 10px;
-            color: var(--text-main);
-            font-size: 0.95rem;
-            outline: none;
-            transition: var(--transition);
+            width: 100%; background: var(--bg-color); border: 1px solid var(--border-color);
+            padding: 0.75rem 1rem; border-radius: 10px; color: var(--text-main);
+            font-size: 0.95rem; outline: none; transition: var(--transition);
         }
-
         .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
-            border-color: var(--primary-color);
-            box-shadow: var(--shadow-glow);
+            border-color: var(--primary-color); box-shadow: var(--shadow-glow);
         }
-
-        .form-group textarea {
-            resize: vertical;
-            min-height: 120px;
-        }
+        .form-group textarea { resize: vertical; min-height: 120px; }
 
         .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            padding: 0.75rem 1.5rem;
-            border-radius: 12px;
-            font-weight: 600;
-            font-size: 0.95rem;
-            cursor: pointer;
-            border: none;
-            transition: var(--transition);
-            width: 100%;
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+            padding: 0.75rem 1.5rem; border-radius: 12px; font-weight: 600; font-size: 0.95rem;
+            cursor: pointer; border: none; transition: var(--transition); width: 100%; text-decoration: none;
         }
-
         .btn-primary {
             background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
-            color: white;
-            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+            color: white; box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
         }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(99, 102, 241, 0.6); }
 
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.6);
-        }
+        .btn-secondary { background: transparent; border: 1px solid var(--border-color); color: var(--text-muted); margin-top: 10px; }
+        .btn-secondary:hover { background: var(--surface-hover); color: var(--text-main); }
 
-        .btn-secondary {
-            background: transparent;
-            border: 1px solid var(--border-color);
-            color: var(--text-muted);
-            margin-top: 10px;
-        }
-        .btn-secondary:hover {
-            background: var(--surface-hover);
-            color: var(--text-main);
-        }
-
-        .manage-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            max-height: 450px;
-            overflow-y: auto;
-            padding-right: 5px;
-        }
-
+        .manage-list { display: flex; flex-direction: column; gap: 12px; max-height: 450px; overflow-y: auto; padding-right: 5px; }
         .manage-item {
-            background: var(--bg-color);
-            border: 1px solid var(--border-color);
-            padding: 1rem;
-            border-radius: 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 10px;
+            background: var(--bg-color); border: 1px solid var(--border-color);
+            padding: 1rem; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; gap: 10px;
         }
-
-        .manage-info h4 {
-            font-size: 0.95rem;
-            font-weight: 600;
-            margin-bottom: 4px;
-        }
-
-        .manage-info span {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-        }
+        .manage-info h4 { font-size: 0.95rem; font-weight: 600; margin-bottom: 4px; }
+        .manage-info span { font-size: 0.75rem; color: var(--text-muted); }
 
         .btn-danger {
-            background: rgba(239, 68, 68, 0.1);
-            color: #ef4444;
-            border: 1px solid rgba(239, 68, 68, 0.2);
-            padding: 6px 12px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: var(--transition);
+            background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.2);
+            padding: 6px 12px; border-radius: 8px; cursor: pointer; font-weight: 600; transition: var(--transition);
         }
-
-        .btn-danger:hover {
-            background: #ef4444;
-            color: white;
-        }
-
-        .alert-msg {
-            font-size: 0.85rem;
-            margin-top: 10px;
-            text-align: center;
-            display: none;
-        }
+        .btn-danger:hover { background: #ef4444; color: white; }
     </style>
 </head>
 <body>
 
-    <!-- 1. MÀN HÌNH XÁC THỰC (ĐĂNG NHẬP / ĐĂNG KÝ) -->
-    <div id="authScreen">
-        <div class="auth-card">
-            <div class="logo" style="justify-content: center; margin-bottom: 1rem;">
-                <i class="fa-solid fa-code"></i> DevTips.vn
-            </div>
-            
-            <div class="auth-tabs">
-                <button class="auth-tab active" onclick="switchTab('login')">Đăng Nhập</button>
-                <button class="auth-tab" onclick="switchTab('register')">Đăng Ký Nhanh</button>
-            </div>
+    <!-- 1. GIAO DIỆN NGỤY TRANG (Nếu người lạ vào sẽ tưởng trang không tồn tại) -->
+    <div id="fake404">
+        <h1>404</h1>
+        <p>Rất tiếc, trang bạn đang tìm kiếm không tồn tại hoặc đã bị di chuyển.</p>
+        <a href="index.html" class="btn btn-primary" style="max-width: 200px;">Trở về Trang Chủ</a>
+    </div>
 
-            <!-- Form Đăng Nhập -->
-            <form id="loginForm" class="auth-form-section active">
+    <!-- 2. HỘP THOẠI NHẬP MÃ BÍ MẬT (Chỉ hiện khi nhấn tổ hợp phím ẩn: Ctrl + Shift + A) -->
+    <div id="secretLoginModal">
+        <div class="login-card">
+            <h2 style="margin-bottom: 10px;">🔐 Secret Gateway</h2>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 20px;">Nhập khóa mã hóa của quản trị viên</p>
+            <form id="secretForm">
                 <div class="form-group" style="text-align: left;">
-                    <label>Tên tài khoản</label>
-                    <input type="text" id="loginUsername" placeholder="Nhập username..." required>
+                    <input type="password" id="secretKeyInput" placeholder="Mật khẩu bảo mật..." required>
                 </div>
-                <div class="form-group" style="text-align: left;">
-                    <label>Mật khẩu</label>
-                    <input type="password" id="loginPassword" placeholder="Nhập mật khẩu..." required>
-                </div>
-                <div class="alert-msg" id="loginAlert" style="color: #ef4444;"></div>
-                <button type="submit" class="btn btn-primary" style="margin-top: 10px;">Vào Dashboard Của Tôi</button>
-                <a href="index.html" class="btn btn-secondary">Quay lại Trang Chủ</a>
-            </form>
-
-            <!-- Form Đăng Ký -->
-            <form id="registerForm" class="auth-form-section">
-                <div class="form-group" style="text-align: left;">
-                    <label>Tên hiển thị / Tác giả</label>
-                    <input type="text" id="regName" placeholder="Ví dụ: Hoàng Nam..." required>
-                </div>
-                <div class="form-group" style="text-align: left;">
-                    <label>Tài khoản (Username)</label>
-                    <input type="text" id="regUsername" placeholder="Tên đăng nhập không dấu..." required>
-                </div>
-                <div class="form-group" style="text-align: left;">
-                    <label>Mật khẩu</label>
-                    <input type="password" id="regPassword" placeholder="Tạo mật khẩu..." required>
-                </div>
-                <div class="alert-msg" id="regAlert"></div>
-                <button type="submit" class="btn btn-primary" style="margin-top: 10px;">Tạo Tài Khoản Ngay</button>
+                <button type="submit" class="btn btn-primary">Xác Thực</button>
+                <button type="button" class="btn btn-secondary" onclick="hideSecretModal()">Hủy</button>
             </form>
         </div>
     </div>
 
-    <!-- 2. GIAO DIỆN DASHBOARD RIÊNG CỦA TỪNG USER -->
+    <!-- 3. DASHBOARD QUẢN TRỊ THỰC TẾ (Ẩn hoàn toàn cho đến khi mở khóa) -->
     <div id="dashboardScreen">
         <aside class="dash-sidebar">
             <div>
@@ -427,46 +223,42 @@
                     <i class="fa-solid fa-code"></i> DevTips.vn
                 </a>
                 <ul class="dash-menu">
-                    <li class="active"><a href="#"><i class="fa-solid fa-chart-pie"></i> Bài viết của tôi</a></li>
+                    <li class="active"><a href="#"><i class="fa-solid fa-chart-pie"></i> Quản lý bài viết</a></li>
                     <li><a href="index.html" target="_blank"><i class="fa-solid fa-globe"></i> Xem trang chủ</a></li>
                 </ul>
             </div>
             <div>
-                <button class="btn btn-secondary" onclick="handleLogout()" style="width: 100%;"><i class="fa-solid fa-right-from-bracket"></i> Đăng xuất</button>
+                <button class="btn btn-secondary" onclick="handleLogout()" style="width: 100%;"><i class="fa-solid fa-right-from-bracket"></i> Khóa lại</button>
             </div>
         </aside>
 
         <main class="dash-main">
             <div class="dash-header">
-                <h1>Bảng Quản Trị Cá Nhân</h1>
+                <h1>Bảng Quản Trị Bí Mật (@tuxinhtrai)</h1>
                 <div class="user-profile">
-                    <i class="fa-solid fa-user-circle"></i>
-                    <div>
-                        <h4 style="font-size: 0.9rem;" id="currentUserNameDisplay">Tên User</h4>
-                        <span style="font-size: 0.75rem; color: var(--text-muted);">Thành viên hệ thống</span>
-                    </div>
+                    <i class="fa-solid fa-user-shield" style="color: var(--primary-color);"></i>
+                    <span>Tú Xinh Trai (Admin)</span>
                 </div>
             </div>
 
             <div class="stats-grid">
                 <div class="stat-card">
-                    <h3>Bài viết bạn đã đăng</h3>
-                    <div class="number" id="userPostsCount">0</div>
+                    <h3>Tổng bài viết</h3>
+                    <div class="number" id="totalPostsCount">0</div>
                 </div>
                 <div class="stat-card">
-                    <h3>Trạng thái tài khoản</h3>
-                    <div class="number" style="font-size: 1.1rem; color: #10b981; margin-top: 5px;"><i class="fa-solid fa-bolt"></i> Hoạt động tự do</div>
+                    <h3>Bảo mật</h3>
+                    <div class="number" style="font-size: 1.1rem; color: #10b981; margin-top: 5px;"><i class="fa-solid fa-user-secret"></i> Ẩn danh tuyệt đối</div>
                 </div>
             </div>
 
             <div class="content-grid">
-                <!-- Form Đăng Bài Riêng -->
                 <div class="panel-card">
-                    <h2><i class="fa-solid fa-pen-nib" style="color: var(--primary-color);"></i> Viết Thủ Thuật Mới</h2>
-                    <form id="userPostForm">
+                    <h2><i class="fa-solid fa-pen-nib" style="color: var(--primary-color);"></i> Đăng Bài Mới</h2>
+                    <form id="adminPostForm">
                         <div class="form-group">
-                            <label>Tiêu đề thủ thuật</label>
-                            <input type="text" id="postTitle" placeholder="Tiêu đề bài viết..." required>
+                            <label>Tiêu đề bài viết</label>
+                            <input type="text" id="postTitle" placeholder="Tiêu đề..." required>
                         </div>
                         <div class="form-group">
                             <label>Danh mục</label>
@@ -479,116 +271,77 @@
                         </div>
                         <div class="form-group">
                             <label>Nội dung chi tiết</label>
-                            <textarea id="postContent" placeholder="Nhập chia sẻ của bạn..." required></textarea>
+                            <textarea id="postContent" placeholder="Nội dung thủ thuật..." required></textarea>
                         </div>
-                        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-cloud-arrow-up"></i> Đăng bài lên cộng đồng</button>
+                        <button type="submit" class="btn btn-primary">Xuất bản bài viết</button>
                     </form>
                 </div>
 
-                <!-- Danh Sách Bài Viết Của Riêng User Này -->
                 <div class="panel-card">
-                    <h2><i class="fa-solid fa-list-check" style="color: var(--accent-color);"></i> Bài Viết Đã Đăng Của Bạn</h2>
-                    <div class="manage-list" id="userManageList"></div>
+                    <h2><i class="fa-solid fa-list-check" style="color: var(--accent-color);"></i> Quản Lý & Xóa Bài</h2>
+                    <div class="manage-list" id="adminManageList"></div>
                 </div>
             </div>
         </main>
     </div>
 
-    <!-- Script Xử Lý Đăng Ký, Đăng Nhập và Phân Quyền -->
+    <!-- Script Xử Lý Ẩn Thân & Mật Khẩu -->
     <script>
-        const authScreen = document.getElementById('authScreen');
+        // 👉 MẬT KHẨU BÍ MẬT CỦA RIÊNG BẠN (Hãy thay đổi chuỗi này thành mật khẩu khó đoán tùy ý)
+        const MY_SECRET_PASSWORD = "tuxinhtrai_vip_999";
+
+        const fake404 = document.getElementById('fake404');
+        const secretLoginModal = document.getElementById('secretLoginModal');
         const dashboardScreen = document.getElementById('dashboardScreen');
 
-        // Chuyển Tab Đăng Nhập / Đăng Ký
-        function switchTab(tab) {
-            document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.auth-form-section').forEach(f => f.classList.remove('active'));
-            
-            if(tab === 'login') {
-                document.querySelectorAll('.auth-tab')[0].classList.add('active');
-                document.getElementById('loginForm').classList.add('active');
-            } else {
-                document.querySelectorAll('.auth-tab')[1].classList.add('active');
-                document.getElementById('registerForm').classList.add('active');
-            }
+        // Kiểm tra nếu trước đó đã đăng nhập trong phiên trình duyệt
+        if (sessionStorage.getItem('tuxinhtrai_admin_active') === 'true') {
+            unlockDashboard();
         }
 
-        // Lấy danh sách users và posts từ localStorage
-        let users = JSON.parse(localStorage.getItem('devtips_users')) || [];
-        let posts = JSON.parse(localStorage.getItem('devtips_posts')) || [];
-        let currentUser = JSON.parse(sessionStorage.getItem('devtips_current_user')) || null;
+        // BÍ MẬT: Nhấn tổ hợp phím `Ctrl + Shift + A` trên bàn phím để hiện khung nhập mật khẩu
+        window.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.shiftKey && e.code === 'KeyA') {
+                e.preventDefault();
+                secretLoginModal.style.display = 'flex';
+                document.getElementById('secretKeyInput').focus();
+            }
+        });
 
-        // Nếu đã lưu phiên đăng nhập trước đó thì mở luôn dashboard
-        if(currentUser) {
-            showDashboard();
+        function hideSecretModal() {
+            secretLoginModal.style.display = 'none';
         }
 
-        // 1. XỬ LÝ ĐĂNG KÝ (Không cần xác minh, lưu thẳng vào máy)
-        document.getElementById('registerForm').addEventListener('submit', function(e) {
+        // Xử lý khi nhập mật khẩu
+        document.getElementById('secretForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            const name = document.getElementById('regName').value.trim();
-            const username = document.getElementById('regUsername').value.trim().toLowerCase();
-            const password = document.getElementById('regPassword').value;
-            const alertBox = document.getElementById('regAlert');
+            const pass = document.getElementById('secretKeyInput').value;
 
-            // Kiểm tra username đã tồn tại chưa
-            const existing = users.find(u => u.username === username);
-            if(existing) {
-                alertBox.style.color = '#ef4444';
-                alertBox.innerText = 'Tên tài khoản này đã có người dùng. Vui lòng chọn tên khác!';
-                alertBox.style.display = 'block';
-                return;
-            }
-
-            // Tạo user mới
-            const newUser = { name, username, password };
-            users.push(newUser);
-            localStorage.setItem('devtips_users', JSON.stringify(users));
-
-            alertBox.style.color = '#10b981';
-            alertBox.innerText = 'Đăng ký thành công! Hãy chuyển sang tab Đăng Nhập.';
-            alertBox.style.display = 'block';
-            this.reset();
-        });
-
-        // 2. XỬ LÝ ĐĂNG NHẬP
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const username = document.getElementById('loginUsername').value.trim().toLowerCase();
-            const password = document.getElementById('loginPassword').value;
-            const alertBox = document.getElementById('loginAlert');
-
-            const foundUser = users.find(u => u.username === username && u.password === password);
-            
-            // Tài khoản Admin mặc định để test nhanh (nếu chưa đăng ký)
-            if(!foundUser && username === 'admin' && password === '123456') {
-                currentUser = { name: 'Quản Trị Viên', username: 'admin' };
-            } else if(foundUser) {
-                currentUser = foundUser;
+            if (pass === MY_SECRET_PASSWORD) {
+                sessionStorage.setItem('tuxinhtrai_admin_active', 'true');
+                unlockDashboard();
             } else {
-                alertBox.innerText = 'Sai tài khoản hoặc mật khẩu!';
-                alertBox.style.display = 'block';
-                return;
+                alert('Mật khẩu không đúng!');
+                document.getElementById('secretKeyInput').value = '';
             }
-
-            sessionStorage.setItem('devtips_current_user', JSON.stringify(currentUser));
-            showDashboard();
         });
 
-        function showDashboard() {
-            authScreen.style.display = 'none';
+        function unlockDashboard() {
+            fake404.style.display = 'none';
+            secretLoginModal.style.display = 'none';
             dashboardScreen.style.display = 'grid';
-            document.getElementById('currentUserNameDisplay').innerText = currentUser.name || currentUser.username;
-            renderUserDashboard();
+            renderAdminDashboard();
         }
 
         function handleLogout() {
-            sessionStorage.removeItem('devtips_current_user');
+            sessionStorage.removeItem('tuxinhtrai_admin_active');
             window.location.reload();
         }
 
-        // 3. ĐĂNG BÀI VÀ QUẢN LÝ BÀI CỦA RIÊNG USER ĐÓ
-        document.getElementById('userPostForm').addEventListener('submit', function(e) {
+        // Quản lý bài viết localStorage
+        let posts = JSON.parse(localStorage.getItem('devtips_posts')) || [];
+
+        document.getElementById('adminPostForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const title = document.getElementById('postTitle').value;
             const category = document.getElementById('postCategory').value;
@@ -596,53 +349,52 @@
 
             const newPost = {
                 id: Date.now(),
-                authorUsername: currentUser.username,
-                authorName: currentUser.name || currentUser.username,
                 title: title,
                 category: category,
+                author: 'Tú Xinh Trai (@tuxinhtrai)',
                 time: 'Vừa xong',
                 snippet: content.substring(0, 90) + '...',
-                content: content
+                content: content,
+                likes: 0,
+                likedByMe: false,
+                comments: []
             };
 
             posts.unshift(newPost);
             localStorage.setItem('devtips_posts', JSON.stringify(posts));
-            renderUserDashboard();
+            renderAdminDashboard();
             this.reset();
-            alert('Đăng bài thành công lên diễn đàn!');
+            alert('Đăng bài thành công!');
         });
 
-        function renderUserDashboard() {
-            const listContainer = document.getElementById('userManageList');
-            // Lọc ra các bài viết do chính user đang đăng nhập tạo ra
-            const myPosts = posts.filter(p => p.authorUsername === currentUser.username);
-            
-            document.getElementById('userPostsCount').innerText = myPosts.length;
+        function renderAdminDashboard() {
+            const listContainer = document.getElementById('adminManageList');
+            document.getElementById('totalPostsCount').innerText = posts.length;
             listContainer.innerHTML = '';
 
-            if(myPosts.length === 0) {
-                listContainer.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 20px;">Bạn chưa đăng bài viết nào.</p>';
+            if (posts.length === 0) {
+                listContainer.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 20px;">Chưa có bài viết nào.</p>';
                 return;
             }
 
-            myPosts.forEach(post => {
+            posts.forEach(post => {
                 listContainer.innerHTML += `
                     <div class="manage-item">
                         <div class="manage-info">
                             <h4>${post.title}</h4>
                             <span>${post.category} • ${post.time}</span>
                         </div>
-                        <button class="btn-danger" onclick="deleteMyPost(${post.id})"><i class="fa-solid fa-trash"></i></button>
+                        <button class="btn-danger" onclick="deletePost(${post.id})"><i class="fa-solid fa-trash"></i></button>
                     </div>
                 `;
             });
         }
 
-        function deleteMyPost(postId) {
-            if(confirm('Bạn có chắc chắn muốn xoá bài viết này?')) {
+        function deletePost(postId) {
+            if (confirm('Bạn có chắc chắn muốn xóa bài viết này không?')) {
                 posts = posts.filter(p => p.id !== postId);
                 localStorage.setItem('devtips_posts', JSON.stringify(posts));
-                renderUserDashboard();
+                renderAdminDashboard();
             }
         }
     </script>
