@@ -65,11 +65,6 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             text-decoration: none;
-            cursor: pointer;
-        }
-
-        .logo i {
-            -webkit-text-fill-color: var(--primary-color);
         }
 
         .search-bar {
@@ -108,7 +103,6 @@
             align-items: center;
         }
 
-        /* Buttons */
         .btn {
             display: inline-flex;
             align-items: center;
@@ -167,7 +161,7 @@
             }
         }
 
-        /* Sidebar Categories */
+        /* Sidebar */
         .sidebar {
             background: var(--surface-color);
             border: 1px solid var(--border-color);
@@ -228,38 +222,13 @@
             font-weight: 700;
         }
 
-        .filter-tabs {
-            display: flex;
-            gap: 10px;
-            background: var(--surface-color);
-            padding: 5px;
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-        }
-
-        .filter-tab {
-            background: transparent;
-            border: none;
-            color: var(--text-muted);
-            padding: 6px 14px;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .filter-tab.active, .filter-tab:hover {
-            background: var(--primary-color);
-            color: white;
-        }
-
-        /* Post Card */
         .post-list {
             display: flex;
             flex-direction: column;
             gap: 16px;
         }
 
+        /* Post Card */
         .post-card {
             background: var(--surface-color);
             border: 1px solid var(--border-color);
@@ -301,11 +270,16 @@
         }
 
         .author-avatar {
-            width: 40px;
-            height: 40px;
+            width: 38px;
+            height: 38px;
             border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid var(--primary-color);
+            background: var(--surface-hover);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            font-weight: 700;
+            border: 1px solid var(--border-color);
         }
 
         .author-info h4 {
@@ -366,14 +340,9 @@
             display: flex;
             align-items: center;
             gap: 6px;
-            transition: var(--transition);
         }
 
-        .post-stats span:hover {
-            color: var(--accent-color);
-        }
-
-        /* MODAL POPUP */
+        /* Modal xem chi tiết */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -441,89 +410,24 @@
         .modal-title {
             font-size: 1.5rem;
             font-weight: 700;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
         }
 
-        /* Form elements inside modal */
-        .form-group {
-            margin-bottom: 1.25rem;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 0.9rem;
-            font-weight: 600;
-            margin-bottom: 6px;
-            color: var(--text-muted);
-        }
-
-        .form-group input, .form-group textarea, .form-group select {
-            width: 100%;
-            background: var(--bg-color);
-            border: 1px solid var(--border-color);
-            padding: 0.75rem 1rem;
-            border-radius: 10px;
-            color: var(--text-main);
-            font-size: 0.95rem;
-            outline: none;
-            transition: var(--transition);
-        }
-
-        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
-            border-color: var(--primary-color);
-            box-shadow: var(--shadow-glow);
-        }
-
-        .form-group textarea {
-            resize: vertical;
-            min-height: 150px;
-        }
-
-        /* Detail Modal specific style */
         .modal-body-content {
             color: var(--text-muted);
             line-height: 1.8;
             margin: 1.5rem 0;
             font-size: 1rem;
+            white-space: pre-line;
         }
 
-        .modal-body-content code {
-            background: var(--bg-color);
-            padding: 2px 6px;
-            border-radius: 4px;
-            color: var(--accent-color);
-            font-family: monospace;
-        }
-
-        .comments-section {
-            border-top: 1px solid var(--border-color);
-            margin-top: 2rem;
-            padding-top: 1.5rem;
-        }
-
-        .comments-section h4 {
-            margin-bottom: 1rem;
-            font-size: 1.1rem;
-        }
-
-        .comment-item {
-            background: var(--bg-color);
-            padding: 1rem;
-            border-radius: 12px;
-            margin-bottom: 10px;
-            border: 1px solid var(--border-color);
-        }
-
-        .comment-author {
-            font-weight: 600;
-            font-size: 0.85rem;
-            color: var(--primary-color);
-            margin-bottom: 4px;
-        }
-
-        .comment-text {
-            font-size: 0.9rem;
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
             color: var(--text-muted);
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
         }
     </style>
 </head>
@@ -531,249 +435,130 @@
 
     <!-- Header -->
     <header>
-        <a href="#" class="logo">
+        <a href="index.html" class="logo">
             <i class="fa-solid fa-code"></i> DevTips.vn
         </a>
         <div class="search-bar">
             <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="text" id="searchInput" placeholder="Tìm kiếm thủ thuật, source code, tool...">
+            <input type="text" id="searchInput" placeholder="Tìm kiếm thủ thuật, source code...">
         </div>
         <div class="nav-actions">
-            <button class="btn btn-outline" id="btnLogin"><i class="fa-regular fa-user"></i> Đăng nhập</button>
-            <button class="btn btn-primary" id="btnOpenCreateModal"><i class="fa-solid fa-plus"></i> Đăng bài mới</button>
+            <a href="admin.html" class="btn btn-outline"><i class="fa-solid fa-user-shield"></i> Quản trị / Đăng bài</a>
         </div>
     </header>
 
     <!-- Main Container -->
     <div class="container">
-        <!-- Sidebar Navigation -->
+        <!-- Sidebar -->
         <aside class="sidebar">
             <h3>Danh mục</h3>
             <ul class="category-list">
-                <li class="category-item active"><a href="#"><i class="fa-solid fa-fire"></i> Thịnh hành</a></li>
+                <li class="category-item active"><a href="#"><i class="fa-solid fa-fire"></i> Tất cả bài viết</a></li>
                 <li class="category-item"><a href="#"><i class="fa-solid fa-globe"></i> Web Development</a></li>
                 <li class="category-item"><a href="#"><i class="fa-solid fa-shield-halved"></i> Bảo mật & Proxy</a></li>
                 <li class="category-item"><a href="#"><i class="fa-solid fa-robot"></i> AI & Automations</a></li>
                 <li class="category-item"><a href="#"><i class="fa-solid fa-mobile-screen"></i> Mobile & App</a></li>
-                <li class="category-item"><a href="#"><i class="fa-solid fa-database"></i> Database & Cloud</a></li>
             </ul>
         </aside>
 
         <!-- Main Feed -->
         <main class="feed">
             <div class="feed-header">
-                <h1>Bài viết mới nhất</h1>
-                <div class="filter-tabs">
-                    <button class="filter-tab active">Mới nhất</button>
-                    <button class="filter-tab">Phổ biến</button>
-                    <button class="filter-tab">Đã lưu</button>
-                </div>
+                <h1>Thủ Thuật Mới Nhất</h1>
             </div>
 
-            <!-- List of Posts -->
+            <!-- List bài viết load động -->
             <div class="post-list" id="postList">
-                <!-- Post Item 1 -->
-                <div class="post-card" onclick="openDetailModal('Tối ưu hóa Cloudflare Workers để chạy API tốc độ cao', 'Nguyễn Anh Tú', 'Hôm nay', 'Bài viết này sẽ hướng dẫn các bạn thiết lập và tinh chỉnh Cloudflare Workers để triển khai các serverless script kết nối với các mô hình AI hoặc xử lý request dữ liệu cực nhanh không cần dùng VPS truyền thống.\n\nCode mẫu căn bản:\n<code>addEventListener("fetch", event => { event.respondWith(handleRequest(event.request)) })</code>', ['Cloudflare', 'Serverless', 'API'])">
-                    <div class="post-meta">
-                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop" class="author-avatar" alt="Avatar">
-                        <div class="author-info">
-                            <h4>Nguyễn Anh Tú</h4>
-                            <span class="post-time">2 giờ trước</span>
-                        </div>
-                    </div>
-                    <h2 class="post-title">Tối ưu hóa Cloudflare Workers để chạy API tốc độ cao</h2>
-                    <p class="post-snippet">Hướng dẫn toàn tập cách deploy các serverless script tối ưu hóa tốc độ phản hồi request, kết hợp binding linh hoạt với external resources...</p>
-                    <div class="post-tags">
-                        <span class="tag">Cloudflare</span>
-                        <span class="tag">Serverless</span>
-                        <span class="tag">API</span>
-                    </div>
-                    <div class="post-stats">
-                        <span><i class="fa-regular fa-heart"></i> 42 lượt thích</span>
-                        <span><i class="fa-regular fa-comment"></i> 12 bình luận</span>
-                        <span><i class="fa-regular fa-eye"></i> 328 lượt xem</span>
-                    </div>
-                </div>
-
-                <!-- Post Item 2 -->
-                <div class="post-card" onclick="openDetailModal('Mẹo ẩn dữ liệu form tự động bằng Tampermonkey Userscript', 'Trần Văn Hoàng', 'Hôm qua', 'Chia sẻ script Tampermonkey giúp tự động điền liệu form ẩn và kích hoạt luồng submit ngầm cực kỳ mượt mà trên các giao diện nền tảng web hiện đại.', ['Tampermonkey', 'JavaScript', 'Automation'])">
-                    <div class="post-meta">
-                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop" class="author-avatar" alt="Avatar">
-                        <div class="author-info">
-                            <h4>Trần Văn Hoàng</h4>
-                            <span class="post-time">Hôm qua</span>
-                        </div>
-                    </div>
-                    <h2 class="post-title">Mẹo ẩn dữ liệu form tự động bằng Tampermonkey Userscript</h2>
-                    <p class="post-snippet">Chia sẻ script Tampermonkey giúp tự động điền liệu form ẩn và kích hoạt luồng submit ngầm cực kỳ mượt mà...</p>
-                    <div class="post-tags">
-                        <span class="tag">Tampermonkey</span>
-                        <span class="tag">JavaScript</span>
-                        <span class="tag">Automation</span>
-                    </div>
-                    <div class="post-stats">
-                        <span><i class="fa-regular fa-heart"></i> 85 lượt thích</span>
-                        <span><i class="fa-regular fa-comment"></i> 24 bình luận</span>
-                        <span><i class="fa-regular fa-eye"></i> 1.2K lượt xem</span>
-                    </div>
-                </div>
-
-                <!-- Post Item 3 -->
-                <div class="post-card" onclick="openDetailModal('Xây dựng Bot Telegram tương tác thông minh với Webhook', 'Lê Minh Thy', '3 ngày trước', 'Tạo Telegram Bot toàn diện dùng webhook thay vì long polling thông thường, giúp tiết kiệm tài nguyên và phản hồi tức thì các yêu cầu hình ảnh, văn bản.', ['TelegramBot', 'Webhook', 'Nodejs'])">
-                    <div class="post-meta">
-                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop" class="author-avatar" alt="Avatar">
-                        <div class="author-info">
-                            <h4>Lê Minh Thy</h4>
-                            <span class="post-time">3 ngày trước</span>
-                        </div>
-                    </div>
-                    <h2 class="post-title">Xây dựng Bot Telegram tương tác thông minh với Webhook</h2>
-                    <p class="post-snippet">Tạo Telegram Bot toàn diện dùng webhook thay vì long polling thông thường, giúp tiết kiệm tài nguyên và phản hồi tức thì...</p>
-                    <div class="post-tags">
-                        <span class="tag">TelegramBot</span>
-                        <span class="tag">Webhook</span>
-                        <span class="tag">Nodejs</span>
-                    </div>
-                    <div class="post-stats">
-                        <span><i class="fa-regular fa-heart"></i> 110 lượt thích</span>
-                        <span><i class="fa-regular fa-comment"></i> 31 bình luận</span>
-                        <span><i class="fa-regular fa-eye"></i> 2.4K lượt xem</span>
-                    </div>
-                </div>
+                <!-- Dữ liệu được render bằng JavaScript ở dưới -->
             </div>
         </main>
     </div>
 
-    <!-- POPUP 1: ĐĂNG BÀI VIẾT MỚI -->
-    <div class="modal-overlay" id="createModal">
-        <div class="modal-container">
-            <button class="modal-close" onclick="closeModal('createModal')"><i class="fa-solid fa-xmark"></i></button>
-            <h2 class="modal-title">Chia Sẻ Thủ Thuật Mới</h2>
-            <form id="createPostForm">
-                <div class="form-group">
-                    <label>Tiêu đề bài viết</label>
-                    <input type="text" id="postTitleInput" placeholder="Ví dụ: Tổng hợp các trick tối ưu code cực hay..." required>
-                </div>
-                <div class="form-group">
-                    <label>Danh mục</label>
-                    <select id="postCategoryInput">
-                        <option value="Web Development">Web Development</option>
-                        <option value="Bảo mật & Proxy">Bảo mật & Proxy</option>
-                        <option value="AI & Automations">AI & Automations</option>
-                        <option value="Mobile & App">Mobile & App</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Nội dung chi tiết / Hướng dẫn</label>
-                    <textarea id="postContentInput" placeholder="Nhập nội dung, source code hoặc các bước hướng dẫn chi tiết..." required></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">Đăng Bài Ngay</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- POPUP 2: CHI TIẾT BÀI VIẾT & BÌNH LUẬN -->
+    <!-- Modal Xem Chi Tiết Bài Viết -->
     <div class="modal-overlay" id="detailModal">
         <div class="modal-container">
-            <button class="modal-close" onclick="closeModal('detailModal')"><i class="fa-solid fa-xmark"></i></button>
-            <h2 class="modal-title" id="detailTitle">Tiêu đề bài viết</h2>
+            <button class="modal-close" onclick="closeDetailModal()"><i class="fa-solid fa-xmark"></i></button>
+            <h2 class="modal-title" id="detailTitle"></h2>
             <div class="post-meta">
-                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop" class="author-avatar" alt="Avatar">
+                <div class="author-avatar"><i class="fa-solid fa-user"></i></div>
                 <div class="author-info">
-                    <h4 id="detailAuthor">Tác giả</h4>
-                    <span class="post-time" id="detailTime">Thời gian</span>
+                    <h4 id="detailAuthor"></h4>
+                    <span class="post-time" id="detailTime"></span>
                 </div>
             </div>
-            <div class="modal-body-content" id="detailContent">
-                <!-- Nội dung động -->
-            </div>
-            
-            <!-- Phần Bình luận -->
-            <div class="comments-section">
-                <h4>Thảo luận (3)</h4>
-                <div class="form-group">
-                    <input type="text" placeholder="Viết bình luận của bạn..." id="commentInput">
-                </div>
-                <div class="comment-item">
-                    <div class="comment-author">Hoàng Nam</div>
-                    <div class="comment-text">Bài viết rất chi tiết và dễ hiểu, mình đã áp dụng thành công trên dự án của mình!</div>
-                </div>
-                <div class="comment-item">
-                    <div class="comment-author">Nguyễn Anh Tú</div>
-                    <div class="comment-text">Cảm ơn bạn đã ủng hộ nhé, có lỗi gì cứ trao đổi thêm nha.</div>
-                </div>
-            </div>
+            <div class="modal-body-content" id="detailContent"></div>
         </div>
     </div>
 
-    <!-- JavaScript Xử lý Animation & Popup -->
+    <!-- JavaScript Xử Lý Dữ Liệu -->
     <script>
-        // Điều khiển mở/đóng Modal
-        const createModal = document.getElementById('createModal');
+        const postListEl = document.getElementById('postList');
         const detailModal = document.getElementById('detailModal');
-        
-        document.getElementById('btnOpenCreateModal').addEventListener('click', () => {
-            createModal.classList.add('active');
-        });
 
-        function closeModal(modalId) {
-            document.getElementById(modalId).classList.remove('active');
+        // Lấy danh sách bài viết từ localStorage (do trang admin đẩy lên)
+        let posts = JSON.parse(localStorage.getItem('devtips_posts')) || [];
+
+        function renderHomePage() {
+            postListEl.innerHTML = '';
+
+            if (posts.length === 0) {
+                postListEl.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fa-regular fa-folder-open" style="font-size: 2.5rem; margin-bottom: 10px; color: var(--primary-color);"></i>
+                        <p>Chưa có bài viết nào được đăng.</p>
+                        <a href="admin.html" class="btn btn-primary" style="margin-top: 15px; display: inline-flex;">Đăng bài viết đầu tiên ngay</a>
+                    </div>
+                `;
+                return;
+            }
+
+            posts.forEach(post => {
+                const card = document.createElement('div');
+                card.className = 'post-card';
+                card.onclick = () => openDetailModal(post);
+                
+                card.innerHTML = `
+                    <div class="post-meta">
+                        <div class="author-avatar"><i class="fa-solid fa-user"></i></div>
+                        <div class="author-info">
+                            <h4>${post.authorName || 'Thành viên'}</h4>
+                            <span class="post-time">${post.time}</span>
+                        </div>
+                    </div>
+                    <h2 class="post-title">${post.title}</h2>
+                    <p class="post-snippet">${post.snippet}</p>
+                    <div class="post-tags">
+                        <span class="tag">${post.category}</span>
+                    </div>
+                    <div class="post-stats">
+                        <span><i class="fa-regular fa-heart"></i> 0 thích</span>
+                        <span><i class="fa-regular fa-comment"></i> 0 bình luận</span>
+                    </div>
+                `;
+                postListEl.appendChild(card);
+            });
         }
 
-        // Đóng popup khi click ra ngoài khung nội dung
-        window.addEventListener('click', (e) => {
-            if (e.target.classList.contains('modal-overlay')) {
-                e.target.classList.remove('active');
-            }
-        });
-
-        // Hàm mở popup xem chi tiết bài viết
-        function openDetailModal(title, author, time, content, tags) {
-            document.getElementById('detailTitle').innerText = title;
-            document.getElementById('detailAuthor').innerText = author;
-            document.getElementById('detailTime').innerText = time;
-            document.getElementById('detailContent').innerHTML = content;
+        function openDetailModal(post) {
+            document.getElementById('detailTitle').innerText = post.title;
+            document.getElementById('detailAuthor').innerText = post.authorName || 'Thành viên';
+            document.getElementById('detailTime').innerText = post.time;
+            document.getElementById('detailContent').innerText = post.content;
             detailModal.classList.add('active');
         }
 
-        // Xử lý nộp form bài viết mới (Mô phỏng thêm bài động lên giao diện)
-        document.getElementById('createPostForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const title = document.getElementById('postTitleInput').value;
-            const content = document.getElementById('postContentInput').value;
-            const category = document.getElementById('postCategoryInput').value;
+        function closeDetailModal() {
+            detailModal.classList.remove('active');
+        }
 
-            const postList = document.getElementById('postList');
-            const newCard = document.createElement('div');
-            newCard.className = 'post-card';
-            newCard.onclick = () => openDetailModal(title, 'Bạn (Thành viên)', 'Vừa xong', content, [category]);
-            
-            newCard.innerHTML = `
-                <div class="post-meta">
-                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop" class="author-avatar" alt="Avatar">
-                    <div class="author-info">
-                        <h4>Bạn (Thành viên mới)</h4>
-                        <span class="post-time">Vừa xong</span>
-                    </div>
-                </div>
-                <h2 class="post-title">${title}</h2>
-                <p class="post-snippet">${content.substring(0, 100)}...</p>
-                <div class="post-tags">
-                    <span class="tag">${category}</span>
-                </div>
-                <div class="post-stats">
-                    <span><i class="fa-regular fa-heart"></i> 0 lượt thích</span>
-                    <span><i class="fa-regular fa-comment"></i> 0 bình luận</span>
-                    <span><i class="fa-regular fa-eye"></i> 1 lượt xem</span>
-                </div>
-            `;
-            
-            postList.prepend(newCard);
-            closeModal('createModal');
-            this.reset();
+        // Đóng modal khi click ra ngoài
+        window.addEventListener('click', (e) => {
+            if (e.target.classList.contains('modal-overlay')) {
+                closeDetailModal();
+            }
         });
 
-        // Tìm kiếm bài viết nhanh
+        // Tìm kiếm nhanh bài viết
         document.getElementById('searchInput').addEventListener('input', function(e) {
             const keyword = e.target.value.toLowerCase();
             const cards = document.querySelectorAll('.post-card');
@@ -787,6 +572,9 @@
                 }
             });
         });
+
+        // Khởi chạy khi tải trang
+        renderHomePage();
     </script>
 </body>
 </html>
