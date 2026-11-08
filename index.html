@@ -41,7 +41,6 @@
                 radial-gradient(circle at 90% 80%, rgba(6, 182, 212, 0.08) 0%, transparent 40%);
         }
 
-        /* Header & Navigation */
         header {
             position: sticky;
             top: 0;
@@ -139,7 +138,6 @@
             border-color: var(--text-muted);
         }
 
-        /* Main Layout */
         .container {
             max-width: 1280px;
             margin: 2rem auto;
@@ -150,18 +148,10 @@
         }
 
         @media (max-width: 900px) {
-            .container {
-                grid-template-columns: 1fr;
-            }
-            .sidebar {
-                display: none;
-            }
-            .search-bar {
-                display: none;
-            }
+            .container { grid-template-columns: 1fr; }
+            .sidebar, .search-bar { display: none; }
         }
 
-        /* Sidebar */
         .sidebar {
             background: var(--surface-color);
             border: 1px solid var(--border-color);
@@ -209,17 +199,10 @@
             color: var(--accent-color);
         }
 
-        /* Feed Section */
-        .feed-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-
         .feed-header h1 {
             font-size: 1.75rem;
             font-weight: 700;
+            margin-bottom: 1.5rem;
         }
 
         .post-list {
@@ -228,7 +211,6 @@
             gap: 16px;
         }
 
-        /* Post Card */
         .post-card {
             background: var(--surface-color);
             border: 1px solid var(--border-color);
@@ -258,9 +240,7 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
 
-        .post-card:hover::before {
-            opacity: 1;
-        }
+        .post-card:hover::before { opacity: 1; }
 
         .post-meta {
             display: flex;
@@ -282,15 +262,8 @@
             border: 1px solid var(--border-color);
         }
 
-        .author-info h4 {
-            font-size: 0.95rem;
-            font-weight: 600;
-        }
-
-        .post-time {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-        }
+        .author-info h4 { font-size: 0.95rem; font-weight: 600; }
+        .post-time { font-size: 0.8rem; color: var(--text-muted); }
 
         .post-title {
             font-size: 1.25rem;
@@ -300,9 +273,7 @@
             transition: var(--transition);
         }
 
-        .post-card:hover .post-title {
-            color: var(--accent-color);
-        }
+        .post-card:hover .post-title { color: var(--accent-color); }
 
         .post-snippet {
             color: var(--text-muted);
@@ -342,83 +313,137 @@
             gap: 6px;
         }
 
-        /* Modal xem chi tiết */
+        /* MODAL CHI TIẾT & BÌNH LUẬN */
         .modal-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.7);
             backdrop-filter: blur(8px);
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
+            opacity: 0; visibility: hidden;
             transition: all 0.3s ease;
         }
 
-        .modal-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
+        .modal-overlay.active { opacity: 1; visibility: visible; }
 
         .modal-container {
             background: var(--surface-color);
             border: 1px solid var(--border-color);
-            width: 90%;
-            max-width: 650px;
-            border-radius: 20px;
-            padding: 2rem;
+            width: 90%; max-width: 700px;
+            border-radius: 20px; padding: 2rem;
             transform: scale(0.9) translateY(20px);
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            max-height: 90vh;
-            overflow-y: auto;
+            max-height: 90vh; overflow-y: auto;
             position: relative;
             box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
         }
 
-        .modal-overlay.active .modal-container {
-            transform: scale(1) translateY(0);
-        }
+        .modal-overlay.active .modal-container { transform: scale(1) translateY(0); }
 
         .modal-close {
-            position: absolute;
-            top: 1.5rem;
-            right: 1.5rem;
-            background: var(--surface-hover);
-            border: none;
-            color: var(--text-muted);
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.1rem;
-            transition: var(--transition);
+            position: absolute; top: 1.5rem; right: 1.5rem;
+            background: var(--surface-hover); border: none;
+            color: var(--text-muted); width: 36px; height: 36px;
+            border-radius: 50%; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.1rem; transition: var(--transition);
         }
 
-        .modal-close:hover {
-            background: #ef4444;
-            color: white;
-        }
+        .modal-close:hover { background: #ef4444; color: white; }
 
-        .modal-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-        }
+        .modal-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem; }
 
         .modal-body-content {
             color: var(--text-muted);
-            line-height: 1.8;
-            margin: 1.5rem 0;
-            font-size: 1rem;
-            white-space: pre-line;
+            line-height: 1.8; margin: 1.5rem 0;
+            font-size: 1rem; white-space: pre-line;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1.5rem;
+        }
+
+        /* Nút thả tim & Thảo luận */
+        .interaction-bar {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .btn-like {
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            padding: 8px 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition);
+        }
+
+        .btn-like.liked {
+            color: #ef4444;
+            border-color: rgba(239, 68, 68, 0.3);
+            background: rgba(239, 68, 68, 0.05);
+        }
+
+        .btn-like:hover { transform: scale(1.05); }
+
+        .comments-section h4 { font-size: 1.1rem; margin-bottom: 1rem; }
+
+        .comment-form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 1.5rem;
+        }
+
+        .comment-form input, .comment-form textarea {
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            padding: 0.75rem 1rem;
+            border-radius: 10px;
+            color: var(--text-main);
+            font-size: 0.9rem;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .comment-form input:focus, .comment-form textarea:focus {
+            border-color: var(--primary-color);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .comment-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: 250px;
+            overflow-y: auto;
+        }
+
+        .comment-item {
+            background: var(--bg-color);
+            padding: 0.85rem 1rem;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+        }
+
+        .comment-author {
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--accent-color);
+            margin-bottom: 4px;
+        }
+
+        .comment-text {
+            font-size: 0.9rem;
+            color: var(--text-muted);
         }
 
         .empty-state {
@@ -443,13 +468,12 @@
             <input type="text" id="searchInput" placeholder="Tìm kiếm thủ thuật, source code...">
         </div>
         <div class="nav-actions">
-            <a href="admin.html" class="btn btn-outline"><i class="fa-solid fa-user-shield"></i> Quản trị / Đăng bài</a>
+            <a href="admin.html" class="btn btn-outline"><i class="fa-solid fa-user-shield"></i> Quản trị Admin</a>
         </div>
     </header>
 
     <!-- Main Container -->
     <div class="container">
-        <!-- Sidebar -->
         <aside class="sidebar">
             <h3>Danh mục</h3>
             <ul class="category-list">
@@ -457,24 +481,18 @@
                 <li class="category-item"><a href="#"><i class="fa-solid fa-globe"></i> Web Development</a></li>
                 <li class="category-item"><a href="#"><i class="fa-solid fa-shield-halved"></i> Bảo mật & Proxy</a></li>
                 <li class="category-item"><a href="#"><i class="fa-solid fa-robot"></i> AI & Automations</a></li>
-                <li class="category-item"><a href="#"><i class="fa-solid fa-mobile-screen"></i> Mobile & App</a></li>
             </ul>
         </aside>
 
-        <!-- Main Feed -->
         <main class="feed">
             <div class="feed-header">
                 <h1>Thủ Thuật Mới Nhất</h1>
             </div>
-
-            <!-- List bài viết load động -->
-            <div class="post-list" id="postList">
-                <!-- Dữ liệu được render bằng JavaScript ở dưới -->
-            </div>
+            <div class="post-list" id="postList"></div>
         </main>
     </div>
 
-    <!-- Modal Xem Chi Tiết Bài Viết -->
+    <!-- Modal Chi Tiết Bài Viết & Bình Luận / Thả Tim -->
     <div class="modal-overlay" id="detailModal">
         <div class="modal-container">
             <button class="modal-close" onclick="closeDetailModal()"><i class="fa-solid fa-xmark"></i></button>
@@ -486,16 +504,36 @@
                     <span class="post-time" id="detailTime"></span>
                 </div>
             </div>
+
             <div class="modal-body-content" id="detailContent"></div>
+
+            <!-- Tương tác: Thả tim -->
+            <div class="interaction-bar">
+                <button class="btn-like" id="btnLikePost" onclick="toggleLikeCurrentPost()">
+                    <i class="fa-solid fa-heart"></i> <span id="likeCountText">0</span> Thích
+                </button>
+            </div>
+
+            <!-- Khu vực Bình luận ẩn danh -->
+            <div class="comments-section">
+                <h4>Thảo luận cộng đồng</h4>
+                <form class="comment-form" id="commentForm">
+                    <input type="text" id="commentAuthorInput" placeholder="Tên của bạn (Để trống sẽ là Ẩn danh)...">
+                    <textarea id="commentContentInput" placeholder="Viết bình luận của bạn..." rows="2" required></textarea>
+                    <button type="submit" class="btn btn-primary" style="align-self: flex-end; padding: 6px 16px; font-size: 0.85rem;">Gửi bình luận</button>
+                </form>
+
+                <div class="comment-list" id="commentList"></div>
+            </div>
         </div>
     </div>
 
-    <!-- JavaScript Xử Lý Dữ Liệu -->
+    <!-- Script Xử Lý Giao Diện, Tim & Bình Luận -->
     <script>
         const postListEl = document.getElementById('postList');
         const detailModal = document.getElementById('detailModal');
+        let currentOpenPostId = null;
 
-        // Lấy danh sách bài viết từ localStorage (do trang admin đẩy lên)
         let posts = JSON.parse(localStorage.getItem('devtips_posts')) || [];
 
         function renderHomePage() {
@@ -505,8 +543,7 @@
                 postListEl.innerHTML = `
                     <div class="empty-state">
                         <i class="fa-regular fa-folder-open" style="font-size: 2.5rem; margin-bottom: 10px; color: var(--primary-color);"></i>
-                        <p>Chưa có bài viết nào được đăng.</p>
-                        <a href="admin.html" class="btn btn-primary" style="margin-top: 15px; display: inline-flex;">Đăng bài viết đầu tiên ngay</a>
+                        <p>Chưa có bài viết nào được đăng tải từ Admin.</p>
                     </div>
                 `;
                 return;
@@ -515,13 +552,16 @@
             posts.forEach(post => {
                 const card = document.createElement('div');
                 card.className = 'post-card';
-                card.onclick = () => openDetailModal(post);
+                card.onclick = () => openDetailModal(post.id);
                 
+                const commentCount = post.comments ? post.comments.length : 0;
+                const likesCount = post.likes || 0;
+
                 card.innerHTML = `
                     <div class="post-meta">
                         <div class="author-avatar"><i class="fa-solid fa-user"></i></div>
                         <div class="author-info">
-                            <h4>${post.authorName || 'Thành viên'}</h4>
+                            <h4>${post.author}</h4>
                             <span class="post-time">${post.time}</span>
                         </div>
                     </div>
@@ -531,27 +571,110 @@
                         <span class="tag">${post.category}</span>
                     </div>
                     <div class="post-stats">
-                        <span><i class="fa-regular fa-heart"></i> 0 thích</span>
-                        <span><i class="fa-regular fa-comment"></i> 0 bình luận</span>
+                        <span><i class="fa-solid fa-heart" style="color: ${post.likedByMe ? '#ef4444' : 'inherit'}"></i> ${likesCount} thích</span>
+                        <span><i class="fa-regular fa-comment"></i> ${commentCount} bình luận</span>
                     </div>
                 `;
                 postListEl.appendChild(card);
             });
         }
 
-        function openDetailModal(post) {
+        function openDetailModal(postId) {
+            currentOpenPostId = postId;
+            const post = posts.find(p => p.id === postId);
+            if (!post) return;
+
             document.getElementById('detailTitle').innerText = post.title;
-            document.getElementById('detailAuthor').innerText = post.authorName || 'Thành viên';
+            document.getElementById('detailAuthor').innerText = post.author;
             document.getElementById('detailTime').innerText = post.time;
             document.getElementById('detailContent').innerText = post.content;
+
+            updateLikeButtonUI(post);
+            renderComments(post);
+
             detailModal.classList.add('active');
         }
 
         function closeDetailModal() {
             detailModal.classList.remove('active');
+            currentOpenPostId = null;
         }
 
-        // Đóng modal khi click ra ngoài
+        // Thả tim bài viết
+        function toggleLikeCurrentPost() {
+            const post = posts.find(p => p.id === currentOpenPostId);
+            if (!post) return;
+
+            if (!post.likes) post.likes = 0;
+            if (post.likedByMe) {
+                post.likes -= 1;
+                post.likedByMe = false;
+            } else {
+                post.likes += 1;
+                post.likedByMe = true;
+            }
+
+            localStorage.setItem('devtips_posts', JSON.stringify(posts));
+            updateLikeButtonUI(post);
+            renderHomePage();
+        }
+
+        function updateLikeButtonUI(post) {
+            const btnLike = document.getElementById('btnLikePost');
+            const likeCountText = document.getElementById('likeCountText');
+            likeCountText.innerText = post.likes || 0;
+            if (post.likedByMe) {
+                btnLike.classList.add('liked');
+            } else {
+                btnLike.classList.remove('liked');
+            }
+        }
+
+        // Gửi bình luận ẩn danh
+        document.getElementById('commentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const authorInput = document.getElementById('commentAuthorInput').value.trim();
+            const contentInput = document.getElementById('commentContentInput').value.trim();
+
+            const authorName = authorInput === '' ? 'Ẩn danh' : authorInput;
+
+            const post = posts.find(p => p.id === currentOpenPostId);
+            if (!post) return;
+
+            if (!post.comments) post.comments = [];
+            post.comments.push({
+                author: authorName,
+                text: contentInput,
+                time: 'Vừa xong'
+            });
+
+            localStorage.setItem('devtips_posts', JSON.stringify(posts));
+            renderComments(post);
+            renderHomePage();
+            
+            document.getElementById('commentContentInput').value = '';
+            document.getElementById('commentAuthorInput').value = '';
+        });
+
+        function renderComments(post) {
+            const commentListEl = document.getElementById('commentList');
+            commentListEl.innerHTML = '';
+
+            if (!post.comments || post.comments.length === 0) {
+                commentListEl.innerHTML = '<p style="font-size: 0.85rem; color: var(--text-muted); text-align: center;">Chưa có bình luận nào. Hãy là người đầu tiên thảo luận!</p>';
+                return;
+            }
+
+            post.comments.slice().reverse().forEach(c => {
+                commentListEl.innerHTML += `
+                    <div class="comment-item">
+                        <div class="comment-author">${c.author} <span style="font-weight: 400; color: var(--text-muted); font-size: 0.75rem;">• ${c.time}</span></div>
+                        <div class="comment-text">${c.text}</div>
+                    </div>
+                `;
+            });
+        }
+
         window.addEventListener('click', (e) => {
             if (e.target.classList.contains('modal-overlay')) {
                 closeDetailModal();
@@ -573,7 +696,6 @@
             });
         });
 
-        // Khởi chạy khi tải trang
         renderHomePage();
     </script>
 </body>
