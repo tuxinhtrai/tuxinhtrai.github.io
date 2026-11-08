@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DevTips - Admin Login & Dashboard</title>
+    <title>DevTips - Cổng Đăng Nhập & Quản Trị Thành Viên</title>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- FontAwesome Icons -->
@@ -37,8 +37,8 @@
             min-height: 100vh;
         }
 
-        /* MÀN HÌNH ĐĂNG NHẬP */
-        #loginScreen {
+        /* KHU VỰC AUTH (Đăng nhập / Đăng ký) */
+        #authScreen {
             display: flex;
             justify-content: center;
             align-items: center;
@@ -46,26 +46,61 @@
             padding: 20px;
         }
 
-        .login-card {
+        .auth-card {
             background: var(--surface-color);
             border: 1px solid var(--border-color);
             padding: 2.5rem;
             border-radius: 20px;
             width: 100%;
-            max-width: 420px;
+            max-width: 440px;
             box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .auth-card h2 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
             text-align: center;
         }
 
-        .login-card h2 {
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .login-card p {
+        .auth-card p {
             color: var(--text-muted);
             font-size: 0.9rem;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .auth-tabs {
+            display: flex;
+            background: var(--bg-color);
+            border-radius: 12px;
+            padding: 4px;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .auth-tab {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 10px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .auth-tab.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .auth-form-section {
+            display: none;
+        }
+
+        .auth-form-section.active {
+            display: block;
         }
 
         /* KHU VỰC DASHBOARD (Ẩn ban đầu) */
@@ -81,7 +116,6 @@
             .content-grid { grid-template-columns: 1fr; }
         }
 
-        /* Sidebar Dashboard */
         .dash-sidebar {
             background: var(--surface-color);
             border-right: 1px solid var(--border-color);
@@ -129,7 +163,6 @@
             transform: translateX(4px);
         }
 
-        /* Main Content Area */
         .dash-main {
             padding: 2.5rem;
             overflow-y: auto;
@@ -158,14 +191,11 @@
             border: 1px solid var(--border-color);
         }
 
-        .user-profile img {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            object-fit: cover;
+        .user-profile i {
+            font-size: 1.8rem;
+            color: var(--primary-color);
         }
 
-        /* Stats Cards */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -192,7 +222,6 @@
             color: var(--accent-color);
         }
 
-        /* Form & Management Section */
         .content-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -286,7 +315,6 @@
             color: var(--text-main);
         }
 
-        /* Post Management List */
         .manage-list {
             display: flex;
             flex-direction: column;
@@ -334,46 +362,72 @@
             color: white;
         }
 
-        .error-msg {
-            color: #ef4444;
+        .alert-msg {
             font-size: 0.85rem;
             margin-top: 10px;
+            text-align: center;
             display: none;
         }
     </style>
 </head>
 <body>
 
-    <!-- 1. MÀN HÌNH ĐĂNG NHẬP -->
-    <div id="loginScreen">
-        <div class="login-card">
+    <!-- 1. MÀN HÌNH XÁC THỰC (ĐĂNG NHẬP / ĐĂNG KÝ) -->
+    <div id="authScreen">
+        <div class="auth-card">
             <div class="logo" style="justify-content: center; margin-bottom: 1rem;">
                 <i class="fa-solid fa-code"></i> DevTips.vn
             </div>
-            <h2>Đăng Nhập Admin</h2>
-            <p>Nhập mật khẩu quản trị để truy cập trang dashboard.</p>
-            <form id="loginForm">
+            
+            <div class="auth-tabs">
+                <button class="auth-tab active" onclick="switchTab('login')">Đăng Nhập</button>
+                <button class="auth-tab" onclick="switchTab('register')">Đăng Ký Nhanh</button>
+            </div>
+
+            <!-- Form Đăng Nhập -->
+            <form id="loginForm" class="auth-form-section active">
                 <div class="form-group" style="text-align: left;">
-                    <label>Mật khẩu quản trị</label>
-                    <input type="password" id="adminPassword" placeholder="Nhập mật khẩu..." required>
+                    <label>Tên tài khoản</label>
+                    <input type="text" id="loginUsername" placeholder="Nhập username..." required>
                 </div>
-                <div class="error-msg" id="loginError">Mật khẩu không chính xác! Vui lòng thử lại.</div>
-                <button type="submit" class="btn btn-primary" style="margin-top: 10px;">Truy Cập Dashboard</button>
+                <div class="form-group" style="text-align: left;">
+                    <label>Mật khẩu</label>
+                    <input type="password" id="loginPassword" placeholder="Nhập mật khẩu..." required>
+                </div>
+                <div class="alert-msg" id="loginAlert" style="color: #ef4444;"></div>
+                <button type="submit" class="btn btn-primary" style="margin-top: 10px;">Vào Dashboard Của Tôi</button>
                 <a href="index.html" class="btn btn-secondary">Quay lại Trang Chủ</a>
+            </form>
+
+            <!-- Form Đăng Ký -->
+            <form id="registerForm" class="auth-form-section">
+                <div class="form-group" style="text-align: left;">
+                    <label>Tên hiển thị / Tác giả</label>
+                    <input type="text" id="regName" placeholder="Ví dụ: Hoàng Nam..." required>
+                </div>
+                <div class="form-group" style="text-align: left;">
+                    <label>Tài khoản (Username)</label>
+                    <input type="text" id="regUsername" placeholder="Tên đăng nhập không dấu..." required>
+                </div>
+                <div class="form-group" style="text-align: left;">
+                    <label>Mật khẩu</label>
+                    <input type="password" id="regPassword" placeholder="Tạo mật khẩu..." required>
+                </div>
+                <div class="alert-msg" id="regAlert"></div>
+                <button type="submit" class="btn btn-primary" style="margin-top: 10px;">Tạo Tài Khoản Ngay</button>
             </form>
         </div>
     </div>
 
-    <!-- 2. GIAO DIỆN DASHBOARD CHÍNH (Sau khi đăng nhập thành công) -->
+    <!-- 2. GIAO DIỆN DASHBOARD RIÊNG CỦA TỪNG USER -->
     <div id="dashboardScreen">
-        <!-- Sidebar Dashboard -->
         <aside class="dash-sidebar">
             <div>
                 <a href="index.html" class="logo">
                     <i class="fa-solid fa-code"></i> DevTips.vn
                 </a>
                 <ul class="dash-menu">
-                    <li class="active"><a href="#"><i class="fa-solid fa-chart-pie"></i> Tổng quan & Đăng bài</a></li>
+                    <li class="active"><a href="#"><i class="fa-solid fa-chart-pie"></i> Bài viết của tôi</a></li>
                     <li><a href="index.html" target="_blank"><i class="fa-solid fa-globe"></i> Xem trang chủ</a></li>
                 </ul>
             </div>
@@ -382,48 +436,41 @@
             </div>
         </aside>
 
-        <!-- Main Dashboard -->
         <main class="dash-main">
             <div class="dash-header">
-                <h1>Quản Trị Hệ Thống</h1>
+                <h1>Bảng Quản Trị Cá Nhân</h1>
                 <div class="user-profile">
-                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop" alt="Admin">
+                    <i class="fa-solid fa-user-circle"></i>
                     <div>
-                        <h4 style="font-size: 0.9rem;">Nguyễn Anh Tú</h4>
-                        <span style="font-size: 0.75rem; color: var(--text-muted);">Administrator</span>
+                        <h4 style="font-size: 0.9rem;" id="currentUserNameDisplay">Tên User</h4>
+                        <span style="font-size: 0.75rem; color: var(--text-muted);">Thành viên hệ thống</span>
                     </div>
                 </div>
             </div>
 
-            <!-- Thống kê nhanh -->
             <div class="stats-grid">
                 <div class="stat-card">
-                    <h3>Tổng số bài viết</h3>
-                    <div class="number" id="totalPostsCount">0</div>
+                    <h3>Bài viết bạn đã đăng</h3>
+                    <div class="number" id="userPostsCount">0</div>
                 </div>
                 <div class="stat-card">
-                    <h3>Lượt tương tác giả lập</h3>
-                    <div class="number">1,452</div>
-                </div>
-                <div class="stat-card">
-                    <h3>Bảo mật phiên</h3>
-                    <div class="number" style="font-size: 1.2rem; color: #10b981; margin-top: 5px;"><i class="fa-solid fa-shield-halved"></i> Đã xác thực</div>
+                    <h3>Trạng thái tài khoản</h3>
+                    <div class="number" style="font-size: 1.1rem; color: #10b981; margin-top: 5px;"><i class="fa-solid fa-bolt"></i> Hoạt động tự do</div>
                 </div>
             </div>
 
-            <!-- Khu vực Form đăng bài & Danh sách quản lý -->
             <div class="content-grid">
-                <!-- Form Tạo Bài Mới -->
+                <!-- Form Đăng Bài Riêng -->
                 <div class="panel-card">
-                    <h2><i class="fa-solid fa-pen-nib" style="color: var(--primary-color);"></i> Đăng Bài Viết Mới</h2>
-                    <form id="adminPostForm">
+                    <h2><i class="fa-solid fa-pen-nib" style="color: var(--primary-color);"></i> Viết Thủ Thuật Mới</h2>
+                    <form id="userPostForm">
                         <div class="form-group">
                             <label>Tiêu đề thủ thuật</label>
-                            <input type="text" id="adminTitle" placeholder="Nhập tiêu đề hấp dẫn..." required>
+                            <input type="text" id="postTitle" placeholder="Tiêu đề bài viết..." required>
                         </div>
                         <div class="form-group">
                             <label>Danh mục</label>
-                            <select id="adminCategory">
+                            <select id="postCategory">
                                 <option value="Web Development">Web Development</option>
                                 <option value="Bảo mật & Proxy">Bảo mật & Proxy</option>
                                 <option value="AI & Automations">AI & Automations</option>
@@ -431,127 +478,171 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>Nội dung chi tiết (Hỗ trợ code block)</label>
-                            <textarea id="adminContent" placeholder="Nhập nội dung chia sẻ..." required></textarea>
+                            <label>Nội dung chi tiết</label>
+                            <textarea id="postContent" placeholder="Nhập chia sẻ của bạn..." required></textarea>
                         </div>
-                        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-cloud-arrow-up"></i> Xuất bản bài viết</button>
+                        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-cloud-arrow-up"></i> Đăng bài lên cộng đồng</button>
                     </form>
                 </div>
 
-                <!-- Danh sách bài viết đang quản lý -->
+                <!-- Danh Sách Bài Viết Của Riêng User Này -->
                 <div class="panel-card">
-                    <h2><i class="fa-solid fa-list-check" style="color: var(--accent-color);"></i> Quản Lý Bài Viết</h2>
-                    <div class="manage-list" id="adminManageList"></div>
+                    <h2><i class="fa-solid fa-list-check" style="color: var(--accent-color);"></i> Bài Viết Đã Đăng Của Bạn</h2>
+                    <div class="manage-list" id="userManageList"></div>
                 </div>
             </div>
         </main>
     </div>
 
-    <!-- Script Xử Lý Đăng Nhập & Quản Trị -->
+    <!-- Script Xử Lý Đăng Ký, Đăng Nhập và Phân Quyền -->
     <script>
-        // MẬT KHẨU QUẢN TRỊ CỦA BẠN (Bạn có thể đổi chữ 'admin123' thành mật khẩu tùy ý)
-        const ADMIN_PASSWORD_SECRET = "admin123"; 
-
-        const loginScreen = document.getElementById('loginScreen');
+        const authScreen = document.getElementById('authScreen');
         const dashboardScreen = document.getElementById('dashboardScreen');
-        const loginForm = document.getElementById('loginForm');
-        const loginError = document.getElementById('loginError');
 
-        // Kiểm tra nếu trước đó đã đăng nhập trong phiên duyệt web này
-        if (sessionStorage.getItem('devtips_logged_in') === 'true') {
+        // Chuyển Tab Đăng Nhập / Đăng Ký
+        function switchTab(tab) {
+            document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.auth-form-section').forEach(f => f.classList.remove('active'));
+            
+            if(tab === 'login') {
+                document.querySelectorAll('.auth-tab')[0].classList.add('active');
+                document.getElementById('loginForm').classList.add('active');
+            } else {
+                document.querySelectorAll('.auth-tab')[1].classList.add('active');
+                document.getElementById('registerForm').classList.add('active');
+            }
+        }
+
+        // Lấy danh sách users và posts từ localStorage
+        let users = JSON.parse(localStorage.getItem('devtips_users')) || [];
+        let posts = JSON.parse(localStorage.getItem('devtips_posts')) || [];
+        let currentUser = JSON.parse(sessionStorage.getItem('devtips_current_user')) || null;
+
+        // Nếu đã lưu phiên đăng nhập trước đó thì mở luôn dashboard
+        if(currentUser) {
             showDashboard();
         }
 
-        // Xử lý sự kiện submit form đăng nhập
-        loginForm.addEventListener('submit', function(e) {
+        // 1. XỬ LÝ ĐĂNG KÝ (Không cần xác minh, lưu thẳng vào máy)
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            const enteredPass = document.getElementById('adminPassword').value;
+            const name = document.getElementById('regName').value.trim();
+            const username = document.getElementById('regUsername').value.trim().toLowerCase();
+            const password = document.getElementById('regPassword').value;
+            const alertBox = document.getElementById('regAlert');
 
-            if (enteredPass === ADMIN_PASSWORD_SECRET) {
-                sessionStorage.setItem('devtips_logged_in', 'true');
-                showDashboard();
-            } else {
-                loginError.style.display = 'block';
-            }
-        });
-
-        function showDashboard() {
-            loginScreen.style.display = 'none';
-            dashboardScreen.style.display = 'grid';
-            renderDashboard();
-        }
-
-        function handleLogout() {
-            sessionStorage.removeItem('devtips_logged_in');
-            window.location.reload();
-        }
-
-        // --- Quản lý Bài Viết ---
-        let posts = JSON.parse(localStorage.getItem('devtips_posts')) || [
-            {
-                title: 'Tối ưu hóa Cloudflare Workers để chạy API tốc độ cao',
-                author: 'Nguyễn Anh Tú',
-                time: 'Hôm nay',
-                category: 'Cloudflare',
-                snippet: 'Hướng dẫn toàn tập cách deploy các serverless script...',
-                content: 'Bài viết này sẽ hướng dẫn các bạn thiết lập và tinh chỉnh Cloudflare Workers...'
-            }
-        ];
-
-        function saveAndRender() {
-            localStorage.setItem('devtips_posts', JSON.stringify(posts));
-            renderDashboard();
-        }
-
-        function renderDashboard() {
-            const listContainer = document.getElementById('adminManageList');
-            document.getElementById('totalPostsCount').innerText = posts.length;
-            listContainer.innerHTML = '';
-
-            if(posts.length === 0) {
-                listContainer.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 20px;">Chưa có bài viết nào.</p>';
+            // Kiểm tra username đã tồn tại chưa
+            const existing = users.find(u => u.username === username);
+            if(existing) {
+                alertBox.style.color = '#ef4444';
+                alertBox.innerText = 'Tên tài khoản này đã có người dùng. Vui lòng chọn tên khác!';
+                alertBox.style.display = 'block';
                 return;
             }
 
-            posts.forEach((post, index) => {
-                const item = document.createElement('div');
-                item.className = 'manage-item';
-                item.innerHTML = `
-                    <div class="manage-info">
-                        <h4>${post.title}</h4>
-                        <span>${post.category} • ${post.time}</span>
-                    </div>
-                    <button class="btn-danger" onclick="deletePost(${index})"><i class="fa-solid fa-trash"></i></button>
-                `;
-                listContainer.appendChild(item);
-            });
+            // Tạo user mới
+            const newUser = { name, username, password };
+            users.push(newUser);
+            localStorage.setItem('devtips_users', JSON.stringify(users));
+
+            alertBox.style.color = '#10b981';
+            alertBox.innerText = 'Đăng ký thành công! Hãy chuyển sang tab Đăng Nhập.';
+            alertBox.style.display = 'block';
+            this.reset();
+        });
+
+        // 2. XỬ LÝ ĐĂNG NHẬP
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('loginUsername').value.trim().toLowerCase();
+            const password = document.getElementById('loginPassword').value;
+            const alertBox = document.getElementById('loginAlert');
+
+            const foundUser = users.find(u => u.username === username && u.password === password);
+            
+            // Tài khoản Admin mặc định để test nhanh (nếu chưa đăng ký)
+            if(!foundUser && username === 'admin' && password === '123456') {
+                currentUser = { name: 'Quản Trị Viên', username: 'admin' };
+            } else if(foundUser) {
+                currentUser = foundUser;
+            } else {
+                alertBox.innerText = 'Sai tài khoản hoặc mật khẩu!';
+                alertBox.style.display = 'block';
+                return;
+            }
+
+            sessionStorage.setItem('devtips_current_user', JSON.stringify(currentUser));
+            showDashboard();
+        });
+
+        function showDashboard() {
+            authScreen.style.display = 'none';
+            dashboardScreen.style.display = 'grid';
+            document.getElementById('currentUserNameDisplay').innerText = currentUser.name || currentUser.username;
+            renderUserDashboard();
         }
 
-        document.getElementById('adminPostForm').addEventListener('submit', function(e) {
+        function handleLogout() {
+            sessionStorage.removeItem('devtips_current_user');
+            window.location.reload();
+        }
+
+        // 3. ĐĂNG BÀI VÀ QUẢN LÝ BÀI CỦA RIÊNG USER ĐÓ
+        document.getElementById('userPostForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            const title = document.getElementById('adminTitle').value;
-            const category = document.getElementById('adminCategory').value;
-            const content = document.getElementById('adminContent').value;
+            const title = document.getElementById('postTitle').value;
+            const category = document.getElementById('postCategory').value;
+            const content = document.getElementById('postContent').value;
 
             const newPost = {
+                id: Date.now(),
+                authorUsername: currentUser.username,
+                authorName: currentUser.name || currentUser.username,
                 title: title,
-                author: 'Nguyễn Anh Tú (Admin)',
-                time: 'Vừa xong',
                 category: category,
+                time: 'Vừa xong',
                 snippet: content.substring(0, 90) + '...',
                 content: content
             };
 
             posts.unshift(newPost);
-            saveAndRender();
+            localStorage.setItem('devtips_posts', JSON.stringify(posts));
+            renderUserDashboard();
             this.reset();
-            alert('Đăng bài viết mới thành công!');
+            alert('Đăng bài thành công lên diễn đàn!');
         });
 
-        function deletePost(index) {
-            if(confirm('Bạn có chắc chắn muốn xoá bài viết này không?')) {
-                posts.splice(index, 1);
-                saveAndRender();
+        function renderUserDashboard() {
+            const listContainer = document.getElementById('userManageList');
+            // Lọc ra các bài viết do chính user đang đăng nhập tạo ra
+            const myPosts = posts.filter(p => p.authorUsername === currentUser.username);
+            
+            document.getElementById('userPostsCount').innerText = myPosts.length;
+            listContainer.innerHTML = '';
+
+            if(myPosts.length === 0) {
+                listContainer.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 20px;">Bạn chưa đăng bài viết nào.</p>';
+                return;
+            }
+
+            myPosts.forEach(post => {
+                listContainer.innerHTML += `
+                    <div class="manage-item">
+                        <div class="manage-info">
+                            <h4>${post.title}</h4>
+                            <span>${post.category} • ${post.time}</span>
+                        </div>
+                        <button class="btn-danger" onclick="deleteMyPost(${post.id})"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                `;
+            });
+        }
+
+        function deleteMyPost(postId) {
+            if(confirm('Bạn có chắc chắn muốn xoá bài viết này?')) {
+                posts = posts.filter(p => p.id !== postId);
+                localStorage.setItem('devtips_posts', JSON.stringify(posts));
+                renderUserDashboard();
             }
         }
     </script>
