@@ -3,42 +3,87 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Wild Bounty Showdown - Demo Game</title>
+  <title>Wild Bounty Showdown - Custom Frame</title>
   <style>
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
-    body, html {
-      width: 100%;
-      height: 100%;
-      background-color: #0c0603;
-      overflow: hidden;
+
+    body {
+      background: radial-gradient(circle, #3a1e0b 0%, #0c0603 100%);
+      font-family: Arial, sans-serif;
+      color: #fff;
       display: flex;
-      justify-content: center;
+      flex-direction: column;
       align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      overflow: hidden;
     }
-    .game-wrapper {
-      width: 100%;
-      max-width: 480px; /* Giới hạn khung chiều rộng chuẩn di động */
-      height: 100%;
-      max-height: 100vh;
-      background: #000;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+
+    /* Tiêu đề trang trí bên trên */
+    .game-header {
+      text-align: center;
+      margin-bottom: 10px;
     }
-    iframe {
+
+    .game-header h1 {
+      font-size: 22px;
+      color: #ffd700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      text-shadow: 2px 2px 4px #000;
+    }
+
+    /* Khung máy game bao bọc bên ngoài (Cái khung để che phần thừa) */
+    .arcade-cabinet {
+      position: relative;
+      width: 400px;
+      height: 680px;
+      background: #150a04;
+      border: 4px solid #b8860b;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9), 0 0 15px rgba(212, 175, 55, 0.4);
+      overflow: hidden;
+    }
+
+    /* Lớp phủ ẩn bớt phần thừa và căn chỉnh iframe lọt vào khung */
+    .game-screen {
+      position: absolute;
+      top: -90px; /* Điều chỉnh số âm này lên/xuống để dịch chuyển màn hình game vào giữa khung */
+      left: 0;
       width: 100%;
-      height: 100%;
+      height: calc(100% + 180px);
       border: none;
+    }
+
+    /* Dòng chữ trang trí phía dưới */
+    .game-footer {
+      margin-top: 10px;
+      font-size: 12px;
+      color: #a08060;
+      text-align: center;
     }
   </style>
 </head>
 <body>
 
-  <div class="game-wrapper">
-    <!-- Thay link bên dưới bằng đường dẫn iframe thực tế của game demo -->
-    <iframe src="https://www.gamesville.com/slots/wild-bounty-showdown" allowfullscreen></iframe>
+  <!-- Tiêu đề trang trí -->
+  <div class="game-header">
+    <h1>WILD BOUNTY SHOWDOWN</h1>
+  </div>
+
+  <!-- Khung máy game trang trí -->
+  <div class="arcade-cabinet">
+    <!-- Nhúng web gốc vào đây, nó sẽ bị lớp .arcade-cabinet che các phần rìa đi -->
+    <iframe class="game-screen" src="https://www.gameshub.com/free-games/slots/wild-bounty-showdown/" allowfullscreen></iframe>
+  </div>
+
+  <!-- Chân trang -->
+  <div class="game-footer">
+    Hosted on GitHub Pages | Designed for Custom UI
   </div>
 
 </body>
