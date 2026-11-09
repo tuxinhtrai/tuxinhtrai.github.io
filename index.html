@@ -1,702 +1,301 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DevTips - Cộng Đồng Chia Sẻ Thủ Thuật & Code</title>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <style>
-        :root {
-            --bg-color: #0b0f19;
-            --surface-color: #131b2e;
-            --surface-hover: #1a2540;
-            --primary-color: #6366f1;
-            --primary-hover: #4f46e5;
-            --accent-color: #06b6d4;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --border-color: rgba(255, 255, 255, 0.08);
-            --shadow-glow: 0 0 25px rgba(99, 102, 241, 0.2);
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wild West Slot Machine Demo</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-        }
+    body {
+      background: #2b1704;
+      background: radial-gradient(circle, #4a2810 0%, #150a02 100%);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            min-height: 100vh;
-            overflow-x: hidden;
-            background-image: 
-                radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.08) 0%, transparent 40%),
-                radial-gradient(circle at 90% 80%, rgba(6, 182, 212, 0.08) 0%, transparent 40%);
-        }
+    .game-container {
+      background: #3a1e0b;
+      border: 4px solid #d4af37;
+      border-radius: 16px;
+      padding: 24px;
+      width: 360px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 15px rgba(212, 175, 55, 0.3);
+    }
 
-        header {
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            background: rgba(11, 15, 25, 0.85);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border-color);
-            padding: 1rem 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+    h1 {
+      color: #f39c12;
+      font-size: 24px;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      text-shadow: 2px 2px 4px #000;
+    }
 
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 1.5rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-decoration: none;
-        }
+    .subtitle {
+      font-size: 12px;
+      color: #bdc3c7;
+      margin-bottom: 20px;
+    }
 
-        .search-bar {
-            position: relative;
-            width: 400px;
-        }
+    .dashboard {
+      display: flex;
+      justify-content: space-between;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 10px 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      border: 1px solid #5c3a21;
+    }
 
-        .search-bar input {
-            width: 100%;
-            background: var(--surface-color);
-            border: 1px solid var(--border-color);
-            padding: 0.75rem 1rem 0.75rem 2.75rem;
-            border-radius: 12px;
-            color: var(--text-main);
-            font-size: 0.95rem;
-            outline: none;
-            transition: var(--transition);
-        }
+    .stat-box {
+      display: flex;
+      flex-direction: column;
+    }
 
-        .search-bar input:focus {
-            border-color: var(--primary-color);
-            box-shadow: var(--shadow-glow);
-        }
+    .stat-label {
+      font-size: 11px;
+      color: #aaa;
+      text-transform: uppercase;
+    }
 
-        .search-bar i {
-            position: absolute;
-            left: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-muted);
-        }
+    .stat-value {
+      font-size: 18px;
+      font-weight: bold;
+      color: #f1c40f;
+    }
 
-        .nav-actions {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-        }
+    .reels-wrapper {
+      display: flex;
+      justify-content: space-between;
+      background: #111;
+      padding: 12px;
+      border-radius: 12px;
+      border: 3px solid #8e5a2b;
+      margin-bottom: 20px;
+      position: relative;
+      overflow: hidden;
+    }
 
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 0.7rem 1.25rem;
-            border-radius: 12px;
-            font-weight: 600;
-            font-size: 0.95rem;
-            cursor: pointer;
-            border: none;
-            transition: var(--transition);
-            text-decoration: none;
-        }
+    .reel {
+      width: 30%;
+      height: 90px;
+      background: #fff;
+      border-radius: 8px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 48px;
+      box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+      user-select: none;
+      transition: transform 0.1s ease-in-out;
+    }
 
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
-            color: white;
-            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
-        }
+    .reel.spinning {
+      filter: blur(2px);
+    }
 
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.6);
-        }
+    .message {
+      height: 24px;
+      font-size: 14px;
+      font-weight: bold;
+      margin-bottom: 15px;
+      color: #2ecc71;
+    }
 
-        .btn-outline {
-            background: transparent;
-            border: 1px solid var(--border-color);
-            color: var(--text-main);
-        }
+    .controls {
+      display: flex;
+      gap: 10px;
+    }
 
-        .btn-outline:hover {
-            background: var(--surface-hover);
-            border-color: var(--text-muted);
-        }
+    button {
+      flex: 1;
+      padding: 12px 0;
+      font-size: 16px;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      text-transform: uppercase;
+      transition: all 0.2s ease;
+    }
 
-        .container {
-            max-width: 1280px;
-            margin: 2rem auto;
-            padding: 0 20px;
-            display: grid;
-            grid-template-columns: 260px 1fr;
-            gap: 30px;
-        }
+    .btn-spin {
+      background: linear-gradient(180deg, #f39c12 0%, #d35400 100%);
+      color: #fff;
+      box-shadow: 0 4px 0 #962d00;
+    }
 
-        @media (max-width: 900px) {
-            .container { grid-template-columns: 1fr; }
-            .sidebar, .search-bar { display: none; }
-        }
+    .btn-spin:active {
+      transform: translateY(4px);
+      box-shadow: 0 0 0 #962d00;
+    }
 
-        .sidebar {
-            background: var(--surface-color);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 1.5rem;
-            height: fit-content;
-            position: sticky;
-            top: 5rem;
-        }
+    .btn-spin:disabled {
+      background: #7f8c8d;
+      box-shadow: none;
+      cursor: not-allowed;
+    }
 
-        .sidebar h3 {
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--text-muted);
-            margin-bottom: 1rem;
-        }
+    .btn-reset {
+      flex: 0.4;
+      background: #7f8c8d;
+      color: #fff;
+      box-shadow: 0 4px 0 #34495e;
+    }
 
-        .category-list {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .category-item a {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 0.75rem 1rem;
-            border-radius: 10px;
-            color: var(--text-muted);
-            text-decoration: none;
-            font-weight: 500;
-            transition: var(--transition);
-        }
-
-        .category-item a:hover, .category-item.active a {
-            background: var(--surface-hover);
-            color: var(--text-main);
-            transform: translateX(4px);
-        }
-
-        .category-item.active a {
-            color: var(--accent-color);
-        }
-
-        .feed-header h1 {
-            font-size: 1.75rem;
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-        }
-
-        .post-list {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .post-card {
-            background: var(--surface-color);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 1.5rem;
-            cursor: pointer;
-            transition: var(--transition);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .post-card::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            height: 100%;
-            width: 4px;
-            background: var(--primary-color);
-            opacity: 0;
-            transition: var(--transition);
-        }
-
-        .post-card:hover {
-            transform: translateY(-4px);
-            border-color: rgba(99, 102, 241, 0.3);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        }
-
-        .post-card:hover::before { opacity: 1; }
-
-        .post-meta {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 12px;
-        }
-
-        .author-avatar {
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            background: var(--surface-hover);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--primary-color);
-            font-weight: 700;
-            border: 1px solid var(--border-color);
-        }
-
-        .author-info h4 { font-size: 0.95rem; font-weight: 600; }
-        .post-time { font-size: 0.8rem; color: var(--text-muted); }
-
-        .post-title {
-            font-size: 1.25rem;
-            font-weight: 700;
-            margin-bottom: 8px;
-            color: var(--text-main);
-            transition: var(--transition);
-        }
-
-        .post-card:hover .post-title { color: var(--accent-color); }
-
-        .post-snippet {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            line-height: 1.6;
-            margin-bottom: 1rem;
-        }
-
-        .post-tags {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            margin-bottom: 1rem;
-        }
-
-        .tag {
-            background: rgba(99, 102, 241, 0.1);
-            color: var(--primary-color);
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 0.8rem;
-            font-weight: 600;
-        }
-
-        .post-stats {
-            display: flex;
-            gap: 20px;
-            border-top: 1px solid var(--border-color);
-            padding-top: 1rem;
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
-
-        .post-stats span {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        /* MODAL CHI TIẾT & BÌNH LUẬN */
-        .modal-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(8px);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            opacity: 0; visibility: hidden;
-            transition: all 0.3s ease;
-        }
-
-        .modal-overlay.active { opacity: 1; visibility: visible; }
-
-        .modal-container {
-            background: var(--surface-color);
-            border: 1px solid var(--border-color);
-            width: 90%; max-width: 700px;
-            border-radius: 20px; padding: 2rem;
-            transform: scale(0.9) translateY(20px);
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            max-height: 90vh; overflow-y: auto;
-            position: relative;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
-        }
-
-        .modal-overlay.active .modal-container { transform: scale(1) translateY(0); }
-
-        .modal-close {
-            position: absolute; top: 1.5rem; right: 1.5rem;
-            background: var(--surface-hover); border: none;
-            color: var(--text-muted); width: 36px; height: 36px;
-            border-radius: 50%; cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1.1rem; transition: var(--transition);
-        }
-
-        .modal-close:hover { background: #ef4444; color: white; }
-
-        .modal-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem; }
-
-        .modal-body-content {
-            color: var(--text-muted);
-            line-height: 1.8; margin: 1.5rem 0;
-            font-size: 1rem; white-space: pre-line;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 1.5rem;
-        }
-
-        /* Nút thả tim & Thảo luận */
-        .interaction-bar {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .btn-like {
-            background: var(--bg-color);
-            border: 1px solid var(--border-color);
-            color: var(--text-muted);
-            padding: 8px 16px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: var(--transition);
-        }
-
-        .btn-like.liked {
-            color: #ef4444;
-            border-color: rgba(239, 68, 68, 0.3);
-            background: rgba(239, 68, 68, 0.05);
-        }
-
-        .btn-like:hover { transform: scale(1.05); }
-
-        .comments-section h4 { font-size: 1.1rem; margin-bottom: 1rem; }
-
-        .comment-form {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-bottom: 1.5rem;
-        }
-
-        .comment-form input, .comment-form textarea {
-            background: var(--bg-color);
-            border: 1px solid var(--border-color);
-            padding: 0.75rem 1rem;
-            border-radius: 10px;
-            color: var(--text-main);
-            font-size: 0.9rem;
-            outline: none;
-            transition: var(--transition);
-        }
-
-        .comment-form input:focus, .comment-form textarea:focus {
-            border-color: var(--primary-color);
-            box-shadow: var(--shadow-glow);
-        }
-
-        .comment-list {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            max-height: 250px;
-            overflow-y: auto;
-        }
-
-        .comment-item {
-            background: var(--bg-color);
-            padding: 0.85rem 1rem;
-            border-radius: 10px;
-            border: 1px solid var(--border-color);
-        }
-
-        .comment-author {
-            font-weight: 600;
-            font-size: 0.85rem;
-            color: var(--accent-color);
-            margin-bottom: 4px;
-        }
-
-        .comment-text {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 3rem;
-            color: var(--text-muted);
-            background: var(--surface-color);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-        }
-    </style>
+    .btn-reset:active {
+      transform: translateY(4px);
+      box-shadow: 0 0 0 #34495e;
+    }
+  </style>
 </head>
 <body>
 
-    <!-- Header -->
-    <header>
-        <a href="index.html" class="logo">
-            <i class="fa-solid fa-code"></i> DevTips.vn
-        </a>
-        <div class="search-bar">
-            <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="text" id="searchInput" placeholder="Tìm kiếm thủ thuật, source code...">
-        </div>
-        <div class="nav-actions">
-            <a href="admin.html" class="btn btn-outline"><i class="fa-solid fa-user-shield"></i> Quản trị Admin</a>
-        </div>
-    </header>
+  <div class="game-container">
+    <h1>WILD WEST SLOT</h1>
+    <div class="subtitle">Demo Game Nổ Hũ HTML5</div>
 
-    <!-- Main Container -->
-    <div class="container">
-        <aside class="sidebar">
-            <h3>Danh mục</h3>
-            <ul class="category-list">
-                <li class="category-item active"><a href="#"><i class="fa-solid fa-fire"></i> Tất cả bài viết</a></li>
-                <li class="category-item"><a href="#"><i class="fa-solid fa-globe"></i> Web Development</a></li>
-                <li class="category-item"><a href="#"><i class="fa-solid fa-shield-halved"></i> Bảo mật & Proxy</a></li>
-                <li class="category-item"><a href="#"><i class="fa-solid fa-robot"></i> AI & Automations</a></li>
-            </ul>
-        </aside>
-
-        <main class="feed">
-            <div class="feed-header">
-                <h1>Thủ Thuật Mới Nhất</h1>
-            </div>
-            <div class="post-list" id="postList"></div>
-        </main>
+    <div class="dashboard">
+      <div class="stat-box">
+        <span class="stat-label">Số Dư</span>
+        <span class="stat-value" id="balance">1000</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-label">Tiền Cược</span>
+        <span class="stat-value" id="bet">50</span>
+      </div>
     </div>
 
-    <!-- Modal Chi Tiết Bài Viết & Bình Luận / Thả Tim -->
-    <div class="modal-overlay" id="detailModal">
-        <div class="modal-container">
-            <button class="modal-close" onclick="closeDetailModal()"><i class="fa-solid fa-xmark"></i></button>
-            <h2 class="modal-title" id="detailTitle"></h2>
-            <div class="post-meta">
-                <div class="author-avatar"><i class="fa-solid fa-user"></i></div>
-                <div class="author-info">
-                    <h4 id="detailAuthor"></h4>
-                    <span class="post-time" id="detailTime"></span>
-                </div>
-            </div>
-
-            <div class="modal-body-content" id="detailContent"></div>
-
-            <!-- Tương tác: Thả tim -->
-            <div class="interaction-bar">
-                <button class="btn-like" id="btnLikePost" onclick="toggleLikeCurrentPost()">
-                    <i class="fa-solid fa-heart"></i> <span id="likeCountText">0</span> Thích
-                </button>
-            </div>
-
-            <!-- Khu vực Bình luận ẩn danh -->
-            <div class="comments-section">
-                <h4>Thảo luận cộng đồng</h4>
-                <form class="comment-form" id="commentForm">
-                    <input type="text" id="commentAuthorInput" placeholder="Tên của bạn (Để trống sẽ là Ẩn danh)...">
-                    <textarea id="commentContentInput" placeholder="Viết bình luận của bạn..." rows="2" required></textarea>
-                    <button type="submit" class="btn btn-primary" style="align-self: flex-end; padding: 6px 16px; font-size: 0.85rem;">Gửi bình luận</button>
-                </form>
-
-                <div class="comment-list" id="commentList"></div>
-            </div>
-        </div>
+    <div class="reels-wrapper">
+      <div class="reel" id="reel1">🤠</div>
+      <div class="reel" id="reel2">🤠</div>
+      <div class="reel" id="reel3">🤠</div>
     </div>
 
-    <!-- Script Xử Lý Giao Diện, Tim & Bình Luận -->
-    <script>
-        const postListEl = document.getElementById('postList');
-        const detailModal = document.getElementById('detailModal');
-        let currentOpenPostId = null;
+    <div class="message" id="message">Nhấn QUAY để bắt đầu!</div>
 
-        let posts = JSON.parse(localStorage.getItem('devtips_posts')) || [];
+    <div class="controls">
+      <button class="btn-spin" id="spinBtn" onclick="spin()">QUAY 🎰</button>
+      <button class="btn-reset" onclick="resetGame()">Nạp Lại</button>
+    </div>
+  </div>
 
-        function renderHomePage() {
-            postListEl.innerHTML = '';
+  <script>
+    const symbols = ['🤠', '⭐️', '🌵', '💰', '🪙'];
+    const BET_AMOUNT = 50;
+    
+    let balance = parseInt(localStorage.getItem('slot_balance')) || 1000;
+    let isSpinning = false;
 
-            if (posts.length === 0) {
-                postListEl.innerHTML = `
-                    <div class="empty-state">
-                        <i class="fa-regular fa-folder-open" style="font-size: 2.5rem; margin-bottom: 10px; color: var(--primary-color);"></i>
-                        <p>Chưa có bài viết nào được đăng tải từ Admin.</p>
-                    </div>
-                `;
-                return;
-            }
+    const balanceEl = document.getElementById('balance');
+    const messageEl = document.getElementById('message');
+    const spinBtn = document.getElementById('spinBtn');
+    const reels = [
+      document.getElementById('reel1'),
+      document.getElementById('reel2'),
+      document.getElementById('reel3')
+    ];
 
-            posts.forEach(post => {
-                const card = document.createElement('div');
-                card.className = 'post-card';
-                card.onclick = () => openDetailModal(post.id);
-                
-                const commentCount = post.comments ? post.comments.length : 0;
-                const likesCount = post.likes || 0;
+    function updateBalanceUI() {
+      balanceEl.innerText = balance;
+      localStorage.setItem('slot_balance', balance);
+    }
 
-                card.innerHTML = `
-                    <div class="post-meta">
-                        <div class="author-avatar"><i class="fa-solid fa-user"></i></div>
-                        <div class="author-info">
-                            <h4>${post.author}</h4>
-                            <span class="post-time">${post.time}</span>
-                        </div>
-                    </div>
-                    <h2 class="post-title">${post.title}</h2>
-                    <p class="post-snippet">${post.snippet}</p>
-                    <div class="post-tags">
-                        <span class="tag">${post.category}</span>
-                    </div>
-                    <div class="post-stats">
-                        <span><i class="fa-solid fa-heart" style="color: ${post.likedByMe ? '#ef4444' : 'inherit'}"></i> ${likesCount} thích</span>
-                        <span><i class="fa-regular fa-comment"></i> ${commentCount} bình luận</span>
-                    </div>
-                `;
-                postListEl.appendChild(card);
-            });
-        }
+    updateBalanceUI();
 
-        function openDetailModal(postId) {
-            currentOpenPostId = postId;
-            const post = posts.find(p => p.id === postId);
-            if (!post) return;
+    function getRandomSymbol() {
+      return symbols[Math.floor(Math.random() * symbols.length)];
+    }
 
-            document.getElementById('detailTitle').innerText = post.title;
-            document.getElementById('detailAuthor').innerText = post.author;
-            document.getElementById('detailTime').innerText = post.time;
-            document.getElementById('detailContent').innerText = post.content;
+    function spin() {
+      if (isSpinning) return;
+      if (balance < BET_AMOUNT) {
+        messageEl.style.color = '#e74c3c';
+        messageEl.innerText = 'Bạn đã hết tiền! Nhấn Nạp Lại.';
+        return;
+      }
 
-            updateLikeButtonUI(post);
-            renderComments(post);
+      // Trừ tiền cược
+      balance -= BET_AMOUNT;
+      updateBalanceUI();
+      
+      isSpinning = true;
+      spinBtn.disabled = true;
+      messageEl.innerText = 'Đang quay...';
+      messageEl.style.color = '#f1c40f';
 
-            detailModal.classList.add('active');
-        }
+      // Thêm hiệu ứng quay
+      reels.forEach(reel => reel.classList.add('spinning'));
 
-        function closeDetailModal() {
-            detailModal.classList.remove('active');
-            currentOpenPostId = null;
-        }
-
-        // Thả tim bài viết
-        function toggleLikeCurrentPost() {
-            const post = posts.find(p => p.id === currentOpenPostId);
-            if (!post) return;
-
-            if (!post.likes) post.likes = 0;
-            if (post.likedByMe) {
-                post.likes -= 1;
-                post.likedByMe = false;
-            } else {
-                post.likes += 1;
-                post.likedByMe = true;
-            }
-
-            localStorage.setItem('devtips_posts', JSON.stringify(posts));
-            updateLikeButtonUI(post);
-            renderHomePage();
-        }
-
-        function updateLikeButtonUI(post) {
-            const btnLike = document.getElementById('btnLikePost');
-            const likeCountText = document.getElementById('likeCountText');
-            likeCountText.innerText = post.likes || 0;
-            if (post.likedByMe) {
-                btnLike.classList.add('liked');
-            } else {
-                btnLike.classList.remove('liked');
-            }
-        }
-
-        // Gửi bình luận ẩn danh
-        document.getElementById('commentForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const authorInput = document.getElementById('commentAuthorInput').value.trim();
-            const contentInput = document.getElementById('commentContentInput').value.trim();
-
-            const authorName = authorInput === '' ? 'Ẩn danh' : authorInput;
-
-            const post = posts.find(p => p.id === currentOpenPostId);
-            if (!post) return;
-
-            if (!post.comments) post.comments = [];
-            post.comments.push({
-                author: authorName,
-                text: contentInput,
-                time: 'Vừa xong'
-            });
-
-            localStorage.setItem('devtips_posts', JSON.stringify(posts));
-            renderComments(post);
-            renderHomePage();
-            
-            document.getElementById('commentContentInput').value = '';
-            document.getElementById('commentAuthorInput').value = '';
+      let intervalCount = 0;
+      const spinInterval = setInterval(() => {
+        reels.forEach(reel => {
+          reel.innerText = getRandomSymbol();
         });
+        intervalCount++;
 
-        function renderComments(post) {
-            const commentListEl = document.getElementById('commentList');
-            commentListEl.innerHTML = '';
-
-            if (!post.comments || post.comments.length === 0) {
-                commentListEl.innerHTML = '<p style="font-size: 0.85rem; color: var(--text-muted); text-align: center;">Chưa có bình luận nào. Hãy là người đầu tiên thảo luận!</p>';
-                return;
-            }
-
-            post.comments.slice().reverse().forEach(c => {
-                commentListEl.innerHTML += `
-                    <div class="comment-item">
-                        <div class="comment-author">${c.author} <span style="font-weight: 400; color: var(--text-muted); font-size: 0.75rem;">• ${c.time}</span></div>
-                        <div class="comment-text">${c.text}</div>
-                    </div>
-                `;
-            });
+        if (intervalCount > 15) {
+          clearInterval(spinInterval);
+          stopSpin();
         }
+      }, 80);
+    }
 
-        window.addEventListener('click', (e) => {
-            if (e.target.classList.contains('modal-overlay')) {
-                closeDetailModal();
-            }
-        });
+    function stopSpin() {
+      const finalSymbols = [getRandomSymbol(), getRandomSymbol(), getRandomSymbol()];
 
-        // Tìm kiếm nhanh bài viết
-        document.getElementById('searchInput').addEventListener('input', function(e) {
-            const keyword = e.target.value.toLowerCase();
-            const cards = document.querySelectorAll('.post-card');
-            cards.forEach(card => {
-                const title = card.querySelector('.post-title').innerText.toLowerCase();
-                const snippet = card.querySelector('.post-snippet').innerText.toLowerCase();
-                if(title.includes(keyword) || snippet.includes(keyword)) {
-                    card.style.display = 'block';
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-        });
+      reels.forEach((reel, index) => {
+        reel.classList.remove('spinning');
+        reel.innerText = finalSymbols[index];
+      });
 
-        renderHomePage();
-    </script>
+      checkWin(finalSymbols);
+      isSpinning = false;
+      spinBtn.disabled = false;
+    }
+
+    function checkWin(results) {
+      const [s1, s2, s3] = results;
+
+      if (s1 === s2 && s2 === s3) {
+        // Nổ hũ - 3 biểu tượng giống nhau
+        let winAmount = BET_AMOUNT * 10;
+        if (s1 === '🤠') winAmount = BET_AMOUNT * 20; // JackPot Cowboy
+
+        balance += winAmount;
+        messageEl.style.color = '#2ecc71';
+        messageEl.innerText = `🎉 THẮNG LỚN! +${winAmount} Xu!`;
+      } else if (s1 === s2 || s2 === s3 || s1 === s3) {
+        // Trúng 2 biểu tượng giống nhau
+        const winAmount = BET_AMOUNT * 2;
+        balance += winAmount;
+        messageEl.style.color = '#2ecc71';
+        messageEl.innerText = `👍 Trúng Nhỏ! +${winAmount} Xu!`;
+      } else {
+        messageEl.style.color = '#bdc3c7';
+        messageEl.innerText = 'Chúc bạn may mắn lần sau!';
+      }
+
+      updateBalanceUI();
+    }
+
+    function resetGame() {
+      if (isSpinning) return;
+      balance = 1000;
+      updateBalanceUI();
+      messageEl.style.color = '#2ecc71';
+      messageEl.innerText = 'Đã khôi phục 1000 Xu!';
+    }
+  </script>
 </body>
 </html>
