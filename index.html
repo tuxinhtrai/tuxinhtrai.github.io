@@ -3,18 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Wild West Slot Machine Demo</title>
+  <title>Wild Bounty Showdown - Demo Clone</title>
   <style>
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
+      user-select: none;
     }
 
     body {
-      background: #2b1704;
-      background: radial-gradient(circle, #4a2810 0%, #150a02 100%);
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #0d0603;
+      background-image: radial-gradient(circle, #3a1e0b 0%, #0d0603 100%);
+      font-family: Arial, sans-serif;
       color: #fff;
       display: flex;
       justify-content: center;
@@ -22,280 +23,354 @@
       min-height: 100vh;
     }
 
-    .game-container {
-      background: #3a1e0b;
-      border: 4px solid #d4af37;
-      border-radius: 16px;
-      padding: 24px;
-      width: 360px;
-      text-align: center;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 15px rgba(212, 175, 55, 0.3);
+    /* Khung giả lập màn hình dọc giống di động */
+    .mobile-screen {
+      width: 100%;
+      max-width: 380px;
+      height: 720px;
+      background: #1c0e06;
+      border: 3px solid #b8860b;
+      border-radius: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 0 25px rgba(212, 175, 55, 0.2);
+      overflow: hidden;
+      position: relative;
     }
 
-    h1 {
-      color: #f39c12;
-      font-size: 24px;
-      margin-bottom: 8px;
+    /* Header & Banner */
+    .header {
+      background: linear-gradient(180deg, #5a2e0e, #2d1707);
+      padding: 12px;
+      text-align: center;
+      border-bottom: 2px solid #b8860b;
+    }
+
+    .game-title {
+      font-size: 18px;
+      font-weight: bold;
+      color: #ffd700;
       text-transform: uppercase;
-      letter-spacing: 2px;
+      letter-spacing: 1px;
       text-shadow: 2px 2px 4px #000;
     }
 
-    .subtitle {
-      font-size: 12px;
-      color: #bdc3c7;
-      margin-bottom: 20px;
-    }
-
-    .dashboard {
-      display: flex;
-      justify-content: space-between;
-      background: rgba(0, 0, 0, 0.4);
-      padding: 10px 15px;
-      border-radius: 8px;
-      margin-bottom: 20px;
-      border: 1px solid #5c3a21;
-    }
-
-    .stat-box {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .stat-label {
-      font-size: 11px;
-      color: #aaa;
-      text-transform: uppercase;
-    }
-
-    .stat-value {
-      font-size: 18px;
-      font-weight: bold;
-      color: #f1c40f;
-    }
-
-    .reels-wrapper {
-      display: flex;
-      justify-content: space-between;
-      background: #111;
-      padding: 12px;
+    .multiplier-bar {
+      background: rgba(0, 0, 0, 0.6);
+      margin-top: 6px;
+      padding: 4px 10px;
       border-radius: 12px;
-      border: 3px solid #8e5a2b;
-      margin-bottom: 20px;
-      position: relative;
-      overflow: hidden;
+      font-size: 12px;
+      color: #f39c12;
+      border: 1px solid #795548;
     }
 
-    .reel {
-      width: 30%;
-      height: 90px;
-      background: #fff;
-      border-radius: 8px;
+    /* Slot Machine Grid */
+    .slot-container {
+      flex: 1;
       display: flex;
       justify-content: center;
       align-items: center;
-      font-size: 48px;
-      box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
-      user-select: none;
-      transition: transform 0.1s ease-in-out;
+      padding: 10px;
+      background: rgba(0,0,0,0.3);
     }
 
-    .reel.spinning {
-      filter: blur(2px);
+    .reels-board {
+      display: flex;
+      gap: 6px;
+      background: #120904;
+      padding: 10px;
+      border-radius: 12px;
+      border: 2px solid #8b5a2b;
+      box-shadow: inset 0 0 10px #000;
     }
 
-    .message {
-      height: 24px;
+    .reel {
+      width: 58px;
+      height: 240px;
+      background: #2a160a;
+      border-radius: 6px;
+      overflow: hidden;
+      border: 1px solid #4a2812;
+      position: relative;
+    }
+
+    .symbol-container {
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      top: 0;
+      width: 100%;
+      transition: transform 0.1s linear;
+    }
+
+    .symbol {
+      height: 60px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 28px;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+
+    /* Overlay kết quả & Thông báo */
+    .status-msg {
+      text-align: center;
+      font-size: 13px;
+      font-weight: bold;
+      color: #ffd700;
+      height: 20px;
+      margin-bottom: 4px;
+    }
+
+    /* Thanh Thống Kê Số Dư */
+    .dash-bar {
+      display: flex;
+      justify-content: space-around;
+      background: #0f0703;
+      padding: 8px 0;
+      border-top: 1px solid #5c3a21;
+      border-bottom: 1px solid #5c3a21;
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-label {
+      font-size: 10px;
+      color: #a08060;
+    }
+
+    .stat-val {
       font-size: 14px;
       font-weight: bold;
-      margin-bottom: 15px;
-      color: #2ecc71;
+      color: #fff;
     }
 
-    .controls {
+    /* Bảng Điều Khiển Giống PG Soft */
+    .footer-controls {
+      background: #170b04;
+      padding: 15px 20px;
       display: flex;
-      gap: 10px;
+      justify-content: space-between;
+      align-items: center;
     }
 
-    button {
-      flex: 1;
-      padding: 12px 0;
+    .btn-circle {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #3a1e0b;
+      border: 1px solid #b8860b;
+      color: #ffd700;
       font-size: 16px;
-      font-weight: bold;
-      border: none;
-      border-radius: 8px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       cursor: pointer;
-      text-transform: uppercase;
-      transition: all 0.2s ease;
     }
 
-    .btn-spin {
-      background: linear-gradient(180deg, #f39c12 0%, #d35400 100%);
-      color: #fff;
-      box-shadow: 0 4px 0 #962d00;
+    .btn-circle:active {
+      transform: scale(0.92);
     }
 
-    .btn-spin:active {
-      transform: translateY(4px);
-      box-shadow: 0 0 0 #962d00;
+    .spin-btn {
+      width: 65px;
+      height: 65px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #ffe066 0%, #d4af37 50%, #8b5a2b 100%);
+      border: 3px solid #fff;
+      box-shadow: 0 0 12px rgba(212, 175, 55, 0.6);
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 26px;
+      color: #3a1e0b;
     }
 
-    .btn-spin:disabled {
-      background: #7f8c8d;
-      box-shadow: none;
+    .spin-btn:active {
+      transform: scale(0.95);
+    }
+
+    .spin-btn:disabled {
+      filter: grayscale(0.8);
       cursor: not-allowed;
-    }
-
-    .btn-reset {
-      flex: 0.4;
-      background: #7f8c8d;
-      color: #fff;
-      box-shadow: 0 4px 0 #34495e;
-    }
-
-    .btn-reset:active {
-      transform: translateY(4px);
-      box-shadow: 0 0 0 #34495e;
     }
   </style>
 </head>
 <body>
 
-  <div class="game-container">
-    <h1>WILD WEST SLOT</h1>
-    <div class="subtitle">Demo Game Nổ Hũ HTML5</div>
+  <div class="mobile-screen">
+    <!-- Header -->
+    <div class="header">
+      <div class="game-title">WILD BOUNTY</div>
+      <div class="multiplier-bar">HỆ SỐ THẮNG: <span id="multiplier">X1</span></div>
+    </div>
 
-    <div class="dashboard">
-      <div class="stat-box">
-        <span class="stat-label">Số Dư</span>
-        <span class="stat-value" id="balance">1000</span>
-      </div>
-      <div class="stat-box">
-        <span class="stat-label">Tiền Cược</span>
-        <span class="stat-value" id="bet">50</span>
+    <!-- Khung Slot Machine -->
+    <div class="slot-container">
+      <div class="reels-board">
+        <div class="reel"><div class="symbol-container" id="reel0"></div></div>
+        <div class="reel"><div class="symbol-container" id="reel1"></div></div>
+        <div class="reel"><div class="symbol-container" id="reel2"></div></div>
+        <div class="reel"><div class="symbol-container" id="reel3"></div></div>
+        <div class="reel"><div class="symbol-container" id="reel4"></div></div>
       </div>
     </div>
 
-    <div class="reels-wrapper">
-      <div class="reel" id="reel1">🤠</div>
-      <div class="reel" id="reel2">🤠</div>
-      <div class="reel" id="reel3">🤠</div>
+    <!-- Thông báo & Dashboard -->
+    <div>
+      <div class="status-msg" id="statusMsg">Nhấn Nút Quay Để Bắt Đầu</div>
+      <div class="dash-bar">
+        <div class="stat-item">
+          <div class="stat-label">VÀNG</div>
+          <div class="stat-val" id="balance">1,000.00</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">CƯỢC</div>
+          <div class="stat-val" id="bet">10.00</div>
+        </div>
+      </div>
     </div>
 
-    <div class="message" id="message">Nhấn QUAY để bắt đầu!</div>
-
-    <div class="controls">
-      <button class="btn-spin" id="spinBtn" onclick="spin()">QUAY 🎰</button>
-      <button class="btn-reset" onclick="resetGame()">Nạp Lại</button>
+    <!-- Thanh Nút Bấm Chơi -->
+    <div class="footer-controls">
+      <button class="btn-circle" onclick="adjustBet(-5)">-</button>
+      <button class="btn-circle" onclick="adjustBet(5)">+</button>
+      <button class="spin-btn" id="spinBtn" onclick="startSpin()">↻</button>
+      <button class="btn-circle">⚡</button>
+      <button class="btn-circle" onclick="resetMoney()">⚙</button>
     </div>
   </div>
 
   <script>
-    const symbols = ['🤠', '⭐️', '🌵', '💰', '🪙'];
-    const BET_AMOUNT = 50;
+    // Danh sách Biểu Tượng theo phong cách PG Soft Showdown
+    const symbols = ['🤠', '🔫', '🤠', '💰', '⭐', '🅰️', '🇰', '🇶', '🇯'];
+    const BET_DEFAULT = 10;
     
-    let balance = parseInt(localStorage.getItem('slot_balance')) || 1000;
+    let balance = parseFloat(localStorage.getItem('pg_demo_bal')) || 1000;
+    let currentBet = 10;
     let isSpinning = false;
 
-    const balanceEl = document.getElementById('balance');
-    const messageEl = document.getElementById('message');
-    const spinBtn = document.getElementById('spinBtn');
-    const reels = [
+    const reelElements = [
+      document.getElementById('reel0'),
       document.getElementById('reel1'),
       document.getElementById('reel2'),
-      document.getElementById('reel3')
+      document.getElementById('reel3'),
+      document.getElementById('reel4')
     ];
 
-    function updateBalanceUI() {
-      balanceEl.innerText = balance;
-      localStorage.setItem('slot_balance', balance);
+    // Khởi tạo các biểu tượng ban đầu
+    function initReels() {
+      reelElements.forEach(container => {
+        container.innerHTML = '';
+        for (let i = 0; i < 6; i++) {
+          const sym = document.createElement('div');
+          sym.className = 'symbol';
+          sym.innerText = getRandomSymbol();
+          container.appendChild(sym);
+        }
+      });
+      updateUI();
     }
-
-    updateBalanceUI();
 
     function getRandomSymbol() {
       return symbols[Math.floor(Math.random() * symbols.length)];
     }
 
-    function spin() {
+    function updateUI() {
+      document.getElementById('balance').innerText = balance.toFixed(2);
+      document.getElementById('bet').innerText = currentBet.toFixed(2);
+      localStorage.setItem('pg_demo_bal', balance);
+    }
+
+    function adjustBet(val) {
       if (isSpinning) return;
-      if (balance < BET_AMOUNT) {
-        messageEl.style.color = '#e74c3c';
-        messageEl.innerText = 'Bạn đã hết tiền! Nhấn Nạp Lại.';
+      if (currentBet + val >= 5 && currentBet + val <= balance) {
+        currentBet += val;
+        updateUI();
+      }
+    }
+
+    function resetMoney() {
+      if (isSpinning) return;
+      balance = 1000;
+      updateUI();
+      document.getElementById('statusMsg').innerText = "Đã Khôi Phục 1,000 Vàng";
+    }
+
+    function startSpin() {
+      if (isSpinning) return;
+      if (balance < currentBet) {
+        document.getElementById('statusMsg').innerText = "Số dư không đủ!";
         return;
       }
 
-      // Trừ tiền cược
-      balance -= BET_AMOUNT;
-      updateBalanceUI();
-      
+      balance -= currentBet;
+      updateUI();
       isSpinning = true;
-      spinBtn.disabled = true;
-      messageEl.innerText = 'Đang quay...';
-      messageEl.style.color = '#f1c40f';
+      document.getElementById('spinBtn').disabled = true;
+      document.getElementById('statusMsg').innerText = "Đang Quay...";
+      document.getElementById('multiplier').innerText = "X1";
 
-      // Thêm hiệu ứng quay
-      reels.forEach(reel => reel.classList.add('spinning'));
+      let completed = 0;
 
-      let intervalCount = 0;
-      const spinInterval = setInterval(() => {
-        reels.forEach(reel => {
-          reel.innerText = getRandomSymbol();
-        });
-        intervalCount++;
+      reelElements.forEach((container, index) => {
+        let count = 0;
+        const speed = 50;
+        const maxRounds = 15 + index * 5; // Hiệu ứng dừng từng cột từ trái sang phải
 
-        if (intervalCount > 15) {
-          clearInterval(spinInterval);
-          stopSpin();
-        }
-      }, 80);
-    }
+        const timer = setInterval(() => {
+          const firstChild = container.firstElementChild;
+          container.removeChild(firstChild);
+          
+          const newSym = document.createElement('div');
+          newSym.className = 'symbol';
+          newSym.innerText = getRandomSymbol();
+          container.appendChild(newSym);
 
-    function stopSpin() {
-      const finalSymbols = [getRandomSymbol(), getRandomSymbol(), getRandomSymbol()];
-
-      reels.forEach((reel, index) => {
-        reel.classList.remove('spinning');
-        reel.innerText = finalSymbols[index];
+          count++;
+          if (count >= maxRounds) {
+            clearInterval(timer);
+            completed++;
+            if (completed === reelElements.length) {
+              endSpin();
+            }
+          }
+        }, speed);
       });
-
-      checkWin(finalSymbols);
-      isSpinning = false;
-      spinBtn.disabled = false;
     }
 
-    function checkWin(results) {
-      const [s1, s2, s3] = results;
+    function endSpin() {
+      isSpinning = false;
+      document.getElementById('spinBtn').disabled = false;
 
-      if (s1 === s2 && s2 === s3) {
-        // Nổ hũ - 3 biểu tượng giống nhau
-        let winAmount = BET_AMOUNT * 10;
-        if (s1 === '🤠') winAmount = BET_AMOUNT * 20; // JackPot Cowboy
+      // Lấy danh sách kết quả hiển thị ở hàng giữa (dòng thứ 2)
+      const results = reelElements.map(c => c.children[1].innerText);
+      
+      // Tính thưởng cơ bản
+      const counts = {};
+      results.forEach(x => { counts[x] = (counts[x] || 0) + 1; });
 
+      let maxCombo = Math.max(...Object.values(counts));
+
+      if (maxCombo >= 3) {
+        const winAmount = currentBet * maxCombo * 2;
         balance += winAmount;
-        messageEl.style.color = '#2ecc71';
-        messageEl.innerText = `🎉 THẮNG LỚN! +${winAmount} Xu!`;
-      } else if (s1 === s2 || s2 === s3 || s1 === s3) {
-        // Trúng 2 biểu tượng giống nhau
-        const winAmount = BET_AMOUNT * 2;
-        balance += winAmount;
-        messageEl.style.color = '#2ecc71';
-        messageEl.innerText = `👍 Trúng Nhỏ! +${winAmount} Xu!`;
+        document.getElementById('multiplier').innerText = `X${maxCombo}`;
+        document.getElementById('statusMsg').innerText = `THẮNG LỚN: +${winAmount.toFixed(2)} Vàng!`;
       } else {
-        messageEl.style.color = '#bdc3c7';
-        messageEl.innerText = 'Chúc bạn may mắn lần sau!';
+        document.getElementById('statusMsg').innerText = "Chúc Bạn May Mắn Lần Sau!";
       }
 
-      updateBalanceUI();
+      updateUI();
     }
 
-    function resetGame() {
-      if (isSpinning) return;
-      balance = 1000;
-      updateBalanceUI();
-      messageEl.style.color = '#2ecc71';
-      messageEl.innerText = 'Đã khôi phục 1000 Xu!';
-    }
+    // Chạy khởi tạo
+    initReels();
   </script>
 </body>
 </html>
