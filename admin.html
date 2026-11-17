@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard — Nguyễn Anh Tú (@wanhtu)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b1120;
+      --card: rgba(30, 41, 59, 0.72);
+      --border: rgba(255, 255, 255, 0.12);
+      --accent: #f59e0b;
+      --accent-2: #fbbf24;
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      background: radial-gradient(circle at top right, #1e293b, #090d16 70%);
+      color: var(--text); min-height: 100vh; padding: 24px 16px;
+    }
+    .container { max-width: 980px; margin: 0 auto; }
+
+    .glass {
+      background: var(--card); backdrop-filter: blur(16px);
+      border: 1px solid var(--border); border-radius: 24px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+    }
+
+    /* LOGIN SCREEN */
+    .login-wrap { max-width: 420px; margin: 80px auto; padding: 34px; text-align: center; }
+    .login-wrap h1 { font-size: 1.6rem; margin-bottom: 8px; }
+    .login-wrap p { color: var(--muted); font-size: .9rem; margin-bottom: 22px; }
+
+    /* DASHBOARD */
+    .topbar {
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;
+      padding: 18px 24px; margin-bottom: 20px;
+    }
+    .topbar h2 { font-size: 1.25rem; display: flex; align-items: center; gap: 10px; }
+    .top-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+    .grid-layout { display: grid; grid-template-columns: 1.25fr 0.75fr; gap: 20px; align-items: start; }
+    .panel { padding: 24px; }
+    .panel h3 { font-size: 1.05rem; margin-bottom: 16px; color: var(--accent-2); display: flex; align-items: center; gap: 8px; }
+
+    .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+    label { font-size: .82rem; font-weight: 700; color: var(--muted); }
+    input[type="text"], input[type="password"], select, textarea {
+      width: 100%; padding: 11px 14px; border-radius: 14px;
+      border: 1px solid var(--border); background: rgba(15, 23, 42, 0.65);
+      color: #fff; font: inherit; font-size: .9rem; outline: none; transition: .2s;
+    }
+    input:focus, select:focus, textarea:focus { border-color: var(--accent); }
+    textarea { font-family: 'JetBrains Mono', monospace; font-size: .84rem; min-height: 200px; resize: vertical; line-height: 1.6; }
+
+    .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+    .toolbar { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+    .tag-btn {
+      padding: 5px 10px; border-radius: 8px; border: 1px solid var(--border);
+      background: rgba(255,255,255,0.06); color: var(--text); font-size: .76rem; font-weight: 700; cursor: pointer;
+    }
+    .tag-btn:hover { background: var(--accent); color: #000; }
+
+    .btn {
+      padding: 11px 18px; border-radius: 14px; border: 1px solid var(--border);
+      background: rgba(255,255,255,0.08); color: #fff; font: inherit; font-size: .88rem;
+      font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: .2s; text-decoration: none;
+    }
+    .btn:hover { transform: translateY(-2px); background: rgba(255,255,255,0.14); }
+    .btn.primary { background: linear-gradient(135deg, #f59e0b, #fbbf24); color: #0f172a; border: none; font-weight: 800; }
+    .btn.success { background: #10b981; color: #fff; border: none; }
+    .btn.danger { background: rgba(239, 68, 68, 0.2); color: #fca5a5; border-color: rgba(239, 68, 68, 0.4); }
+
+    .preview-box {
+      margin-top: 16px; padding: 18px; border-radius: 16px;
+      border: 1px dashed var(--accent); background: rgba(15, 23, 42, 0.5);
+    }
+    .preview-content { line-height: 1.7; font-size: .92rem; margin-top: 8px; }
+    .preview-content a { color: var(--accent-2); text-decoration: underline; }
+    .preview-content pre { background: #000; padding: 12px; border-radius: 10px; overflow-x: auto; margin: 8px 0; }
+    .preview-content img { max-width: 100%; border-radius: 12px; margin: 8px 0; }
+
+    .post-item {
+      padding: 12px 14px; border-radius: 14px; border: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.45); margin-bottom: 10px;
+      display: flex; justify-content: space-between; align-items: center; gap: 10px;
+    }
+    .post-item-title { font-weight: 700; font-size: .88rem; margin-bottom: 3px; }
+    .post-item-meta { font-size: .74rem; color: var(--muted); }
+    .item-btns { display: flex; gap: 6px; flex-shrink: 0; }
+    .sm-btn { padding: 6px 10px; border-radius: 8px; border: none; font-size: .75rem; font-weight: 700; cursor: pointer; }
+
+    .gh-sync-box {
+      margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--border);
+    }
+    .status-msg { font-size: .82rem; margin-top: 10px; font-weight: 700; color: #34d399; }
+
+    @media (max-width: 820px) { .grid-layout, .row-2 { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- MÀN HÌNH ĐĂNG NHẬP -->
+    <div id="loginScreen" class="login-wrap glass">
+      <div style="font-size:2.6rem; margin-bottom:10px;">🍊</div>
+      <h1>Admin Dashboard</h1>
+      <p>Khu vực quản trị bài viết của Nguyễn Anh Tú (@wanhtu)</p>
+      <div class="form-group" style="text-align:left;">
+        <label>Mật khẩu quản trị (Mặc định: wanhtu2026)</label>
+        <input type="password" id="passInput" placeholder="Nhập mật khẩu..." onkeydown="if(event.key==='Enter') loginAdmin()" />
+      </div>
+      <button class="btn primary" style="width:100%; justify-content:center;" onclick="loginAdmin()">🔐 Đăng nhập Dashboard</button>
+    </div>
+
+    <!-- GIAO DIỆN QUẢN TRỊ CHÍNH -->
+    <div id="dashScreen" style="display:none;">
+      <div class="topbar glass">
+        <h2>🍊 Admin Dashboard — Nguyễn Anh Tú</h2>
+        <div class="top-actions">
+          <a href="index.html" target="_blank" class="btn">🌐 Xem Trang Chủ</a>
+          <button class="btn" onclick="downloadPostsJson()">⬇️ Tải posts.json</button>
+          <button class="btn danger" onclick="logoutAdmin()">Thoát</button>
+        </div>
+      </div>
+
+      <div class="grid-layout">
+        <!-- CỘT TRÁI: TRÌNH SOẠN THẢO HTML -->
+        <div class="panel glass">
+          <h3 id="editorHeading">✍️ Đăng bài viết mới (Hỗ trợ mã HTML)</h3>
+          <input type="hidden" id="editId" value="" />
+
+          <div class="row-2">
+            <div class="form-group">
+              <label>Tiêu đề bài viết *</label>
+              <input type="text" id="postTitle" placeholder="Nhập tiêu đề bài viết..." />
+            </div>
+            <div class="form-group">
+              <label>Chuyên mục</label>
+              <select id="postCat">
+                <option value="Tech Tips">⚡ Tech Tips</option>
+                <option value="Bot & Code">🤖 Bot & Code</option>
+                <option value="Marketing">📈 Marketing</option>
+                <option value="Thông báo">📢 Thông báo</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label style="display:flex; justify-content:space-between; align-items:center;">
+              <span>Mã HTML / Nội dung bài viết *</span>
+              <span style="color:var(--text); cursor:pointer;">
+                <input type="checkbox" id="postPin" /> 📌 Ghim lên đầu diễn đàn
+              </span>
+            </label>
+
+            <div class="toolbar">
+              <button type="button" class="tag-btn" onclick="addHtml('<p>', '</p>')">&lt;p&gt; Đoạn</button>
+              <button type="button" class="tag-btn" onclick="addHtml('<b>', '</b>')">&lt;b&gt; Đậm</button>
+              <button type="button" class="tag-btn" onclick="addHtml('<h3>', '</h3>')">&lt;h3&gt; Tiêu đề</button>
+              <button type="button" class="tag-btn" onclick="addHtml('<pre><code>', '</code></pre>')">Khối Code</button>
+              <button type="button" class="tag-btn" onclick="addHtml('<a href=&quot;https://t.me/wanhtu&quot; target=&quot;_blank&quot;>', '</a>')">Link</button>
+              <button type="button" class="tag-btn" onclick="addHtml('<img src=&quot;URL_ANH&quot; alt=&quot;image&quot; />', '')">Ảnh</button>
+            </div>
+
+            <textarea id="postHtml" oninput="updateLivePreview()" placeholder="Dán hoặc viết mã HTML của bạn vào đây...&#10;Ví dụ: <p>Chia sẻ tool mới cực xịn cho anh em!</p>"></textarea>
+          </div>
+
+          <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <button class="btn primary" id="submitBtn" onclick="savePost()">🚀 Đăng bài ngay</button>
+            <button class="btn" onclick="resetEditor()">🔄 Làm mới</button>
+          </div>
+
+          <div class="preview-box">
+            <div style="font-size:.75rem; font-weight:800; color:var(--accent); letter-spacing:.06em;">👁️ LIVE PREVIEW (XEM TRƯỚC TRỰC TIẾP):</div>
+            <div id="livePreview" class="preview-content"><i style="color:var(--muted);">Nội dung HTML sẽ hiển thị trực tiếp tại đây khi bạn gõ...</i></div>
+          </div>
+        </div>
+
+        <!-- CỘT PHẢI: DANH SÁCH BÀI & ĐỒNG BỘ GITHUB -->
+        <div>
+          <div class="panel glass" style="margin-bottom:20px;">
+            <h3>📚 Bài viết đã đăng (<span id="postCount">0</span>)</h3>
+            <div id="postsList"></div>
+          </div>
+
+          <div class="panel glass">
+            <h3>☁️ Đồng bộ tự động lên GitHub Pages</h3>
+            <p style="font-size:.8rem; color:var(--muted); line-height:1.5; margin-bottom:12px;">
+              Nếu bạn host web trên GitHub, nhập thông tin bên dưới để mỗi lần đăng bài sẽ tự động lưu vào file <code>posts.json</code> trên repo.
+            </p>
+            <div class="form-group">
+              <label>GitHub Username</label>
+              <input type="text" id="ghUser" placeholder="VD: tupcxdpro-blip" />
+            </div>
+            <div class="form-group">
+              <label>Tên Repository</label>
+              <input type="text" id="ghRepo" placeholder="VD: tupcxdpro-blip.github.io" />
+            </div>
+            <div class="form-group">
+              <label>GitHub Personal Access Token (quyền repo)</label>
+              <input type="password" id="ghToken" placeholder="ghp_xxxxxxxxxxxx" />
+            </div>
+            <button class="btn success" style="width:100%; justify-content:center;" onclick="syncToGitHub()">☁️ Lưu cấu hình & Đẩy lên GitHub</button>
+            <div id="syncStatus" class="status-msg"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const ADMIN_PASSWORD = "wanhtu2026"; // Đổi mật khẩu của bạn tại đây
+    let posts = JSON.parse(localStorage.getItem('wanhtu_forum_posts') || '[]');
+
+    // Kiểm tra trạng thái đăng nhập
+    if (sessionStorage.getItem('wanhtu_admin_logged') === 'true') {
+      showDashboard();
+    }
+
+    function loginAdmin() {
+      const val = document.getElementById('passInput').value.trim();
+      if (val === ADMIN_PASSWORD) {
+        sessionStorage.setItem('wanhtu_admin_logged', 'true');
+        showDashboard();
+      } else {
+        alert('❌ Sai mật khẩu Admin!');
+      }
+    }
+
+    function logoutAdmin() {
+      sessionStorage.removeItem('wanhtu_admin_logged');
+      location.reload();
+    }
+
+    async function showDashboard() {
+      document.getElementById('loginScreen').style.display = 'none';
+      document.getElementById('dashScreen').style.display = 'block';
+
+      // Tải cấu hình GitHub đã lưu (nếu có)
+      document.getElementById('ghUser').value = localStorage.getItem('gh_user') || '';
+      document.getElementById('ghRepo').value = localStorage.getItem('gh_repo') || '';
+      document.getElementById('ghToken').value = localStorage.getItem('gh_token') || '';
+
+      // Thử đọc posts.json nếu có
+      try {
+        const res = await fetch('posts.json?t=' + Date.now());
+        if (res.ok) {
+          const remote = await res.json();
+          if (Array.isArray(remote) && remote.length > 0 && posts.length === 0) {
+            posts = remote;
+            localStorage.setItem('wanhtu_forum_posts', JSON.stringify(posts));
+          }
+        }
+      } catch (e) {}
+
+      renderAdminPosts();
+    }
+
+    function addHtml(open, close) {
+      const ta = document.getElementById('postHtml');
+      const s = ta.selectionStart, e = ta.selectionEnd;
+      const sel = ta.value.substring(s, e);
+      ta.value = ta.value.substring(0, s) + open + sel + close + ta.value.substring(e);
+      ta.focus();
+      updateLivePreview();
+    }
+
+    function updateLivePreview() {
+      const html = document.getElementById('postHtml').value;
+      document.getElementById('livePreview').innerHTML = html || '<i style="color:var(--muted);">Nội dung HTML sẽ hiển thị trực tiếp tại đây...</i>';
+    }
+
+    function savePost() {
+      const title = document.getElementById('postTitle').value.trim();
+      const category = document.getElementById('postCat').value;
+      const html = document.getElementById('postHtml').value.trim();
+      const pinned = document.getElementById('postPin').checked;
+      const editId = document.getElementById('editId').value;
+
+      if (!title || !html) {
+        alert('Vui lòng nhập Tiêu đề và Nội dung HTML!');
+        return;
+      }
+
+      const now = new Date();
+      const dateStr = `${String(now.getDate()).padStart(2,'0')}/${String(now.getMonth()+1).padStart(2,'0')}/${now.getFullYear()} • ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+
+      if (editId) {
+        const idx = posts.findIndex(p => p.id === editId);
+        if (idx !== -1) posts[idx] = { ...posts[idx], title, category, html, pinned };
+      } else {
+        posts.unshift({
+          id: 'post-' + Date.now(),
+          title,
+          category,
+          pinned,
+          date: dateStr,
+          likes: 1,
+          html
+        });
+      }
+
+      localStorage.setItem('wanhtu_forum_posts', JSON.stringify(posts));
+      renderAdminPosts();
+      resetEditor();
+
+      // Tự động đẩy lên GitHub nếu đã điền Token
+      if (document.getElementById('ghToken').value.trim()) {
+        syncToGitHub();
+      } else {
+        alert('✅ Đã lưu bài viết! Hãy bấm "Tải posts.json" hoặc cấu hình GitHub Sync để cập nhật online.');
+      }
+    }
+
+    function renderAdminPosts() {
+      document.getElementById('postCount').textContent = posts.length;
+      const box = document.getElementById('postsList');
+      if (!posts.length) {
+        box.innerHTML = '<div style="color:var(--muted); font-size:.85rem;">Chưa có bài viết nào.</div>';
+        return;
+      }
+      box.innerHTML = posts.map(p => `
+        <div class="post-item">
+          <div style="min-width:0;">
+            <div class="post-item-title">${p.pinned ? '📌 ' : ''}${p.title}</div>
+            <div class="post-item-meta">${p.category} • ${p.date}</div>
+          </div>
+          <div class="item-btns">
+            <button class="sm-btn" style="background:#3b82f6;color:#fff;" onclick="editPost('${p.id}')">Sửa</button>
+            <button class="sm-btn" style="background:#ef4444;color:#fff;" onclick="deletePost('${p.id}')">Xóa</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function editPost(id) {
+      const p = posts.find(x => x.id === id);
+      if (!p) return;
+      document.getElementById('editId').value = p.id;
+      document.getElementById('postTitle').value = p.title;
+      document.getElementById('postCat').value = p.category;
+      document.getElementById('postHtml').value = p.html;
+      document.getElementById('postPin').checked = !!p.pinned;
+      document.getElementById('editorHeading').textContent = '✏️ Đang chỉnh sửa bài viết';
+      document.getElementById('submitBtn').textContent = '💾 Cập nhật bài viết';
+      updateLivePreview();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function deletePost(id) {
+      if (!confirm('Xóa bài viết này?')) return;
+      posts = posts.filter(x => x.id !== id);
+      localStorage.setItem('wanhtu_forum_posts', JSON.stringify(posts));
+      renderAdminPosts();
+      if (document.getElementById('ghToken').value.trim()) syncToGitHub();
+    }
+
+    function resetEditor() {
+      document.getElementById('editId').value = '';
+      document.getElementById('postTitle').value = '';
+      document.getElementById('postHtml').value = '';
+      document.getElementById('postPin').checked = false;
+      document.getElementById('editorHeading').textContent = '✍️ Đăng bài viết mới (Hỗ trợ mã HTML)';
+      document.getElementById('submitBtn').textContent = '🚀 Đăng bài ngay';
+      updateLivePreview();
+    }
+
+    function downloadPostsJson() {
+      const blob = new Blob([JSON.stringify(posts, null, 2)], { type: 'application/json' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'posts.json';
+      a.click();
+    }
+
+    // Đồng bộ trực tiếp file posts.json lên GitHub Repository
+    async function syncToGitHub() {
+      const user = document.getElementById('ghUser').value.trim();
+      const repo = document.getElementById('ghRepo').value.trim();
+      const token = document.getElementById('ghToken').value.trim();
+      const statusEl = document.getElementById('syncStatus');
+
+      if (!user || !repo || !token) {
+        alert('Vui lòng nhập đầy đủ GitHub Username, Repo và Token!');
+        return;
+      }
+
+      localStorage.setItem('gh_user', user);
+      localStorage.setItem('gh_repo', repo);
+      localStorage.setItem('gh_token', token);
+
+      statusEl.style.color = '#fbbf24';
+      statusEl.textContent = '⏳ Đang đẩy posts.json lên GitHub...';
+
+      const apiUrl = `https://api.github.com/repos/${user}/${repo}/contents/posts.json`;
+      try {
+        let sha = null;
+        const getRes = await fetch(apiUrl, { headers: { Authorization: `Bearer ${token}` } });
+        if (getRes.ok) {
+          const fileData = await getRes.json();
+          sha = fileData.sha;
+        }
+
+        const contentBase64 = btoa(unescape(encodeURIComponent(JSON.stringify(posts, null, 2))));
+        const putRes = await fetch(apiUrl, {
+          method: 'PUT',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            message: 'Update forum posts via Admin Dashboard',
+            content: contentBase64,
+            ...(sha ? { sha } : {})
+          })
+        });
+
+        if (putRes.ok) {
+          statusEl.style.color = '#34d399';
+          statusEl.textContent = '✅ Đồng bộ thành công lên GitHub! Trang chủ sẽ tự cập nhật sau ~30 giây.';
+        } else {
+          const err = await putRes.json();
+          statusEl.style.color = '#f87171';
+          statusEl.textContent = '❌ Lỗi GitHub: ' + (err.message || 'Kiểm tra lại Token/Repo');
+        }
+      } catch (e) {
+        statusEl.style.color = '#f87171';
+        statusEl.textContent = '❌ Lỗi kết nối mạng!';
+      }
+    }
+  </script>
+</body>
+</html>
