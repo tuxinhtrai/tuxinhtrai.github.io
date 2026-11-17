@@ -3,22 +3,23 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Nguyễn Anh Tú — Digital Marketer, Automation & Web Builder." />
-  <title>Nguyễn Anh Tú — Capybara Corner 🍊</title>
+  <meta name="description" content="Nguyễn Anh Tú — Digital Marketer, Automation & Tech Forum." />
+  <title>Nguyễn Anh Tú — Capybara Corner & Tech Forum 🍊</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
   <script>
     document.documentElement.classList.add('js');
     try {
-      const savedTheme = localStorage.getItem('anhtu-theme');
-      if (savedTheme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+      if (localStorage.getItem('anhtu-theme') === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
     } catch (e) {}
   </script>
   <style>
     :root {
-      --glass-bg: rgba(255, 255, 255, 0.52);
-      --glass-border: rgba(255, 255, 255, 0.8);
+      --glass-bg: rgba(255, 255, 255, 0.54);
+      --glass-border: rgba(255, 255, 255, 0.82);
       --glass-shadow: 0 12px 40px rgba(31, 38, 135, 0.08), inset 0 1px 2px rgba(255, 255, 255, 0.95);
       --sky: #9ee3ff;
       --sky-2: #dcf5ff;
@@ -30,9 +31,8 @@
       --muted: #786051;
       --line: rgba(95, 64, 47, 0.12);
     }
-
     [data-theme="dark"] {
-      --glass-bg: rgba(22, 32, 50, 0.62);
+      --glass-bg: rgba(22, 32, 50, 0.65);
       --glass-border: rgba(255, 255, 255, 0.14);
       --glass-shadow: 0 14px 44px rgba(0, 0, 0, 0.48), inset 0 1px 1px rgba(255, 255, 255, 0.18);
       --sky: #090e1a;
@@ -48,42 +48,24 @@
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html { scroll-behavior: smooth; }
-
     body {
-      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
       color: var(--text);
       background: linear-gradient(180deg, var(--sky) 0%, var(--sky-2) 42%, #eefad8 74%, var(--mint) 100%);
-      min-height: 100vh;
-      overflow-x: hidden;
-      transition: background .5s ease, color .5s ease;
-      position: relative;
+      min-height: 100vh; overflow-x: hidden; transition: background .5s ease, color .5s ease;
     }
-
     [data-theme="dark"] body {
       background: linear-gradient(180deg, var(--sky) 0%, var(--sky-2) 45%, #0e1829 75%, var(--mint) 100%);
     }
 
-    /* Ambient floating blobs for premium depth */
-    .ambient-bg {
-      position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
-    }
-    .blob {
-      position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.45;
-      animation: floatBlob 16s ease-in-out infinite alternate;
-    }
+    .ambient-bg { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+    .blob { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.45; animation: floatBlob 16s ease-in-out infinite alternate; }
     .blob-1 { width: 380px; height: 380px; background: #ffd28a; top: -80px; left: -60px; }
     .blob-2 { width: 420px; height: 420px; background: #8be9fd; bottom: 10%; right: -100px; animation-delay: -5s; }
     [data-theme="dark"] .blob-1 { background: #1e3a8a; opacity: 0.35; }
     [data-theme="dark"] .blob-2 { background: #065f46; opacity: 0.25; }
+    @keyframes floatBlob { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(40px, 30px) scale(1.1); } }
 
-    @keyframes floatBlob {
-      0% { transform: translate(0, 0) scale(1); }
-      100% { transform: translate(40px, 30px) scale(1.1); }
-    }
-
-    body.loading, body.theme-switching { overflow: hidden; }
-
-    /* ================= LIQUID GLASS + SPOTLIGHT ================= */
     .liquid-glass {
       background: var(--glass-bg);
       backdrop-filter: blur(16px) saturate(185%);
@@ -91,575 +73,240 @@
       border: 1px solid var(--glass-border);
       border-radius: 28px;
       box-shadow: var(--glass-shadow);
-      position: relative;
-      overflow: hidden;
+      position: relative; overflow: hidden;
     }
-
     .liquid-glass::before {
-      content: ""; position: absolute; top: 0; left: 0; right: 0; height: 50%;
-      background: linear-gradient(180deg, rgba(255,255,255,0.42) 0%, rgba(255,255,255,0) 100%);
+      content: ""; position: absolute; top: 0; left: 0; right: 0; height: 45%;
+      background: linear-gradient(180deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 100%);
       pointer-events: none; z-index: 1;
     }
     [data-theme="dark"] .liquid-glass::before {
-      background: linear-gradient(180deg, rgba(255,255,255,0.07) 0%, rgba(255,255,255,0) 100%);
+      background: linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0) 100%);
     }
 
-    /* Interactive mouse spotlight */
-    .liquid-glass::after {
-      content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 1;
-      background: radial-gradient(450px circle at var(--mx, 50%) var(--my, 50%), rgba(255,255,255,0.28), transparent 65%);
-      opacity: 0; transition: opacity 0.3s ease;
-    }
-    [data-theme="dark"] .liquid-glass::after {
-      background: radial-gradient(450px circle at var(--mx, 50%) var(--my, 50%), rgba(255,255,255,0.08), transparent 65%);
-    }
-    .liquid-glass:hover::after { opacity: 1; }
-
-    a { color: inherit; text-decoration: none; -webkit-tap-highlight-color: transparent; }
+    a { color: inherit; text-decoration: none; }
     .container { width: min(1100px, calc(100% - 32px)); margin: 0 auto; position: relative; z-index: 2; }
 
-    /* ================= LOADER ================= */
-    .loader {
-      position: fixed; inset: 0; z-index: 9999; display: grid; place-items: center;
-      background: linear-gradient(180deg, var(--sky) 0%, var(--sky-2) 45%, #effbdc 75%, var(--mint) 100%);
-      transition: opacity .5s ease, visibility .5s ease;
-    }
-    .loader.hide { opacity: 0; visibility: hidden; }
-    .loader-inner { text-align: center; position: relative; z-index: 2; }
-    .loader-capy { width: 120px; height: auto; display: block; margin: 0 auto; animation: capyBob 1.5s ease-in-out infinite; }
-    .loader-text {
-      margin-top: 16px; font-size: .74rem; font-weight: 800; letter-spacing: .22em; text-transform: uppercase;
-      color: var(--brown-dark); display: inline-flex; align-items: center; gap: 4px;
-    }
-    .loader-text i {
-      width: 5px; height: 5px; border-radius: 50%; background: var(--brown-dark);
-      animation: dotPulse 1.2s ease-in-out infinite;
-    }
-    .loader-text i:nth-child(2) { animation-delay: .15s; }
-    .loader-text i:nth-child(3) { animation-delay: .3s; }
-    @keyframes dotPulse { 0%, 100% { opacity: .25; transform: translateY(0); } 50% { opacity: 1; transform: translateY(-3px); } }
-    .loader-bar {
-      width: 190px; height: 8px; margin: 14px auto 0; border-radius: 999px;
-      background: rgba(255,255,255,.45); box-shadow: inset 0 1px 3px rgba(0,0,0,.1); overflow: hidden;
-    }
-    .loader-bar span {
-      display: block; height: 100%; width: 40%; border-radius: inherit;
-      background: linear-gradient(90deg, #eea24f, #f6c06c, #77c88a);
-      animation: loadSlide 1.1s ease-in-out infinite;
-    }
-    @keyframes loadSlide { 0% { transform: translateX(-110%); } 100% { transform: translateX(270%); } }
-
-    /* ================= OVERLAYS ================= */
-    .lang-overlay, .theme-overlay {
-      position: fixed; inset: 0; z-index: 9500;
-      background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      opacity: 0; visibility: hidden; pointer-events: none; transition: opacity .35s ease, visibility .35s ease;
-    }
-    body.lang-switching .lang-overlay, body.theme-switching .theme-overlay { opacity: 1; visibility: visible; pointer-events: auto; }
-    .lang-spinner-wrapper { position: relative; width: 100px; height: 100px; display: grid; place-items: center; }
-    .lang-spinner { position: absolute; inset: 0; width: 100%; height: 100%; animation: spinLoad 1.1s linear infinite; }
-    .lang-capy-logo { font-size: 3rem; animation: jumpCapy 0.45s ease-in-out infinite alternate; }
-    @keyframes jumpCapy { 0% { transform: translateY(0) scale(1); } 100% { transform: translateY(-12px) scale(1.1); } }
-    @keyframes spinLoad { 100% { transform: rotate(360deg); } }
-
-    .theme-sky-icon {
-      position: relative; z-index: 10; font-size: 6.5rem; line-height: 1;
-      filter: drop-shadow(0 0 30px rgba(255, 215, 0, 0.6));
-      animation: spinGlow 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-    }
-    @keyframes spinGlow {
-      0% { transform: scale(0.2) rotate(0deg); opacity: 0; }
-      50% { transform: scale(1.15) rotate(180deg); opacity: 1; }
-      100% { transform: scale(1) rotate(360deg); opacity: 1; }
-    }
-    .theme-runway { position: absolute; bottom: 28%; width: 100%; height: 180px; z-index: 5; pointer-events: none; }
-    .running-capy { position: absolute; bottom: 0; height: auto; filter: drop-shadow(0 15px 10px rgba(0,0,0,0.15)); }
-    .capy-1 { width: 120px; animation: runAcross 1.5s cubic-bezier(0.3, 0, 0.7, 1) 0.1s forwards; }
-    .capy-2 { width: 85px; bottom: 20px; animation: runAcross 1.7s cubic-bezier(0.3, 0, 0.7, 1) 0.2s forwards; }
-    .capy-3 { width: 145px; bottom: -10px; animation: runAcross 1.35s cubic-bezier(0.3, 0, 0.7, 1) 0s forwards; }
-    @keyframes runAcross {
-      0% { transform: translateX(-220px) translateY(0); }
-      50% { transform: translateX(50vw) translateY(-22px); }
-      100% { transform: translateX(110vw) translateY(0); }
-    }
-
-    /* ================= SCROLL PROGRESS & NAV ================= */
-    .progress { position: fixed; top: 0; left: 0; width: 100%; height: 4px; z-index: 60; pointer-events: none; }
-    .progress span {
-      display: block; height: 100%; width: 0; border-radius: 0 999px 999px 0;
-      background: linear-gradient(90deg, #ffb765, #f6c06c, #77c88a, #64d2ff);
-    }
-
+    /* NAV */
     nav { position: sticky; top: 14px; z-index: 30; padding-top: 14px; }
-    .nav-inner {
-      display: flex; justify-content: space-between; align-items: center; gap: 14px;
-      padding: 10px 18px; border-radius: 22px;
-    }
-    .brand {
-      font-weight: 800; font-size: 1.05rem; letter-spacing: -.3px; color: var(--brown-dark);
-      display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; z-index: 2;
-    }
+    .nav-inner { display: flex; justify-content: space-between; align-items: center; padding: 10px 18px; border-radius: 22px; }
+    .brand { font-weight: 800; font-size: 1.05rem; color: var(--brown-dark); display: inline-flex; align-items: center; gap: 6px; z-index: 2; }
     .brand span { color: var(--accent); }
-    .brand em { font-style: normal; display: inline-block; animation: capyWiggle 3.4s ease-in-out infinite; }
-    @keyframes capyWiggle {
-      0%, 88%, 100% { transform: rotate(0); }
-      92% { transform: rotate(-14deg) translateY(-2px); }
-      96% { transform: rotate(12deg) translateY(-1px); }
-    }
-
     .nav-right { display: flex; align-items: center; gap: 10px; z-index: 2; }
     .nav-links { display: flex; gap: 4px; }
-    .nav-links a {
-      padding: 8px 13px; color: var(--muted); border-radius: 12px;
-      font-size: .86rem; font-weight: 700; transition: all .2s ease;
-    }
+    .nav-links a { padding: 8px 12px; color: var(--muted); border-radius: 12px; font-size: .85rem; font-weight: 700; transition: .2s; }
     .nav-links a:hover { background: rgba(255,255,255,0.35); color: var(--brown-dark); }
-    [data-theme="dark"] .nav-links a:hover { background: rgba(255,255,255,0.1); }
-    .nav-links a.active { color: var(--brown-dark); background: rgba(255,255,255,0.65); box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
-    [data-theme="dark"] .nav-links a.active { background: rgba(255,255,255,0.16); }
-
-    .nav-controls { display: flex; gap: 8px; }
-    .lang-switch, .theme-btn {
-      display: flex; gap: 3px; padding: 3px; border-radius: 14px;
-      background: rgba(255,255,255,0.45); border: 1px solid var(--glass-border);
-    }
-    [data-theme="dark"] .lang-switch, [data-theme="dark"] .theme-btn { background: rgba(0,0,0,0.25); }
     .theme-btn {
-      align-items: center; justify-content: center; width: 35px; height: 35px;
-      cursor: pointer; font-size: 1.05rem; transition: transform .2s ease;
+      width: 36px; height: 36px; border-radius: 12px; border: 1px solid var(--glass-border);
+      background: rgba(255,255,255,0.45); cursor: pointer; font-size: 1.05rem; display: grid; place-items: center;
     }
-    .theme-btn:hover { transform: scale(1.08) rotate(12deg); }
-    .lang-btn {
-      border: 0; background: transparent; font: inherit; font-size: .75rem; font-weight: 800;
-      color: var(--muted); padding: 6px 10px; border-radius: 10px; cursor: pointer; transition: all .25s ease;
-    }
-    .lang-btn.active {
-      background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: #fff;
-      box-shadow: 0 4px 12px rgba(235, 140, 56, 0.35);
-    }
+    [data-theme="dark"] .theme-btn { background: rgba(0,0,0,0.25); }
 
-    /* ================= HERO ================= */
-    header { padding: 48px 0 28px; }
-    .hero { display: grid; grid-template-columns: 1.16fr .84fr; gap: 22px; align-items: stretch; }
-    .hero-main { padding: 38px; display: flex; flex-direction: column; justify-content: space-between; }
-
-    .status-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; position: relative; z-index: 2; }
+    /* HERO */
+    header { padding: 38px 0 22px; }
+    .hero { display: grid; grid-template-columns: 1.16fr .84fr; gap: 22px; }
+    .hero-main { padding: 34px; display: flex; flex-direction: column; justify-content: space-between; }
     .eyebrow {
-      display: inline-flex; align-items: center; gap: 8px; padding: 7px 14px;
+      display: inline-flex; align-items: center; gap: 8px; padding: 7px 14px; width: fit-content;
       background: rgba(255,255,255,0.55); color: var(--brown-dark); border: 1px solid var(--glass-border);
-      border-radius: 999px; font-size: .79rem; font-weight: 800;
+      border-radius: 999px; font-size: .79rem; font-weight: 800; margin-bottom: 14px; z-index: 2;
     }
     [data-theme="dark"] .eyebrow { background: rgba(255,255,255,0.09); }
-    .pulse-dot {
-      width: 8px; height: 8px; border-radius: 50%; background: #22c55e;
-      box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.25); animation: pulseGreen 2s infinite;
-    }
-    @keyframes pulseGreen { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+    .pulse-dot { width: 8px; height: 8px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.25); }
+    h1 { font-size: clamp(2.5rem, 5vw, 4rem); line-height: 1.04; letter-spacing: -1.8px; color: var(--brown-dark); margin-bottom: 12px; z-index: 2; font-weight: 800; }
+    h1 .orange { background: linear-gradient(135deg, #e8832c, #f6b95c); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .lead { color: var(--muted); line-height: 1.72; font-size: .96rem; z-index: 2; }
+    .lead strong { color: var(--brown-dark); }
 
-    h1 {
-      font-size: clamp(2.6rem, 5.4vw, 4.3rem); line-height: 1.02; letter-spacing: -2px;
-      color: var(--brown-dark); margin-bottom: 16px; position: relative; z-index: 2; font-weight: 800;
-    }
-    h1 .orange {
-      background: linear-gradient(135deg, #e8832c, #f6b95c);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    }
-
-    .lead { max-width: 650px; color: var(--muted); line-height: 1.75; font-size: 1rem; position: relative; z-index: 2; }
-    .lead strong { color: var(--brown-dark); font-weight: 700; }
-
-    .buttons { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; position: relative; z-index: 2; }
+    .buttons { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; z-index: 2; }
     .btn {
-      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-      padding: 12px 18px; border-radius: 16px; font-weight: 700; font-size: .88rem;
-      background: rgba(255,255,255,0.5); border: 1px solid var(--glass-border); color: var(--brown-dark);
-      box-shadow: 0 4px 14px rgba(0,0,0,0.04); transition: all .22s ease; cursor: pointer;
+      display: inline-flex; align-items: center; gap: 8px; padding: 11px 17px; border-radius: 15px;
+      font-weight: 700; font-size: .87rem; background: rgba(255,255,255,0.5);
+      border: 1px solid var(--glass-border); color: var(--brown-dark); transition: .2s; cursor: pointer;
     }
     [data-theme="dark"] .btn { background: rgba(255,255,255,0.08); }
-    .btn:hover { transform: translateY(-3px); background: rgba(255,255,255,0.8); box-shadow: 0 8px 20px rgba(0,0,0,0.08); }
-    [data-theme="dark"] .btn:hover { background: rgba(255,255,255,0.16); }
-    .btn.primary {
-      color: #fff; background: linear-gradient(135deg, #ea8f3b, #f6be65);
-      border-color: rgba(255,255,255,0.5); box-shadow: 0 8px 20px rgba(234, 143, 59, 0.3);
-    }
-    .btn.primary:hover { box-shadow: 0 10px 24px rgba(234, 143, 59, 0.45); }
+    .btn:hover { transform: translateY(-2px); }
+    .btn.primary { color: #fff; background: linear-gradient(135deg, #ea8f3b, #f6be65); border-color: rgba(255,255,255,0.5); }
 
-    /* Terminal */
-    .terminal {
-      margin-top: 24px; border-radius: 18px; overflow: hidden;
-      background: rgba(255,255,255,0.45); border: 1px solid var(--line); position: relative; z-index: 2;
-    }
+    .terminal { margin-top: 20px; border-radius: 18px; overflow: hidden; background: rgba(255,255,255,0.45); border: 1px solid var(--line); z-index: 2; }
     [data-theme="dark"] .terminal { background: rgba(10, 15, 28, 0.55); }
-    .terminal-bar {
-      padding: 9px 14px; display: flex; align-items: center; gap: 7px;
-      border-bottom: 1px solid var(--line); background: rgba(255,255,255,0.3);
-    }
-    [data-theme="dark"] .terminal-bar { background: rgba(255,255,255,0.04); }
+    .terminal-bar { padding: 9px 14px; display: flex; align-items: center; gap: 7px; border-bottom: 1px solid var(--line); }
     .terminal-bar i { width: 9px; height: 9px; border-radius: 50%; display: block; }
     .terminal-bar i:nth-child(1) { background: #ff6b6b; }
     .terminal-bar i:nth-child(2) { background: #ffd166; }
     .terminal-bar i:nth-child(3) { background: #06d6a0; }
     .terminal-bar span { margin-left: 6px; color: var(--muted); font: .73rem 'JetBrains Mono', monospace; }
-    .terminal pre {
-      margin: 0; padding: 15px 16px; white-space: pre-wrap; color: var(--text);
-      font: .8rem/1.75 'JetBrains Mono', monospace;
-    }
-    .cmd { color: #d97724; font-weight: 700; }
-    .ok { color: #16a34a; font-weight: 700; }
-    .key { color: #2563eb; }
-    [data-theme="dark"] .cmd { color: #fbbf24; }
-    [data-theme="dark"] .ok { color: #4ade80; }
-    [data-theme="dark"] .key { color: #60a5fa; }
-    .cursor {
-      display: inline-block; width: 8px; height: 14px; background: var(--accent);
-      vertical-align: -2px; margin-left: 3px; border-radius: 1px;
-      animation: caretBlink 1s steps(2, start) infinite;
-    }
-    @keyframes caretBlink { 50% { opacity: 0; } }
+    .terminal pre { margin: 0; padding: 14px 16px; white-space: pre-wrap; font: .79rem/1.7 'JetBrains Mono', monospace; }
+    .cmd { color: #d97724; font-weight: 700; } .ok { color: #16a34a; font-weight: 700; } .key { color: #2563eb; }
+    [data-theme="dark"] .cmd { color: #fbbf24; } [data-theme="dark"] .ok { color: #4ade80; } [data-theme="dark"] .key { color: #60a5fa; }
 
-    /* ================= CAPY PLAYGROUND ================= */
-    .capy-card { display: flex; flex-direction: column; gap: 14px; min-height: 100%; padding: 20px; }
+    /* CAPY STAGE */
+    .capy-card { display: flex; flex-direction: column; gap: 12px; padding: 18px; }
     .capy-stage {
-      --u: 1; position: relative; z-index: 2; isolation: isolate;
-      flex: 1 1 auto; min-height: 350px; border-radius: 22px; overflow: hidden;
-      background: linear-gradient(180deg, rgba(115, 204, 255, .6) 0%, rgba(223, 247, 255, .45) 52%, rgba(255, 255, 255, 0) 100%);
-      border: 1px solid var(--glass-border);
-      touch-action: pan-y; user-select: none; transition: background .5s ease;
+      position: relative; z-index: 2; flex: 1; min-height: 320px; border-radius: 22px; overflow: hidden;
+      background: linear-gradient(180deg, rgba(115, 204, 255, .6) 0%, rgba(223, 247, 255, .45) 52%, transparent 100%);
+      border: 1px solid var(--glass-border); cursor: pointer; user-select: none;
     }
-    [data-theme="dark"] .capy-stage {
-      background: linear-gradient(180deg, rgba(6, 12, 28, .85) 0%, rgba(22, 35, 60, .6) 55%, rgba(30, 41, 59, 0) 100%);
-    }
-    .capy-stage.over-grass { cursor: pointer; }
-
-    /* Stars in dark mode */
-    .capy-stage::before {
-      content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
-      opacity: 0; transition: opacity .5s ease;
-      background-image:
-        radial-gradient(1.6px 1.6px at 14% 16%, #fff 50%, transparent 52%),
-        radial-gradient(1.2px 1.2px at 32% 10%, #fff 50%, transparent 52%),
-        radial-gradient(1.5px 1.5px at 48% 24%, #fff 50%, transparent 52%),
-        radial-gradient(1.2px 1.2px at 66% 14%, #fff 50%, transparent 52%),
-        radial-gradient(1.5px 1.5px at 82% 28%, #fff 50%, transparent 52%),
-        radial-gradient(1.1px 1.1px at 24% 34%, #fff 50%, transparent 52%);
-    }
-    [data-theme="dark"] .capy-stage::before { opacity: .85; }
-
-    .sun {
-      position: absolute; z-index: 1; width: 68px; height: 68px; border-radius: 50%;
-      right: 8%; top: 8%; background: #ffe082;
-      box-shadow: 0 0 42px rgba(255, 224, 130, .75); transition: all .5s ease;
-    }
-    [data-theme="dark"] .sun {
-      background: #e2e8f0;
-      box-shadow: inset -14px -9px 0 0 #64748b, 0 0 32px rgba(226, 232, 240, .3);
-    }
-
-    .capy-hill {
-      position: absolute; z-index: 1; left: -8%; right: -8%; bottom: 0; height: 56%;
-      border-radius: 50% 50% 0 0 / 18% 18% 0 0;
-      background: linear-gradient(180deg, #a3e28c 0%, #7bc978 52%, #5fae6c 100%);
-      box-shadow: inset 0 10px 20px rgba(255, 255, 255, .4); transition: background .5s ease;
-    }
-    [data-theme="dark"] .capy-hill {
-      background: linear-gradient(180deg, #2b5943 0%, #1e4535 52%, #153327 100%);
-      box-shadow: inset 0 8px 16px rgba(255, 255, 255, .08);
-    }
-
+    [data-theme="dark"] .capy-stage { background: linear-gradient(180deg, rgba(6, 12, 28, .85) 0%, rgba(22, 35, 60, .6) 55%, transparent 100%); }
+    .sun { position: absolute; width: 60px; height: 60px; border-radius: 50%; right: 8%; top: 8%; background: #ffe082; box-shadow: 0 0 36px rgba(255, 224, 130, .75); }
+    [data-theme="dark"] .sun { background: #e2e8f0; box-shadow: inset -12px -8px 0 0 #64748b; }
+    .capy-hill { position: absolute; left: -8%; right: -8%; bottom: 0; height: 56%; border-radius: 50% 50% 0 0 / 18% 18% 0 0; background: linear-gradient(180deg, #a3e28c 0%, #5fae6c 100%); }
+    [data-theme="dark"] .capy-hill { background: linear-gradient(180deg, #2b5943 0%, #153327 100%); }
     .capy-hint {
-      position: absolute; z-index: 5; left: 12px; top: 12px; max-width: 66%;
-      padding: 7px 12px; border-radius: 14px; font-size: .74rem; font-weight: 700; line-height: 1.4;
-      color: var(--brown-dark); background: rgba(255, 255, 255, .65); border: 1px solid var(--glass-border);
-      backdrop-filter: blur(8px); pointer-events: none; transition: opacity .4s ease;
+      position: absolute; z-index: 5; left: 12px; top: 12px; max-width: 68%; padding: 6px 11px;
+      border-radius: 12px; font-size: .73rem; font-weight: 700; color: var(--brown-dark);
+      background: rgba(255,255,255,.65); backdrop-filter: blur(8px);
     }
-    [data-theme="dark"] .capy-hint { background: rgba(15, 23, 42, .65); }
-
-    .feed-badge {
-      position: absolute; z-index: 5; left: 12px; bottom: 12px;
-      padding: 5px 11px; border-radius: 999px; font-size: .73rem; font-weight: 800;
-      color: var(--brown-dark); background: rgba(255,255,255,0.65); border: 1px solid var(--glass-border);
-      backdrop-filter: blur(6px); pointer-events: none;
-    }
-    [data-theme="dark"] .feed-badge { background: rgba(15,23,42,0.65); }
-
+    [data-theme="dark"] .capy-hint { background: rgba(15,23,42,.65); }
     .capy-layer { position: absolute; inset: 0; z-index: 3; pointer-events: none; }
-    .capy-actor {
-      position: absolute; left: 0; top: 0; transform-origin: 50% 100%; will-change: transform;
-    }
-    .capy-actor .bob { display: block; animation: capyWalkBob .55s ease-in-out infinite alternate; }
-    .capy-actor.eating .bob { animation: capyChomp .22s ease-in-out infinite alternate; }
-    @keyframes capyWalkBob { 0% { transform: translateY(0); } 100% { transform: translateY(-4px); } }
-    @keyframes capyChomp { 0% { transform: scaleY(1); } 100% { transform: scaleY(0.92) translateY(2px); } }
-    .capy-actor svg { display: block; width: 100%; height: auto; overflow: visible; }
-    .capy-actor .shadow {
-      position: absolute; left: 10%; right: 10%; bottom: -2px; height: 8px; border-radius: 50%;
-      background: rgba(35, 20, 10, .22); filter: blur(2px);
-    }
-    .capy-actor.a { width: 98px; }
-    .capy-actor.b { width: 104px; }
-    .capy-actor.c { width: 68px; }
+    .capy-actor { position: absolute; left: 0; top: 0; width: 92px; }
+    .food { position: absolute; z-index: 2; transform: translate(-50%, -70%); font-size: 24px; pointer-events: none; }
+    .pop { position: absolute; z-index: 6; font-size: 18px; pointer-events: none; animation: popUp .9s ease-out forwards; }
+    @keyframes popUp { 0% { opacity: 1; transform: translate(-50%, 0); } 100% { opacity: 0; transform: translate(-50%, -45px); } }
+    .capy-caption { text-align: center; z-index: 2; }
+    .capy-caption h2 { font-size: 1.3rem; color: var(--brown-dark); font-weight: 800; }
+    .capy-caption p { color: var(--muted); font-size: .85rem; }
 
-    .food {
-      position: absolute; z-index: 2; transform: translate(-50%, -70%); font-size: 24px;
-      pointer-events: none; animation: foodDrop .4s cubic-bezier(.3, 1.5, .5, 1);
-      filter: drop-shadow(0 4px 4px rgba(0,0,0,0.2));
-    }
-    @keyframes foodDrop {
-      0% { opacity: 0; transform: translate(-50%, -140%) scale(.4); }
-      100% { opacity: 1; transform: translate(-50%, -70%) scale(1); }
-    }
-    .pop {
-      position: absolute; z-index: 6; font-size: 18px; pointer-events: none;
-      animation: popUp .95s ease-out forwards;
-    }
-    @keyframes popUp {
-      0% { opacity: 0; transform: translate(-50%, 0) scale(.5); }
-      25% { opacity: 1; }
-      100% { opacity: 0; transform: translate(-50%, -48px) scale(1.2); }
-    }
-
-    .capy-caption { position: relative; z-index: 2; text-align: center; }
-    .capy-caption h2 { font-size: 1.45rem; color: var(--brown-dark); margin-bottom: 4px; font-weight: 800; }
-    .capy-caption p { color: var(--muted); font-size: .88rem; }
-
-    /* ================= SECTIONS ================= */
-    section { padding: 28px 0; scroll-margin-top: 84px; }
-    .section-head { display: flex; justify-content: space-between; gap: 20px; align-items: flex-end; margin-bottom: 16px; }
-    .section-head h2 {
-      font-size: 1.65rem; color: var(--brown-dark); letter-spacing: -.6px; font-weight: 800;
-      position: relative; padding-left: 16px;
-    }
+    /* FORUM */
+    section { padding: 26px 0; scroll-margin-top: 80px; }
+    .section-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 14px; margin-bottom: 16px; flex-wrap: wrap; }
+    .section-head h2 { font-size: 1.6rem; color: var(--brown-dark); font-weight: 800; position: relative; padding-left: 15px; }
     .section-head h2::before {
       content: ""; position: absolute; left: 0; top: 50%; transform: translateY(-50%);
-      width: 6px; height: 1.25em; border-radius: 99px; background: linear-gradient(180deg, var(--accent), #4ade80);
+      width: 6px; height: 1.2em; border-radius: 99px; background: linear-gradient(180deg, var(--accent), #4ade80);
     }
-    .section-head p { color: var(--muted); text-align: right; max-width: 520px; line-height: 1.55; font-size: .9rem; }
+    .forum-filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+    .filter-chip {
+      padding: 8px 14px; border-radius: 999px; font-size: .82rem; font-weight: 700;
+      background: rgba(255,255,255,0.45); border: 1px solid var(--glass-border); color: var(--muted); cursor: pointer;
+    }
+    [data-theme="dark"] .filter-chip { background: rgba(255,255,255,0.07); }
+    .filter-chip.active { background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: #fff; border-color: transparent; }
 
-    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
-    .info { padding: 24px; transition: transform .25s ease, box-shadow .25s ease; }
-    .info:hover { transform: translateY(-5px); }
-    .emoji {
-      width: 46px; height: 46px; border-radius: 14px; display: grid; place-items: center;
-      font-size: 1.45rem; margin-bottom: 14px; background: rgba(255,255,255,0.55);
-      border: 1px solid var(--glass-border); position: relative; z-index: 2;
+    .forum-grid { display: flex; flex-direction: column; gap: 16px; }
+    .post-card { padding: 26px; z-index: 2; }
+    .post-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 14px; flex-wrap: wrap; z-index: 2; position: relative; }
+    .post-author-box { display: flex; align-items: center; gap: 12px; }
+    .post-avatar {
+      width: 44px; height: 44px; border-radius: 15px; display: grid; place-items: center;
+      font-size: 1.35rem; background: linear-gradient(135deg, #f6be65, #eb8c38); color: #fff; flex-shrink: 0;
     }
-    [data-theme="dark"] .emoji { background: rgba(255,255,255,0.08); }
-    .info h3 { color: var(--brown-dark); font-size: 1.06rem; margin-bottom: 8px; font-weight: 800; position: relative; z-index: 2; }
-    .info p { color: var(--muted); line-height: 1.68; font-size: .91rem; position: relative; z-index: 2; }
+    .post-meta-info h3 { font-size: 1.18rem; font-weight: 800; color: var(--brown-dark); margin-bottom: 4px; }
+    .post-sub { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: .78rem; color: var(--muted); font-weight: 600; }
+    .badge-admin { padding: 2px 8px; border-radius: 6px; font-size: .7rem; font-weight: 800; background: rgba(235, 140, 56, 0.18); color: #d97724; }
+    [data-theme="dark"] .badge-admin { color: #fbbf24; }
+    .badge-cat { padding: 4px 11px; border-radius: 999px; font-size: .75rem; font-weight: 800; background: rgba(255,255,255,0.6); color: var(--brown-dark); }
+    [data-theme="dark"] .badge-cat { background: rgba(255,255,255,0.1); }
+    .badge-pin { padding: 4px 10px; border-radius: 999px; font-size: .73rem; font-weight: 800; background: rgba(34, 197, 94, 0.16); color: #16a34a; }
+    [data-theme="dark"] .badge-pin { color: #4ade80; }
 
-    .about { padding: 26px; line-height: 1.8; color: var(--muted); font-size: .96rem; }
-    .about strong { color: var(--brown-dark); }
+    .post-html-body { position: relative; z-index: 2; line-height: 1.75; font-size: .95rem; padding-top: 12px; border-top: 1px solid var(--line); overflow-wrap: break-word; }
+    .post-html-body p { margin-bottom: 10px; }
+    .post-html-body a { color: var(--accent); text-decoration: underline; font-weight: 700; }
+    .post-html-body pre { font-family: 'JetBrains Mono', monospace; background: rgba(0,0,0,0.06); padding: 12px; border-radius: 12px; overflow-x: auto; margin: 10px 0; font-size: .84rem; }
+    [data-theme="dark"] .post-html-body pre { background: rgba(0,0,0,0.35); }
+    .post-html-body img { max-width: 100%; border-radius: 16px; margin: 10px 0; }
 
-    .skills { display: flex; flex-wrap: wrap; gap: 10px; padding: 24px; }
-    .pill {
-      padding: 10px 15px; border-radius: 999px; font-size: .84rem; font-weight: 700;
-      border: 1px solid var(--glass-border); background: rgba(255,255,255,0.5); color: var(--brown-dark);
-      transition: all .2s ease; position: relative; z-index: 2;
+    .post-footer { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: 16px; padding-top: 12px; border-top: 1px dashed var(--line); position: relative; z-index: 2; }
+    .react-btn {
+      padding: 6px 12px; border-radius: 999px; border: 1px solid var(--glass-border);
+      background: rgba(255,255,255,0.45); color: var(--brown-dark); font-size: .8rem; font-weight: 700; cursor: pointer;
     }
-    [data-theme="dark"] .pill { background: rgba(255,255,255,0.08); }
-    .pill:hover { transform: translateY(-3px) scale(1.04); background: rgba(255,255,255,0.85); }
-    [data-theme="dark"] .pill:hover { background: rgba(255,255,255,0.16); }
+    [data-theme="dark"] .react-btn { background: rgba(255,255,255,0.07); }
 
-    /* ================= SOCIALS ================= */
-    .socials { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; }
-    .social {
-      padding: 18px 20px; border-radius: 22px; display: flex; align-items: center; gap: 14px;
-      font-size: .92rem; font-weight: 700; transition: all .25s ease; position: relative; z-index: 2;
-    }
-    .social:hover { transform: translateY(-4px); background: rgba(255,255,255,0.75); }
-    [data-theme="dark"] .social:hover { background: rgba(255,255,255,0.14); }
-    .social-ico {
-      width: 42px; height: 42px; border-radius: 14px; display: grid; place-items: center;
-      font-size: 1.25rem; flex-shrink: 0; color: #fff;
-    }
+    /* SOCIALS & FOOTER */
+    .socials { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+    .social { padding: 18px 20px; border-radius: 22px; display: flex; align-items: center; gap: 14px; font-weight: 700; transition: .2s; }
+    .social:hover { transform: translateY(-3px); }
+    .social-ico { width: 42px; height: 42px; border-radius: 14px; display: grid; place-items: center; font-size: 1.2rem; color: #fff; }
     .ico-tg { background: linear-gradient(135deg, #2aabee, #229ed9); }
-    .ico-zl { background: linear-gradient(135deg, #0068ff, #0091ff); font-weight: 800; font-size: .95rem; }
-    .ico-gh { background: linear-gradient(135deg, #334155, #0f172a); }
-    .social-meta { display: flex; flex-direction: column; text-align: left; }
-    .social-meta span { font-size: .76rem; color: var(--muted); font-weight: 600; }
+    .ico-zl { background: linear-gradient(135deg, #0068ff, #0091ff); font-size: .9rem; font-weight: 800; }
+    .social-meta { display: flex; flex-direction: column; }
+    .social-meta span { font-size: .76rem; color: var(--muted); }
 
-    /* ================= FOOTER & BACK TO TOP ================= */
-    footer { padding: 48px 0 64px; text-align: center; color: var(--muted); font-size: .85rem; }
+    footer { padding: 44px 0 60px; text-align: center; color: var(--muted); font-size: .85rem; }
     footer strong { color: var(--brown-dark); }
-    .view-counter {
-      display: inline-flex; align-items: center; gap: 8px; padding: 8px 18px; margin-top: 14px;
-      border-radius: 999px; font-weight: 800; font-size: .88rem; color: var(--brown-dark);
-    }
 
-    .to-top {
-      position: fixed; right: 20px; bottom: 20px; width: 46px; height: 46px; border-radius: 50%;
-      border: 1px solid var(--glass-border); cursor: pointer; display: grid; place-items: center;
-      font-size: 1.1rem; font-weight: 800; color: var(--brown-dark);
-      background: var(--glass-bg); backdrop-filter: blur(10px);
-      box-shadow: 0 6px 18px rgba(0,0,0,0.12);
-      opacity: 0; transform: translateY(16px) scale(.85); pointer-events: none; z-index: 50;
-      transition: all .3s ease;
-    }
-    .to-top.show { opacity: 1; transform: none; pointer-events: auto; }
-    .to-top:hover { transform: translateY(-4px); }
-
-    @keyframes capyBob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
-
-    .js .reveal { opacity: 0; transform: translateY(20px); transition: opacity .6s ease, transform .6s ease; }
-    .js .reveal.in { opacity: 1; transform: none; }
-
-    @media (max-width: 860px) {
-      .hero, .grid-3 { grid-template-columns: 1fr; }
-      .section-head { align-items: flex-start; flex-direction: column; }
-      .section-head p { text-align: left; }
-    }
-    @media (max-width: 600px) {
-      .container { width: min(100% - 20px, 1100px); }
-      .nav-links { display: none; }
-      header { padding-top: 28px; }
-      .hero-main, .capy-card, .info, .about { padding: 22px; }
-      .buttons .btn { flex: 1 1 46%; }
-    }
+    @media (max-width: 860px) { .hero { grid-template-columns: 1fr; } }
+    @media (max-width: 600px) { .nav-links { display: none; } }
   </style>
 </head>
-<body class="loading">
+<body>
   <div class="ambient-bg" aria-hidden="true">
     <div class="blob blob-1"></div>
     <div class="blob blob-2"></div>
   </div>
 
-  <!-- SVG CAPYBARA DEFINITIONS -->
   <svg width="0" height="0" style="position:absolute" aria-hidden="true">
     <defs>
-      <g id="capy-base">
+      <g id="capy-orange">
         <circle cx="-34" cy="-26" r="11" fill="#9b603c"/>
         <circle cx="34" cy="-26" r="11" fill="#9b603c"/>
         <rect x="-46" y="-36" width="92" height="76" rx="36" fill="#bd7a4c"/>
         <ellipse cx="0" cy="16" rx="24" ry="15" fill="#a96a45"/>
         <ellipse cx="-8" cy="12" rx="4" ry="2.8" fill="#2f2018"/>
         <ellipse cx="8" cy="12" rx="4" ry="2.8" fill="#2f2018"/>
-      </g>
-      <g id="capy-face">
-        <use href="#capy-base"/>
         <circle cx="-22" cy="-8" r="5" fill="#3d291e"/>
         <circle cx="22" cy="-8" r="5" fill="#3d291e"/>
         <circle cx="-20.4" cy="-9.6" r="1.6" fill="#fff"/>
         <circle cx="23.6" cy="-9.6" r="1.6" fill="#fff"/>
         <path d="M-9 22 q9 7 18 0" stroke="#2f2018" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-      </g>
-      <!-- Capybara with yuzu orange on head -->
-      <g id="capy-orange">
-        <use href="#capy-face"/>
         <circle cx="0" cy="-45" r="11" fill="#f59e0b"/>
         <path d="M0 -56 Q6 -63 12 -58 Q6 -53 0 -56 Z" fill="#22c55e"/>
       </g>
     </defs>
   </svg>
 
-  <!-- LOADER -->
-  <div class="loader" id="loader">
-    <div class="loader-inner">
-      <svg class="loader-capy" viewBox="-70 -75 140 145" aria-hidden="true">
-        <ellipse cx="0" cy="52" rx="42" ry="7" fill="#6b4a35" opacity=".15"/>
-        <use href="#capy-orange"/>
-      </svg>
-      <div class="loader-text">Loading<i></i><i></i><i></i></div>
-      <div class="loader-bar"><span></span></div>
-    </div>
-  </div>
-
-  <!-- LANG OVERLAY -->
-  <div class="lang-overlay" id="langOverlay" aria-hidden="true">
-    <div class="lang-spinner-wrapper">
-      <svg class="lang-spinner" viewBox="0 0 100 100">
-        <circle cx="50" cy="50" r="38" stroke="#f6c06c" stroke-width="8" fill="none" stroke-dasharray="160 80" stroke-linecap="round"/>
-      </svg>
-      <div class="lang-capy-logo">🍊</div>
-    </div>
-  </div>
-
-  <!-- THEME OVERLAY -->
-  <div class="theme-overlay" id="themeOverlay" aria-hidden="true">
-    <div class="theme-sky-icon" id="themeSkyIcon">🌙</div>
-    <div class="theme-runway">
-      <svg class="running-capy capy-1" viewBox="-60 -70 120 130"><use href="#capy-orange"/></svg>
-      <svg class="running-capy capy-2" viewBox="-60 -60 120 120"><use href="#capy-face"/></svg>
-      <svg class="running-capy capy-3" viewBox="-60 -70 120 130"><use href="#capy-orange"/></svg>
-    </div>
-  </div>
-
-  <div class="progress"><span id="progressBar"></span></div>
-
-  <!-- NAVBAR -->
   <nav>
     <div class="container">
       <div class="nav-inner liquid-glass">
-        <a href="#" class="brand"><em>🍊</em> Nguyễn Anh <span>Tú</span></a>
+        <a href="#" class="brand">🍊 Nguyễn Anh <span>Tú</span></a>
         <div class="nav-right">
           <div class="nav-links">
-            <a href="#about" data-i18n="nav_about">Giới thiệu</a>
-            <a href="#projects" data-i18n="nav_projects">Lĩnh vực</a>
-            <a href="#skills" data-i18n="nav_skills">Kỹ năng</a>
-            <a href="#contact" data-i18n="nav_contact">Liên hệ</a>
+            <a href="#forum">Diễn đàn</a>
+            <a href="#contact">Liên hệ</a>
           </div>
-          <div class="nav-controls">
-            <div class="lang-switch">
-              <button class="lang-btn active" data-lang="vi">VI</button>
-              <button class="lang-btn" data-lang="en">EN</button>
-            </div>
-            <button class="theme-btn" id="themeToggle" aria-label="Đổi giao diện">☀️</button>
-          </div>
+          <button class="theme-btn" id="themeToggle" aria-label="Đổi giao diện">☀️</button>
         </div>
       </div>
     </div>
   </nav>
 
-  <!-- HERO -->
   <header>
     <div class="container">
       <div class="hero">
         <div class="hero-main liquid-glass">
           <div>
-            <div class="status-row">
-              <div class="eyebrow"><span class="pulse-dot"></span> <span data-i18n="status">Sẵn sàng kết nối & hợp tác</span></div>
-              <div class="eyebrow">🇻🇳 Digital Marketing & Tech</div>
-            </div>
+            <div class="eyebrow"><span class="pulse-dot"></span> Digital Marketing & Tech Forum</div>
             <h1>Nguyễn Anh <span class="orange">Tú.</span></h1>
-            <p class="lead" data-i18n="hero_lead">
-              Xin chào! Mình là <strong>Nguyễn Anh Tú</strong> — đam mê <strong>Digital Marketing</strong>, xây dựng <strong>Web Utilities</strong>, <strong>Telegram Bot</strong> tự động hóa và tối ưu trải nghiệm số hiện đại.
+            <p class="lead">
+              Xin chào! Mình là <strong>Nguyễn Anh Tú</strong> — chia sẻ kinh nghiệm <strong>Digital Marketing</strong>, thủ thuật công nghệ, source code <strong>Telegram Bot</strong> và tiện ích web tại diễn đàn bên dưới.
             </p>
             <div class="buttons">
-              <a href="https://t.me/wanhtu" target="_blank" rel="noopener" class="btn primary">
-                ✈️ Telegram (@wanhtu)
-              </a>
-              <a href="https://zalo.me/wanhtu" target="_blank" rel="noopener" class="btn">
-                💬 Zalo (wanhtu)
-              </a>
-              <a href="#projects" class="btn" data-i18n="btn_explore">Khám phá 🚀</a>
+              <a href="https://t.me/wanhtu" target="_blank" rel="noopener" class="btn primary">✈️ Telegram (@wanhtu)</a>
+              <a href="https://zalo.me/wanhtu" target="_blank" rel="noopener" class="btn">💬 Zalo (wanhtu)</a>
+              <a href="#forum" class="btn">📌 Đọc bài viết</a>
             </div>
           </div>
 
           <div class="terminal">
-            <div class="terminal-bar">
-              <i></i><i></i><i></i>
-              <span>wanhtu@capy-corner ~ zsh</span>
-            </div>
+            <div class="terminal-bar"><i></i><i></i><i></i><span>wanhtu@forum ~ zsh</span></div>
             <pre><span class="cmd">$ whoami</span>
-<span class="ok">✔</span> <span class="key">name</span>: "Nguyễn Anh Tú"
-<span class="ok">✔</span> <span class="key">focus</span>: ["Digital Marketing", "Telegram Bots", "Web Apps"]
-<span class="ok">✔</span> <span class="key">contact</span>: "t.me/wanhtu | zalo.me/wanhtu"
-<span class="cmd">$ status</span> --chill <span class="cursor"></span></pre>
+<span class="ok">✔</span> <span class="key">admin</span>: "Nguyễn Anh Tú (@wanhtu)"
+<span class="ok">✔</span> <span class="key">contact</span>: "t.me/wanhtu | zalo.me/wanhtu"</pre>
           </div>
         </div>
 
-        <!-- INTERACTIVE CAPYBARA STAGE -->
         <div class="capy-card liquid-glass">
-          <div class="capy-stage over-grass" id="capyStage">
-            <div class="capy-hint" id="capyHint" data-i18n="capy_hint">👆 Chạm vào bãi cỏ để thả cam & dưa hấu cho Capybara ăn!</div>
-            <div class="feed-badge" id="feedBadge">🍊 Đã cho ăn: 0</div>
+          <div class="capy-stage" id="capyStage">
+            <div class="capy-hint">👆 Chạm vào bãi cỏ để cho Capybara ăn cam!</div>
             <div class="sun"></div>
             <div class="capy-hill"></div>
             <div class="capy-layer" id="capyLayer"></div>
           </div>
           <div class="capy-caption">
             <h2>Capybara Corner 🍊</h2>
-            <p data-i18n="capy_sub">Góc thư giãn nhỏ — chạm vào cỏ để gọi bầy Capybara lại gần.</p>
+            <p>Góc thư giãn nhỏ của Nguyễn Anh Tú</p>
           </div>
         </div>
       </div>
@@ -667,87 +314,37 @@
   </header>
 
   <main class="container">
-    <!-- ABOUT -->
-    <section id="about" class="reveal">
+    <!-- DIỄN ĐÀN -->
+    <section id="forum">
       <div class="section-head">
-        <h2 data-i18n="sec_about">Về mình</h2>
-        <p data-i18n="sec_about_sub">Kết hợp tư duy Marketing tăng trưởng cùng công cụ tự động hóa thông minh.</p>
+        <h2>Diễn đàn & Bài viết từ Admin</h2>
+        <span style="font-size:.85rem; color:var(--muted);">Cập nhật bởi Nguyễn Anh Tú</span>
       </div>
-      <div class="about liquid-glass" data-i18n="about_body">
-        Mình là <strong>Nguyễn Anh Tú</strong>. Mình thích biến những ý tưởng sáng tạo thành sản phẩm thực tế: từ các chiến dịch <strong>Performance Marketing</strong> tối ưu chuyển đổi cho đến việc tự tay code <strong>Telegram Bot</strong> chạy trên Cloudflare Workers, thiết kế giao diện web mượt mà chuẩn <strong>Liquid Glass</strong> và các tiện ích tự động hóa công việc hằng ngày.
+
+      <div class="forum-filters">
+        <button class="filter-chip active" data-cat="ALL">Tất cả</button>
+        <button class="filter-chip" data-cat="Tech Tips">⚡ Tech Tips</button>
+        <button class="filter-chip" data-cat="Bot & Code">🤖 Bot & Code</button>
+        <button class="filter-chip" data-cat="Marketing">📈 Marketing</button>
+        <button class="filter-chip" data-cat="Thông báo">📢 Thông báo</button>
       </div>
+
+      <div class="forum-grid" id="forumPostsContainer"></div>
     </section>
 
-    <!-- PROJECTS / FOCUS -->
-    <section id="projects" class="reveal">
+    <!-- LIÊN HỆ -->
+    <section id="contact">
       <div class="section-head">
-        <h2 data-i18n="sec_proj">Lĩnh vực & Dự án</h2>
-        <p data-i18n="sec_proj_sub">Những mảng mình đang tập trung xây dựng mỗi ngày.</p>
-      </div>
-      <div class="grid-3">
-        <div class="info liquid-glass reveal">
-          <div class="emoji">📈</div>
-          <h3 data-i18n="p1_t">Digital & Performance Ads</h3>
-          <p data-i18n="p1_d">Triển khai và tối ưu quảng cáo đa nền tảng (Facebook, TikTok, Google Ads), phân tích dữ liệu và tối ưu tỷ lệ chuyển đổi.</p>
-        </div>
-        <div class="info liquid-glass reveal">
-          <div class="emoji">🤖</div>
-          <h3 data-i18n="p2_t">AI & Telegram Bot Automation</h3>
-          <p data-i18n="p2_d">Xây dựng Bot Telegram đa năng tích hợp AI, xử lý văn bản, hình ảnh và tự động hóa quy trình trên hạ tầng Serverless.</p>
-        </div>
-        <div class="info liquid-glass reveal">
-          <div class="emoji">🎨</div>
-          <h3 data-i18n="p3_t">Modern Web & UI Design</h3>
-          <p data-i18n="p3_d">Thiết kế landing page, blog cá nhân và các công cụ web nhỏ gọn với hiệu ứng kính mờ (Glassmorphism) mượt mà.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- SKILLS -->
-    <section id="skills" class="reveal">
-      <div class="section-head">
-        <h2 data-i18n="sec_skills">Kỹ năng & Công cụ</h2>
-        <p data-i18n="sec_skills_sub">Bộ công cụ đồng hành trong công việc và lập trình.</p>
-      </div>
-      <div class="skills liquid-glass">
-        <span class="pill">📢 Facebook & TikTok Ads</span>
-        <span class="pill">🔍 Google Ads & Analytics</span>
-        <span class="pill">🤖 Telegram Bot API</span>
-        <span class="pill">☁️ Cloudflare Workers</span>
-        <span class="pill">✨ Gemini & AI Workflows</span>
-        <span class="pill">🌐 HTML / CSS / JavaScript</span>
-        <span class="pill">⚡ Web Automation</span>
-        <span class="pill">🎯 Content & Growth Strategy</span>
-      </div>
-    </section>
-
-    <!-- CONTACT -->
-    <section id="contact" class="reveal">
-      <div class="section-head">
-        <h2 data-i18n="sec_contact">Kết nối trực tiếp</h2>
-        <p data-i18n="sec_contact_sub">Nhắn tin nhanh cho mình qua Telegram hoặc Zalo nhé!</p>
+        <h2>Kết nối trực tiếp</h2>
       </div>
       <div class="socials">
         <a href="https://t.me/wanhtu" target="_blank" rel="noopener" class="social liquid-glass">
           <div class="social-ico ico-tg">✈️</div>
-          <div class="social-meta">
-            <strong>Telegram</strong>
-            <span>t.me/wanhtu</span>
-          </div>
+          <div class="social-meta"><strong>Telegram</strong><span>t.me/wanhtu</span></div>
         </a>
         <a href="https://zalo.me/wanhtu" target="_blank" rel="noopener" class="social liquid-glass">
           <div class="social-ico ico-zl">Zalo</div>
-          <div class="social-meta">
-            <strong>Zalo Chat</strong>
-            <span>zalo.me/wanhtu</span>
-          </div>
-        </a>
-        <a href="#top" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;" class="social liquid-glass">
-          <div class="social-ico ico-gh">🍊</div>
-          <div class="social-meta">
-            <strong>Capybara Club</strong>
-            <span data-i18n="back_top">Lên đầu trang</span>
-          </div>
+          <div class="social-meta"><strong>Zalo Chat</strong><span>zalo.me/wanhtu</span></div>
         </a>
       </div>
     </section>
@@ -756,275 +353,155 @@
   <footer>
     <div class="container">
       <p>© 2026 Crafted with 🍊 by <strong>Nguyễn Anh Tú</strong> (@wanhtu)</p>
-      <div class="view-counter liquid-glass">
-        <span>👀 Lượt ghé thăm:</span>
-        <span id="viewCountNum">1,284</span>
-      </div>
     </div>
   </footer>
 
-  <button class="to-top" id="toTop" aria-label="Lên đầu trang">↑</button>
-
   <script>
-    // 1. Hide Loader smoothly
-    window.addEventListener('load', () => {
-      setTimeout(() => {
-        document.getElementById('loader').classList.add('hide');
-        document.body.classList.remove('loading');
-      }, 650);
-    });
-
-    // 2. Spotlight mouse tracking on Liquid Glass cards
-    document.querySelectorAll('.liquid-glass').forEach(card => {
-      card.addEventListener('mousemove', e => {
-        const rect = card.getBoundingClientRect();
-        card.style.setProperty('--mx', `${e.clientX - rect.left}px`);
-        card.style.setProperty('--my', `${e.clientY - rect.top}px`);
-      });
-    });
-
-    // 3. Theme Toggle with Capybara Runway Animation
-    const themeToggle = document.getElementById('themeToggle');
-    const themeSkyIcon = document.getElementById('themeSkyIcon');
-    const updateThemeIcon = () => {
-      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-      themeToggle.textContent = isDark ? '🌙' : '☀️';
-    };
-    updateThemeIcon();
-
-    themeToggle.addEventListener('click', () => {
-      if (document.body.classList.contains('theme-switching')) return;
-      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-      const nextTheme = isDark ? 'light' : 'dark';
-      themeSkyIcon.textContent = nextTheme === 'dark' ? '🌙' : '☀️';
-
-      // Restart animations
-      document.querySelectorAll('.running-capy').forEach(el => {
-        el.style.animation = 'none';
-        el.offsetHeight;
-        el.style.animation = '';
-      });
-      themeSkyIcon.style.animation = 'none';
-      themeSkyIcon.offsetHeight;
-      themeSkyIcon.style.animation = '';
-
-      document.body.classList.add('theme-switching');
-      setTimeout(() => {
-        if (nextTheme === 'dark') {
-          document.documentElement.setAttribute('data-theme', 'dark');
-        } else {
-          document.documentElement.removeAttribute('data-theme');
-        }
-        try { localStorage.setItem('anhtu-theme', nextTheme); } catch (e) {}
-        updateThemeIcon();
-      }, 650);
-
-      setTimeout(() => {
-        document.body.classList.remove('theme-switching');
-      }, 1500);
-    });
-
-    // 4. Language Switcher (VI / EN)
-    const i18n = {
-      vi: {
-        nav_about: "Giới thiệu", nav_projects: "Lĩnh vực", nav_skills: "Kỹ năng", nav_contact: "Liên hệ",
-        status: "Sẵn sàng kết nối & hợp tác",
-        hero_lead: 'Xin chào! Mình là <strong>Nguyễn Anh Tú</strong> — đam mê <strong>Digital Marketing</strong>, xây dựng <strong>Web Utilities</strong>, <strong>Telegram Bot</strong> tự động hóa và tối ưu trải nghiệm số hiện đại.',
-        btn_explore: "Khám phá 🚀",
-        capy_hint: "👆 Chạm vào bãi cỏ để thả cam & dưa hấu cho Capybara ăn!",
-        capy_sub: "Góc thư giãn nhỏ — chạm vào cỏ để gọi bầy Capybara lại gần.",
-        sec_about: "Về mình", sec_about_sub: "Kết hợp tư duy Marketing tăng trưởng cùng công cụ tự động hóa thông minh.",
-        about_body: 'Mình là <strong>Nguyễn Anh Tú</strong>. Mình thích biến những ý tưởng sáng tạo thành sản phẩm thực tế: từ các chiến dịch <strong>Performance Marketing</strong> tối ưu chuyển đổi cho đến việc tự tay code <strong>Telegram Bot</strong> chạy trên Cloudflare Workers, thiết kế giao diện web mượt mà chuẩn <strong>Liquid Glass</strong> và các tiện ích tự động hóa công việc hằng ngày.',
-        sec_proj: "Lĩnh vực & Dự án", sec_proj_sub: "Những mảng mình đang tập trung xây dựng mỗi ngày.",
-        p1_t: "Digital & Performance Ads", p1_d: "Triển khai và tối ưu quảng cáo đa nền tảng (Facebook, TikTok, Google Ads), phân tích dữ liệu và tối ưu tỷ lệ chuyển đổi.",
-        p2_t: "AI & Telegram Bot Automation", p2_d: "Xây dựng Bot Telegram đa năng tích hợp AI, xử lý văn bản, hình ảnh và tự động hóa quy trình trên hạ tầng Serverless.",
-        p3_t: "Modern Web & UI Design", p3_d: "Thiết kế landing page, blog cá nhân và các công cụ web nhỏ gọn với hiệu ứng kính mờ (Glassmorphism) mượt mà.",
-        sec_skills: "Kỹ năng & Công cụ", sec_skills_sub: "Bộ công cụ đồng hành trong công việc và lập trình.",
-        sec_contact: "Kết nối trực tiếp", sec_contact_sub: "Nhắn tin nhanh cho mình qua Telegram hoặc Zalo nhé!",
-        back_top: "Lên đầu trang"
-      },
-      en: {
-        nav_about: "About", nav_projects: "Focus", nav_skills: "Skills", nav_contact: "Contact",
-        status: "Open for work & collabs",
-        hero_lead: 'Hi there! I am <strong>Nguyen Anh Tu</strong> — passionate about <strong>Digital Marketing</strong>, building <strong>Web Utilities</strong>, <strong>Telegram Bots</strong>, and crafting smooth modern digital experiences.',
-        btn_explore: "Explore 🚀",
-        capy_hint: "👆 Tap on the grass to drop oranges & treats for the Capybaras!",
-        capy_sub: "A cozy corner — tap the grass to gather the Capybara squad.",
-        sec_about: "About Me", sec_about_sub: "Blending growth marketing mindset with smart automation tools.",
-        about_body: 'I am <strong>Nguyen Anh Tu</strong>. I love turning creative ideas into real products: from conversion-driven <strong>Performance Marketing</strong> campaigns to coding serverless <strong>Telegram Bots</strong> on Cloudflare Workers, designing sleek <strong>Liquid Glass</strong> web interfaces, and daily workflow utilities.',
-        sec_proj: "Focus & Projects", sec_proj_sub: "What I build and optimize every single day.",
-        p1_t: "Digital & Performance Ads", p1_d: "Running and scaling multi-channel campaigns (Facebook, TikTok, Google Ads) with data-driven conversion optimization.",
-        p2_t: "AI & Telegram Bot Automation", p2_d: "Building multifunctional Telegram bots powered by AI for text, image workflows, and serverless automation.",
-        p3_t: "Modern Web & UI Design", p3_d: "Crafting sleek landing pages, personal blogs, and lightweight web tools with smooth glassmorphism aesthetics.",
-        sec_skills: "Skills & Stack", sec_skills_sub: "Tools I use daily for marketing and development.",
-        sec_contact: "Direct Contact", sec_contact_sub: "Reach out directly via Telegram or Zalo!",
-        back_top: "Back to top"
+    // Bài viết dự phòng nếu chưa có file posts.json
+    const FALLBACK_POSTS = [
+      {
+        id: "welcome-1",
+        title: "Chào mừng đến với Diễn đàn của Nguyễn Anh Tú 🍊",
+        category: "Thông báo",
+        pinned: true,
+        date: "17/11/2026 • 21:20",
+        likes: 15,
+        html: `<p>Chào mừng bạn ghé thăm góc chia sẻ của <b>Nguyễn Anh Tú</b>! Mọi thủ thuật công nghệ, code bot và tài liệu Marketing sẽ được đăng tải tại đây.</p>
+               <p>Liên hệ nhanh: <a href="https://t.me/wanhtu" target="_blank">Telegram (@wanhtu)</a> | <a href="https://zalo.me/wanhtu" target="_blank">Zalo</a></p>`
       }
-    };
-
-    let currentLang = 'vi';
-    let feedCount = 0;
-
-    document.querySelectorAll('.lang-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const lang = btn.dataset.lang;
-        if (lang === currentLang) return;
-        document.body.classList.add('lang-switching');
-        document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-
-        setTimeout(() => {
-          currentLang = lang;
-          document.querySelectorAll('[data-i18n]').forEach(el => {
-            const key = el.dataset.i18n;
-            if (i18n[lang][key]) el.innerHTML = i18n[lang][key];
-          });
-          document.getElementById('feedBadge').textContent =
-            lang === 'vi' ? `🍊 Đã cho ăn: ${feedCount}` : `🍊 Fed: ${feedCount}`;
-        }, 300);
-
-        setTimeout(() => {
-          document.body.classList.remove('lang-switching');
-        }, 650);
-      });
-    });
-
-    // 5. Interactive Capybara Playground Engine
-    const stage = document.getElementById('capyStage');
-    const layer = document.getElementById('capyLayer');
-    const feedBadge = document.getElementById('feedBadge');
-    const foods = ['🍊', '🍉', '🍓', '🥬', '🥕', '🍎'];
-    let activeFood = null;
-
-    const capys = [
-      { cls: 'a', face: '#capy-orange', x: 70, y: 240, tx: 140, ty: 250, speed: 1.1 },
-      { cls: 'b', face: '#capy-face', x: 210, y: 265, tx: 160, ty: 260, speed: 0.9 },
-      { cls: 'c', face: '#capy-orange', x: 140, y: 295, tx: 220, ty: 290, speed: 1.3 }
     ];
 
-    capys.forEach(c => {
-      const el = document.createElement('div');
-      el.className = `capy-actor ${c.cls}`;
-      el.innerHTML = `
-        <div class="shadow"></div>
-        <span class="bob">
-          <svg viewBox="-60 -70 120 125"><use href="${c.face}"/></svg>
-        </span>`;
-      layer.appendChild(el);
-      c.el = el;
-    });
+    let allPosts = [];
+    let currentCat = 'ALL';
 
-    function spawnPop(x, y, emoji) {
-      const pop = document.createElement('div');
-      pop.className = 'pop';
-      pop.textContent = emoji;
-      pop.style.left = x + 'px';
-      pop.style.top = (y - 35) + 'px';
-      stage.appendChild(pop);
-      setTimeout(() => pop.remove(), 950);
-    }
-
-    stage.addEventListener('click', e => {
-      const rect = stage.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-
-      // Only drop on grass area (lower 55%)
-      if (y < rect.height * 0.44) return;
-
-      if (activeFood && activeFood.el) activeFood.el.remove();
-
-      const ico = foods[Math.floor(Math.random() * foods.length)];
-      const foodEl = document.createElement('div');
-      foodEl.className = 'food';
-      foodEl.textContent = ico;
-      foodEl.style.left = x + 'px';
-      foodEl.style.top = y + 'px';
-      stage.appendChild(foodEl);
-
-      activeFood = { x, y, el: foodEl, bites: 3 };
-      capys.forEach((c, idx) => {
-        c.tx = x + (idx - 1) * 34;
-        c.ty = y + (idx % 2) * 12;
-      });
-    });
-
-    function animateCapys() {
-      const rect = stage.getBoundingClientRect();
-      const w = rect.width || 360;
-      const h = rect.height || 350;
-
-      capys.forEach(c => {
-        const dx = c.tx - c.x;
-        const dy = c.ty - c.y;
-        const dist = Math.hypot(dx, dy);
-
-        if (dist > 6) {
-          c.x += (dx / dist) * c.speed;
-          c.y += (dy / dist) * c.speed;
-          c.el.classList.remove('eating');
-        } else {
-          if (activeFood && Math.hypot(activeFood.x - c.x, activeFood.y - c.y) < 48) {
-            c.el.classList.add('eating');
-            if (Math.random() < 0.035) {
-              activeFood.bites--;
-              spawnPop(c.x, c.y, '💚');
-              if (activeFood.bites <= 0) {
-                activeFood.el.remove();
-                activeFood = null;
-                feedCount++;
-                feedBadge.textContent = currentLang === 'vi'
-                  ? `🍊 Đã cho ăn: ${feedCount}`
-                  : `🍊 Fed: ${feedCount}`;
-              }
-            }
-          } else {
-            c.el.classList.remove('eating');
-            if (Math.random() < 0.012) {
-              c.tx = 45 + Math.random() * (w - 90);
-              c.ty = h * 0.52 + Math.random() * (h * 0.4);
-            }
+    async function loadForumPosts() {
+      // 1. Ưu tiên tải từ file posts.json trên server/GitHub Pages (nếu có)
+      try {
+        const res = await fetch('posts.json?t=' + Date.now());
+        if (res.ok) {
+          const remotePosts = await res.json();
+          if (Array.isArray(remotePosts) && remotePosts.length > 0) {
+            allPosts = remotePosts;
+            renderPosts();
+            return;
           }
         }
+      } catch (e) {}
 
-        const flip = dx < -1 ? -1 : 1;
-        c.el.style.transform = `translate(${c.x - 45}px, ${c.y - 65}px) scaleX(${flip})`;
-        c.el.style.zIndex = Math.round(c.y);
-      });
-
-      requestAnimationFrame(animateCapys);
+      // 2. Nếu chạy local chưa có posts.json thì lấy từ localStorage hoặc FALLBACK_POSTS
+      try {
+        const local = localStorage.getItem('wanhtu_forum_posts');
+        allPosts = local ? JSON.parse(local) : FALLBACK_POSTS;
+      } catch (e) {
+        allPosts = FALLBACK_POSTS;
+      }
+      renderPosts();
     }
-    requestAnimationFrame(animateCapys);
 
-    // 6. Scroll Progress, Back to Top & Reveal Observer
-    const progressBar = document.getElementById('progressBar');
-    const toTop = document.getElementById('toTop');
+    function renderPosts() {
+      const container = document.getElementById('forumPostsContainer');
+      const list = allPosts
+        .filter(p => currentCat === 'ALL' || p.category === currentCat)
+        .sort((a, b) => (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0));
 
-    window.addEventListener('scroll', () => {
-      const scrollTop = window.scrollY;
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
-      progressBar.style.width = pct + '%';
+      if (!list.length) {
+        container.innerHTML = `<div class="post-card liquid-glass" style="text-align:center;color:var(--muted);">Chưa có bài viết nào trong mục này.</div>`;
+        return;
+      }
 
-      if (scrollTop > 320) toTop.classList.add('show');
-      else toTop.classList.remove('show');
-    }, { passive: true });
+      container.innerHTML = list.map(p => `
+        <article class="post-card liquid-glass">
+          <div class="post-header">
+            <div class="post-author-box">
+              <div class="post-avatar">🍊</div>
+              <div class="post-meta-info">
+                <h3>${p.title}</h3>
+                <div class="post-sub">
+                  <strong>Nguyễn Anh Tú</strong>
+                  <span class="badge-admin">ADMIN</span>
+                  <span>• ${p.date}</span>
+                </div>
+              </div>
+            </div>
+            <div style="display:flex; gap:6px; align-items:center;">
+              ${p.pinned ? '<span class="badge-pin">📌 Đã ghim</span>' : ''}
+              <span class="badge-cat">${p.category}</span>
+            </div>
+          </div>
+          <div class="post-html-body">${p.html}</div>
+          <div class="post-footer">
+            <a href="https://t.me/wanhtu" target="_blank" rel="noopener" class="react-btn">💬 Thảo luận qua Telegram</a>
+            <span style="font-size:.76rem; color:var(--muted); font-weight:700;">#wanhtu</span>
+          </div>
+        </article>
+      `).join('');
+    }
 
-    toTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
-
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) entry.target.classList.add('in');
+    document.querySelectorAll('.filter-chip').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-chip').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentCat = btn.dataset.cat;
+        renderPosts();
       });
-    }, { threshold: 0.12 });
-    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    });
 
-    // Local persistent view counter
-    try {
-      let views = parseInt(localStorage.getItem('anhtu-views') || '1284', 10) + 1;
-      localStorage.setItem('anhtu-views', views);
-      document.getElementById('viewCountNum').textContent = views.toLocaleString('en-US');
-    } catch (e) {}
+    loadForumPosts();
+
+    // Theme toggle
+    const themeToggle = document.getElementById('themeToggle');
+    const syncThemeIcon = () => {
+      themeToggle.textContent = document.documentElement.getAttribute('data-theme') === 'dark' ? '🌙' : '☀️';
+    };
+    syncThemeIcon();
+    themeToggle.addEventListener('click', () => {
+      const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      if (next === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+      else document.documentElement.removeAttribute('data-theme');
+      localStorage.setItem('anhtu-theme', next);
+      syncThemeIcon();
+    });
+
+    // Capybara mini playground
+    const stage = document.getElementById('capyStage');
+    const layer = document.getElementById('capyLayer');
+    const capys = [
+      { x: 70, y: 220, tx: 140, ty: 230, s: 1.1 },
+      { x: 200, y: 250, tx: 160, ty: 245, s: 0.9 }
+    ].map(c => {
+      const el = document.createElement('div');
+      el.className = 'capy-actor';
+      el.innerHTML = `<svg viewBox="-60 -70 120 125"><use href="#capy-orange"/></svg>`;
+      layer.appendChild(el);
+      return { ...c, el };
+    });
+
+    stage.addEventListener('click', e => {
+      const r = stage.getBoundingClientRect();
+      const x = e.clientX - r.left, y = e.clientY - r.top;
+      if (y < r.height * 0.44) return;
+      const f = document.createElement('div');
+      f.className = 'food'; f.textContent = '🍊';
+      f.style.left = x + 'px'; f.style.top = y + 'px';
+      stage.appendChild(f);
+      setTimeout(() => f.remove(), 3000);
+      capys.forEach((c, i) => { c.tx = x + (i ? 25 : -25); c.ty = y; });
+    });
+
+    function loop() {
+      const r = stage.getBoundingClientRect();
+      capys.forEach(c => {
+        const dx = c.tx - c.x, dy = c.ty - c.y, d = Math.hypot(dx, dy);
+        if (d > 5) { c.x += (dx / d) * c.s; c.y += (dy / d) * c.s; }
+        else if (Math.random() < 0.015) {
+          c.tx = 40 + Math.random() * ((r.width || 300) - 80);
+          c.ty = (r.height || 320) * 0.52 + Math.random() * 110;
+        }
+        c.el.style.transform = `translate(${c.x - 45}px, ${c.y - 60}px) scaleX(${dx < -1 ? -1 : 1})`;
+      });
+      requestAnimationFrame(loop);
+    }
+    requestAnimationFrame(loop);
   </script>
 </body>
 </html>
